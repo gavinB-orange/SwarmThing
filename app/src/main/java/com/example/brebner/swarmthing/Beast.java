@@ -17,7 +17,7 @@ public class Beast extends DrawableThing {
     public final static int NPERX = 30;
     public final static int NPERY = 30;
 
-    final int INEBRIATION = 16;
+    private final int INEBRIATION = 50;
 
     private int id;
     private Bitmap bitmap;
@@ -50,14 +50,14 @@ public class Beast extends DrawableThing {
         rectF = new RectF();
     }
 
-    void adjustRectF() {
+    private void adjustRectF() {
         rectF.left = xpos;
         rectF.right = xpos + width;
         rectF.top = ypos;
         rectF.bottom = ypos + height;
     }
 
-    RectF getRectF() {
+    public RectF getRectF() {
         return rectF;
     }
 

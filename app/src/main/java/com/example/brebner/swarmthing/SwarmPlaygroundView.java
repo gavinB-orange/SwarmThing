@@ -1,6 +1,7 @@
 package com.example.brebner.swarmthing;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,16 +16,11 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private static final String TAG = "SwarmPlaygroundView";
     private int BACKGROUND = Color.argb(255, 32, 96, 0);
 
-    private Context context;
-    private Canvas canvas;
     private SurfaceHolder surfaceHolder;
-    private Paint paint;
 
     private int screenX;
     private int screenY;
     private int nbeasts;
-    private int n_beast_rows;
-    private int n_beast_cols;
 
     private boolean playing = false;
     private boolean paused = false;
@@ -37,22 +33,20 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private Hud hud;
     private ArrayList<Beast> beasts;
 
-    public SwarmPlaygroundView(Context context, int x, int y, int nb) {
+    public SwarmPlaygroundView(Context context, int screenX, int screenY, int nb) {
         super(context);
-        this.context = context;
         surfaceHolder = getHolder();
-        paint = new Paint();
-        screenX = x;
-        screenY = y;
+        this.screenX = screenX;
+        this.screenY = screenY;
         nbeasts = nb;
         hud = new Hud(40,40, nbeasts);
-        n_beast_cols = (int)java.lang.Math.sqrt(nbeasts);
-        n_beast_rows = nbeasts / n_beast_cols;
+        int n_beast_cols = (int) Math.sqrt(nbeasts);
+        int n_beast_rows = nbeasts / n_beast_cols;
         while (n_beast_rows * n_beast_cols < nbeasts) {
             n_beast_cols++;
         }
         Log.d(TAG, "SwarmPlaygroundView: n_cols = " + n_beast_cols + " n_rows = " + n_beast_rows);
-        beasts = new ArrayList<Beast>();
+        beasts = new ArrayList<>();
         for (int i = 0; i < nbeasts; i++) {
             int bx = (screenX / n_beast_cols) * (i % n_beast_cols) + screenX / Beast.NPERX;
             int by = (screenY / n_beast_rows) * ((i / n_beast_cols) % n_beast_rows) + screenY / Beast.NPERY;
@@ -63,6 +57,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     void loadSounds(Context context) {
         Log.w(TAG, "loadSounds: NOT IMPLEMENTED", null);
+        Resources res = context.getResources();
     }
 
     void update() {
@@ -74,7 +69,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     void draw() {
         if (surfaceHolder.getSurface().isValid()) {
-            canvas = surfaceHolder.lockCanvas();
+            Canvas canvas = surfaceHolder.lockCanvas();
             canvas.drawColor(BACKGROUND);
             hud.draw(canvas);
             for (Beast b: beasts) {
