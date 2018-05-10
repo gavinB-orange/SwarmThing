@@ -37,7 +37,6 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private Hud hud;
     private ArrayList<Beast> beasts;
 
-
     public SwarmPlaygroundView(Context context, int x, int y, int nb) {
         super(context);
         this.context = context;
@@ -57,7 +56,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         for (int i = 0; i < nbeasts; i++) {
             int bx = (screenX / n_beast_cols) * (i % n_beast_cols) + screenX / Beast.NPERX;
             int by = (screenY / n_beast_rows) * ((i / n_beast_cols) % n_beast_rows) + screenY / Beast.NPERY;
-            beasts.add(new Beast(bx, by, screenX, screenY, context));
+            beasts.add(new Beast(i, bx, by, screenX, screenY, beasts, context));
         }
         loadSounds(context);
     }
