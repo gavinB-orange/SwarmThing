@@ -12,6 +12,7 @@ public class Hud extends DrawableThing {
     private int displayColor = Color.argb(128, 0, 0, 0);
 
     private int nbeasts = 0;
+    private long fps = 0;
 
     public Hud(int x, int y, int nbeasts) {
         super();
@@ -20,6 +21,10 @@ public class Hud extends DrawableThing {
         this.nbeasts = nbeasts;
         this.paint.setColor(displayColor);
         this.paint.setTextSize(HUD_TEXT_SIZE);
+    }
+
+    public void setFps(long fps) {
+        this.fps = fps;
     }
 
     public void setDisplayColor(int displayColor) {
@@ -39,6 +44,6 @@ public class Hud extends DrawableThing {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawText("Number beasts : " + nbeasts, xpos, ypos, paint);
+        canvas.drawText("Number beasts : " + nbeasts + " FPS = " + fps, xpos, ypos, paint);
     }
 }

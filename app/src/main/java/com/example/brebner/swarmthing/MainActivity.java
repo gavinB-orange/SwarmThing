@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final int MAXBEASTS = 100;
+    public final static int MAXBEASTS = 100;
 
     private static final String TAG = "MainActivity";
 

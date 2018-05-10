@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+
 public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     private static final String TAG = "SwarmPlaygroundView";
@@ -21,6 +23,8 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private int screenX;
     private int screenY;
     private int nbeasts;
+    private int n_beast_rows;
+    private int n_beast_cols;
 
     private boolean playing = false;
     private boolean paused = false;
@@ -31,7 +35,8 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     // things
     private Hud hud;
-    private Beast exampleBeast;
+    private ArrayList<Beast> beasts;
+
 
     public SwarmPlaygroundView(Context context, int x, int y, int nb) {
         super(context);
@@ -42,20 +47,30 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         screenY = y;
         nbeasts = nb;
         hud = new Hud(40,40, nbeasts);
-        exampleBeast = new Beast(screenX / 2, screenY / 2, context);
+        n_beast_cols = (int)java.lang.Math.sqrt(nbeasts);
+        n_beast_rows = nbeasts / n_beast_cols;
+        while (n_beast_rows * n_beast_cols < nbeasts) {
+            n_beast_cols++;
+        }
+        Log.d(TAG, "SwarmPlaygroundView: n_cols = " + n_beast_cols + " n_rows = " + n_beast_rows);
+        beasts = new ArrayList<Beast>();
+        for (int i = 0; i < nbeasts; i++) {
+            int bx = (screenX / n_beast_cols) * (i % n_beast_cols) + screenX / Beast.NPERX;
+            int by = (screenY / n_beast_rows) * ((i / n_beast_cols) % n_beast_rows) + screenY / Beast.NPERY;
+            beasts.add(new Beast(bx, by, screenX, screenY, context));
+        }
         loadSounds(context);
-        prepareLevel();
     }
 
     void loadSounds(Context context) {
-
-    }
-
-    void prepareLevel() {
-
+        Log.w(TAG, "loadSounds: NOT IMPLEMENTED", null);
     }
 
     void update() {
+        hud.setFps(fps);
+        for (Beast b: beasts) {
+            b.update();
+        }
     }
 
     void draw() {
@@ -63,7 +78,9 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             canvas = surfaceHolder.lockCanvas();
             canvas.drawColor(BACKGROUND);
             hud.draw(canvas);
-            exampleBeast.draw(canvas);
+            for (Beast b: beasts) {
+                b.draw(canvas);
+            }
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
