@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SwarmThing</string>
+    <string name="splash">Welcome to Swarm Thing</string>
+    <string name="choose_n_beasts">How many beasts?</string>
+    <string name="hint_enter_number">10</string>
+    <string name="run">Run</string>
+</resources>
