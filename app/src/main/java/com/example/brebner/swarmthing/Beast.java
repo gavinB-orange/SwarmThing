@@ -32,7 +32,7 @@ public class Beast extends DrawableThing {
     private RectF rectF;
     private ArrayList<Beast> beasts;
 
-    public Beast(int id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
+    public Beast(int id, int x, int y, int screenX, int screenY, int drawable, ArrayList<Beast> beasts, Context context) {
         super();
         this.id = id;
         this.xpos = x;
@@ -45,7 +45,7 @@ public class Beast extends DrawableThing {
         width = screenX / NPERX;
         height = screenY / NPERY;
         this.beasts = beasts;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_1);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), drawable);
         bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
         rectF = new RectF();
     }
