@@ -66,6 +66,7 @@ public class Beast extends DrawableThing {
     }
 
     public void update() {
+        super.update();
         // move based on current velocity
         int next_xpos;
         int next_ypos;

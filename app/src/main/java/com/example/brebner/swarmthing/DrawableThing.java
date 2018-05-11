@@ -7,12 +7,39 @@ public abstract class DrawableThing {
 
     int xpos;
     int ypos;
+    long energy;
+    boolean active;
+
     Paint paint;
 
     public DrawableThing() {
         xpos = 0;
         ypos = 0;
         paint = new Paint();
+        setActive(true);
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public long getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(long energy) {
+        this.energy = energy;
+    }
+
+    public void update(){
+        energy--;
+        if (energy <= 0){
+            setActive(false);
+        }
     }
 
     public int getXpos() {

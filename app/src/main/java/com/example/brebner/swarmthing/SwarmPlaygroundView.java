@@ -20,6 +20,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     // private int BACKGROUND = Color.argb(255, 32, 96, 0);
 
     private final int OTHER_RATIO = 3;
+    private final int INIT_ENERGY = 10000;
 
     private SurfaceHolder surfaceHolder;
 
@@ -70,6 +71,10 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 beasts.add(new Beast(i, bx, by, screenX, screenY, R.drawable.beast_1, beasts, context));
             }
         }
+        for (Beast b: beasts){
+            b.setActive(true);
+            b.setEnergy(random.nextInt(INIT_ENERGY));
+        }
         loadSounds(context);
     }
 
@@ -82,6 +87,19 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         hud.setFps(fps);
         for (Beast b: beasts) {
             b.update();
+        }
+    }
+
+    void cull() {
+        ArrayList<Beast> todie = new ArrayList<>();
+        for (Beast b: beasts) {
+            if (! b.isActive()) {
+                todie.add(b);
+            }
+        }
+        for (Beast b: todie) {
+            beasts.remove(b);
+            Log.d(TAG, "cull: removing beast " + b.getID());
         }
     }
 
@@ -104,6 +122,8 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             long startFrameTime = System.currentTimeMillis();
             if (!paused) {
                 update();
+                cull();
+                hud.setNbeasts(beasts.size());
             }
             draw();
 
