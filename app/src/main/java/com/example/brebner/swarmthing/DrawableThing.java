@@ -8,7 +8,7 @@ public abstract class DrawableThing {
     int xpos;
     int ypos;
     long energy;
-    boolean active;
+    private boolean active;
 
     Paint paint;
 

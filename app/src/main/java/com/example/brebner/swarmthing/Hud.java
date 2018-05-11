@@ -2,8 +2,6 @@ package com.example.brebner.swarmthing;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.text.method.HideReturnsTransformationMethod;
 
 public class Hud extends DrawableThing {
 
@@ -11,7 +9,7 @@ public class Hud extends DrawableThing {
     private final int HUD_TEXT_SIZE = 40;
     private int displayColor = Color.argb(128, 0, 0, 255);
 
-    private int nbeasts = 0;
+    private int nbeasts;
     private long fps = 0;
 
     public Hud(int x, int y, int nbeasts) {
