@@ -19,7 +19,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private static final String TAG = "SwarmPlaygroundView";
     // private int BACKGROUND = Color.argb(255, 32, 96, 0);
 
-    private final int OTHER_RATIO = 3;
+    private final int OTHER_RATIO = 2;
     private final int INIT_ENERGY = 10000;
 
     private SurfaceHolder surfaceHolder;
@@ -65,10 +65,10 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             int bx = (screenX / n_beast_cols) * (i % n_beast_cols) + screenX / Beast.NPERX;
             int by = (screenY / n_beast_rows) * ((i / n_beast_cols) % n_beast_rows) + screenY / Beast.NPERY;
             if (random.nextInt(OTHER_RATIO) == 0) {
-                beasts.add(new OtherBeast(i, bx, by, screenX, screenY, R.drawable.beast_2, beasts, context));
+                beasts.add(new FoodBeast(i, bx, by, screenX, screenY, R.drawable.beast_2, beasts, context));
             }
             else {
-                beasts.add(new Beast(i, bx, by, screenX, screenY, R.drawable.beast_1, beasts, context));
+                beasts.add(new GrazingBeast(i, bx, by, screenX, screenY, R.drawable.beast_1, beasts, context));
             }
         }
         for (Beast b: beasts){
@@ -83,10 +83,15 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         Resources res = context.getResources();
     }
 
-    void update() {
+    void update(long cycle) {
         hud.setFps(fps);
+        hud.setNbeasts(beasts.size());
         for (Beast b: beasts) {
             b.update();
+            if (b.getClass() == FoodBeast.class) {
+                FoodBeast fb = (FoodBeast) b;
+                fb.grow((cycle / 100) % 10);
+            }
         }
     }
 
@@ -118,12 +123,13 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         Log.d(TAG, "run ");
+        long cycle = 0;
         while (playing) {
             long startFrameTime = System.currentTimeMillis();
             if (!paused) {
-                update();
+                update(cycle);
+                cycle ++;
                 cull();
-                hud.setNbeasts(beasts.size());
             }
             draw();
 

@@ -65,6 +65,10 @@ public class Beast extends DrawableThing {
         return id;
     }
 
+    void collisionExchange(Beast b){
+        // extended by descendants
+    }
+
     public void update() {
         super.update();
         // move based on current velocity
@@ -111,6 +115,7 @@ public class Beast extends DrawableThing {
             if (b.getID() != id) {
                 if (RectF.intersects(b.getRectF(), getRectF())) {
                     Log.d(TAG, "update: Collision other = " + b.getID() + " me = " + id);
+                    collisionExchange(b);
                     // Bounce and change direction
                     next_xpos = xpos - vx;
                     next_ypos = ypos - vy;
