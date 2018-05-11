@@ -10,29 +10,29 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Beast extends DrawableThing {
+public abstract class Beast extends DrawableThing {
 
     private static final String TAG = "Beast";
 
     public final static int NPERX = 30;
     public final static int NPERY = 30;
 
-    private final int INEBRIATION = 50;
+    final int INEBRIATION = 50;
 
-    private int id;
-    private Bitmap bitmap;
-    private Random random;
-    private int screenX;
-    private int screenY;
-    private int vx;
-    private int vy;
-    private int height;
-    private int width;
+    int id;
+    Bitmap[] bitmaps;
+    Random random;
+    int screenX;
+    int screenY;
+    int vx;
+    int vy;
+    int height;
+    int width;
 
-    private RectF rectF;
-    private ArrayList<Beast> beasts;
+    RectF rectF;
+    ArrayList<Beast> beasts;
 
-    public Beast(int id, int x, int y, int screenX, int screenY, int drawable, ArrayList<Beast> beasts, Context context) {
+    public Beast(int id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
         super();
         this.id = id;
         this.xpos = x;
@@ -45,8 +45,6 @@ public class Beast extends DrawableThing {
         width = screenX / NPERX;
         height = screenY / NPERY;
         this.beasts = beasts;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), drawable);
-        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
         rectF = new RectF();
     }
 
@@ -131,8 +129,17 @@ public class Beast extends DrawableThing {
         adjustRectF();
     }
 
+    // choose which bitmap to show
+    abstract Bitmap whichBitmap();
+
+    // return the initial energy
+    abstract long getInitEnergy();
+
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(bitmap, xpos, ypos, paint);
+        if (bitmaps != null) {
+            Bitmap bitmap = whichBitmap();
+            canvas.drawBitmap(bitmap, xpos, ypos, paint);
+        }
     }
 }

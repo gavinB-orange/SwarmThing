@@ -20,7 +20,6 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     // private int BACKGROUND = Color.argb(255, 32, 96, 0);
 
     private final int OTHER_RATIO = 2;
-    private final int INIT_ENERGY = 10000;
 
     private SurfaceHolder surfaceHolder;
 
@@ -65,7 +64,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             int bx = (screenX / n_beast_cols) * (i % n_beast_cols) + screenX / Beast.NPERX;
             int by = (screenY / n_beast_rows) * ((i / n_beast_cols) % n_beast_rows) + screenY / Beast.NPERY;
             if (random.nextInt(OTHER_RATIO) == 0) {
-                beasts.add(new FoodBeast(i, bx, by, screenX, screenY, R.drawable.beast_2, beasts, context));
+                beasts.add(new FoodBeast(i, bx, by, screenX, screenY, beasts, context));
             }
             else {
                 beasts.add(new GrazingBeast(i, bx, by, screenX, screenY, R.drawable.beast_1, beasts, context));
@@ -73,7 +72,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         }
         for (Beast b: beasts){
             b.setActive(true);
-            b.setEnergy(random.nextInt(INIT_ENERGY));
+            b.setEnergy(random.nextInt((int)b.getInitEnergy()));
         }
         loadSounds(context);
     }

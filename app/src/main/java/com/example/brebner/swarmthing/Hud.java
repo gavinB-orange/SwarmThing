@@ -9,7 +9,7 @@ public class Hud extends DrawableThing {
 
 
     private final int HUD_TEXT_SIZE = 40;
-    private int displayColor = Color.argb(128, 0, 0, 0);
+    private int displayColor = Color.argb(128, 0, 0, 255);
 
     private int nbeasts = 0;
     private long fps = 0;
