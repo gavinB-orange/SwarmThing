@@ -4,4 +4,10 @@
     <string name="choose_n_beasts">How many beasts?</string>
     <string name="hint_enter_number">10</string>
     <string name="run">Run</string>
+    <string name="configure_title">Configure beasts and simulator :</string>
+    <string name="configure_food_beast">Configure FoodBeast</string>
+    <string name="configure_grazing_beast">Configure GrazingBeast</string>
+    <string name="configure_simulation">Configure Simulation</string>
+    <string name="configfb_init_energy">Initial Energy</string>
+    <string name="done_button">Done</string>
 </resources>

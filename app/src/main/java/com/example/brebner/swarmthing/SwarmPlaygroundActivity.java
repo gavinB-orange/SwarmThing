@@ -10,6 +10,7 @@ import android.view.Display;
 public class SwarmPlaygroundActivity extends Activity {
 
     public final static String BEAST_NUMBER_KEY = "com.example.brebner.swarmthing.BEAST_NUMBER_KEY";
+    public final static String CONFIG_BUNDLE_KEY = "com.example.brebner.swarmthing.CONFIG_BUNDLE_KEY";
 
     SwarmPlaygroundView swarmPlaygroundView;
 
@@ -22,9 +23,10 @@ public class SwarmPlaygroundActivity extends Activity {
         display.getSize(size);
 
         Intent intent = getIntent();
+        Bundle configBundle = intent.getBundleExtra(SwarmPlaygroundActivity.CONFIG_BUNDLE_KEY);
         int nbeasts = intent.getIntExtra(BEAST_NUMBER_KEY, 1);
 
-        swarmPlaygroundView = new SwarmPlaygroundView(this, size.x, size.y, nbeasts);
+        swarmPlaygroundView = new SwarmPlaygroundView(this, size.x, size.y, configBundle);
         setContentView(swarmPlaygroundView);
     }
 

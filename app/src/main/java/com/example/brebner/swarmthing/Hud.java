@@ -5,12 +5,14 @@ import android.graphics.Color;
 
 public class Hud extends DrawableThing {
 
+    private final int averagerange = 100;
 
-    private final int HUD_TEXT_SIZE = 40;
+    private final int HUD_TEXT_SIZE = 60;
     private int displayColor = Color.argb(128, 0, 0, 255);
 
     private int nbeasts;
     private long fps = 0;
+    private float stablefps = 0;
 
     public Hud(int x, int y, int nbeasts) {
         super();
@@ -23,6 +25,7 @@ public class Hud extends DrawableThing {
 
     public void setFps(long fps) {
         this.fps = fps;
+        stablefps = ((averagerange - 1) * stablefps + fps) / averagerange;
     }
 
     public void setDisplayColor(int displayColor) {
@@ -42,6 +45,6 @@ public class Hud extends DrawableThing {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawText("Number beasts : " + nbeasts + " FPS = " + fps, xpos, ypos, paint);
+        canvas.drawText("Number beasts : " + nbeasts + " Average FPS = " + (int)stablefps, xpos, ypos, paint);
     }
 }

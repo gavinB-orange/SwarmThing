@@ -5,8 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,7 +17,6 @@ import java.util.Random;
 public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     private static final String TAG = "SwarmPlaygroundView";
-    // private int BACKGROUND = Color.argb(255, 32, 96, 0);
 
     private final int OTHER_RATIO = 2;
 
@@ -33,6 +32,8 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private Thread gameThread;
 
     private long fps;
+    
+    private Context context;
 
     //background
     private Bitmap bitmap;
@@ -41,16 +42,21 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     // things
     private Hud hud;
     private ArrayList<Beast> beasts;
+    private long beastID;  // monotonic beast ID
 
-    public SwarmPlaygroundView(Context context, int screenX, int screenY, int nb) {
+    private Bundle configBundle;
+
+    public SwarmPlaygroundView(Context context, int screenX, int screenY, Bundle configBundle) {
         super(context);
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_2);
+        this.context = context;
+        this.configBundle = configBundle;
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_3);
         bitmap = Bitmap.createScaledBitmap(bitmap, screenX, screenY, false);
         paint = new Paint();
         surfaceHolder = getHolder();
         this.screenX = screenX;
         this.screenY = screenY;
-        nbeasts = nb;
+        nbeasts = configBundle.getInt(SwarmPlaygroundActivity.BEAST_NUMBER_KEY);
         hud = new Hud(40,40, nbeasts);
         int n_beast_cols = (int) Math.sqrt(nbeasts);
         int n_beast_rows = nbeasts / n_beast_cols;
@@ -60,15 +66,17 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         Log.d(TAG, "SwarmPlaygroundView: n_cols = " + n_beast_cols + " n_rows = " + n_beast_rows);
         beasts = new ArrayList<>();
         Random random = new Random();
+        beastID = 0;
         for (int i = 0; i < nbeasts; i++) {
             int bx = (screenX / n_beast_cols) * (i % n_beast_cols) + screenX / Beast.NPERX;
             int by = (screenY / n_beast_rows) * ((i / n_beast_cols) % n_beast_rows) + screenY / Beast.NPERY;
             if (random.nextInt(OTHER_RATIO) == 0) {
-                beasts.add(new FoodBeast(i, bx, by, screenX, screenY, beasts, context));
+                beasts.add(new FoodBeast(beastID, bx, by, screenX, screenY, configBundle, beasts, context));
             }
             else {
-                beasts.add(new GrazingBeast(i, bx, by, screenX, screenY, R.drawable.beast_1, beasts, context));
+                beasts.add(new GrazingBeast(beastID, bx, by, screenX, screenY, configBundle, beasts, context));
             }
+            beastID++;
         }
         for (Beast b: beasts){
             b.setActive(true);
@@ -90,6 +98,49 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             if (b.getClass() == FoodBeast.class) {
                 FoodBeast fb = (FoodBeast) b;
                 fb.grow((cycle / 100) % 10);
+            }
+        }
+    }
+    
+    void split() {
+        if (beasts.size() > MainActivity.MAXBEASTS) {  // stop at max !
+            for (Beast b: beasts) {
+                b.resetSplit();
+            }
+            return;
+        }
+        ArrayList<Beast> tosplit = new ArrayList<>();
+        for (Beast b: beasts) {
+            if (b.isSplitReady()) {
+                tosplit.add(b);
+            }
+        }
+        if (tosplit.size() < 1) {
+            return;
+        }
+        Log.d(TAG, "split: Have " + tosplit.size() + " beasts ready to split");
+        for (Beast b: tosplit) {
+            if (b.getClass() == FoodBeast.class) {
+                Log.w(TAG, "split: " + b.getID() + " Splitting to form new FoodBeast");
+                FoodBeast fb = (FoodBeast)b;
+                fb.setEnergy(fb.getEnergy() / 2);
+                fb.resetSplit();
+                FoodBeast newfb = new FoodBeast(beastID, fb.getXpos() + 8, fb.getYpos() + 8, screenX, screenY, configBundle, beasts, context);
+                beastID++;
+                newfb.setEnergy(fb.getEnergy());
+                beasts.add(newfb);
+            }
+            else {
+                if (b.getClass() == GrazingBeast.class) {
+                    Log.w(TAG, "split: Splitting to form new GrazingBeast");
+                    GrazingBeast gb = (GrazingBeast)b;
+                    gb.energy = gb.energy / 2;
+                    gb.resetSplit();
+                    GrazingBeast newgb = new GrazingBeast(beastID, gb.getXpos() + 8, gb.getYpos() + 8, screenX, screenY, configBundle, beasts, context);
+                    beastID++;
+                    newgb.setEnergy(gb.energy);
+                    beasts.add(newgb);
+                }
             }
         }
     }
@@ -129,6 +180,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 update(cycle);
                 cycle ++;
                 cull();
+                split();
             }
             draw();
 

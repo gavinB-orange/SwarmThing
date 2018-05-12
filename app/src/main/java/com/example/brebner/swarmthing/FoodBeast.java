@@ -3,6 +3,7 @@ package com.example.brebner.swarmthing;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 
 import java.util.ArrayList;
 
@@ -10,8 +11,11 @@ public class FoodBeast extends Beast {
 
     public static final long INIT_ENERGY = 5000;
 
-    public FoodBeast(int id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
-        super(id, x, y, screenX, screenY, beasts, context);
+    public final int SPLIT_THRESHOLD = 1000;
+    public int splitValue;
+
+    public FoodBeast(long id, int x, int y, int screenX, int screenY, Bundle configBundle, ArrayList<Beast> beasts, Context context) {
+        super(id, x, y, screenX, screenY, configBundle, beasts, context);
         bitmaps = new Bitmap[4];
         bitmaps[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_50);
         bitmaps[0] = Bitmap.createScaledBitmap(bitmaps[0], width, height, false);
@@ -21,6 +25,15 @@ public class FoodBeast extends Beast {
         bitmaps[2] = Bitmap.createScaledBitmap(bitmaps[2], width, height, false);
         bitmaps[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_100);
         bitmaps[3] = Bitmap.createScaledBitmap(bitmaps[3], width, height, false);
+        splitValue = 0;
+    }
+
+    @Override
+    int getStep() {
+        if (energy > INIT_ENERGY / 2) {
+            return  2;
+        }
+        return 1;
     }
 
     @Override
@@ -42,10 +55,20 @@ public class FoodBeast extends Beast {
         return INIT_ENERGY;
     }
 
+    @Override
+    void resetSplit() {
+        super.resetSplit();
+        splitValue = 0;
+    }
+
     public void grow(long amount) {
         energy += amount;
         if (energy > INIT_ENERGY) {
             energy = INIT_ENERGY;
+            splitValue ++;
+        }
+        if (! splitReady && splitValue > SPLIT_THRESHOLD) {
+            splitReady = true;
         }
     }
 

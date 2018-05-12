@@ -8,22 +8,12 @@
     android:paddingTop="64dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/splashTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:text="@string/splash"
-        android:textSize="24sp"
-        android:textStyle="italic"
-        tools:padding="24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="24dp"
-        android:paddingTop="24dp">
+        android:orientation="horizontal">
+
 
         <ImageView
             android:id="@+id/leftImageView"
@@ -32,12 +22,63 @@
             android:layout_weight="1"
             app:srcCompat="@drawable/beast_2" />
 
+        <TextView
+            android:id="@+id/splashTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:text="@string/splash"
+            android:textSize="24sp"
+            android:textStyle="italic" />
+
         <ImageView
             android:id="@+id/rightImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/beast_1" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/configureTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp"
+        android:text="@string/configure_title"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/foodBeastConfigImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doFBConfigButtonClick"
+            app:srcCompat="@drawable/beast_2_100" />
+
+        <ImageButton
+            android:id="@+id/simulatorPreferencesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doPreferencesConfigButtonOnClick"
+            app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+        <ImageButton
+            android:id="@+id/grazingBeastConfigImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doGBConfigButtonOnClick"
+            app:srcCompat="@drawable/beast_1_50" />
     </LinearLayout>
 
     <LinearLayout
@@ -68,7 +109,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="24dp"
         android:paddingTop="24dp">

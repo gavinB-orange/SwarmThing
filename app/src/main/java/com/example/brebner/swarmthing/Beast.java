@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public abstract class Beast extends DrawableThing {
 
     final int INEBRIATION = 50;
 
-    int id;
+    long id;
     Bitmap[] bitmaps;
     Random random;
     int screenX;
@@ -28,25 +29,32 @@ public abstract class Beast extends DrawableThing {
     int vy;
     int height;
     int width;
+    boolean splitReady = false;
 
     RectF rectF;
     ArrayList<Beast> beasts;
 
-    public Beast(int id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
+    Bundle configBundle;
+
+    public Beast(long id, int x, int y, int screenX, int screenY, Bundle configBundle, ArrayList<Beast> beasts, Context context) {
         super();
+        this.configBundle = configBundle;
         this.id = id;
         this.xpos = x;
         this.ypos = y;
         this.screenX = screenX;
         this.screenY = screenY;
         random = new Random();
-        vx = random.nextInt(3) - 1;
-        vy = random.nextInt(3) - 1;
         width = screenX / NPERX;
         height = screenY / NPERY;
         this.beasts = beasts;
         rectF = new RectF();
+        int tmpstep = getStep();
+        vx = random.nextInt(2 * tmpstep + 1) - tmpstep;
+        vy = random.nextInt(2 * tmpstep + 1) - tmpstep;
     }
+
+    abstract int getStep();
 
     private void adjustRectF() {
         rectF.left = xpos;
@@ -55,11 +63,20 @@ public abstract class Beast extends DrawableThing {
         rectF.bottom = ypos + height;
     }
 
+    boolean isSplitReady() {
+        return splitReady;
+    }
+
+    void resetSplit() {
+        Log.d(TAG, "resetSplit: beast " + getID());
+        splitReady = false;
+    }
+
     public RectF getRectF() {
         return rectF;
     }
 
-    public int getID() {
+    public long getID() {
         return id;
     }
 
@@ -75,9 +92,10 @@ public abstract class Beast extends DrawableThing {
         next_xpos = xpos + vx;
         next_ypos = ypos + vy;
         // randomly switch from time to time
+        int tmpstep = getStep();
         if (random.nextInt(INEBRIATION) == 0) {
             if (vx == 0) {
-                vx = random.nextInt(3) - 1;
+                vx = random.nextInt(2 * tmpstep + 1) - tmpstep;
             }
             else {
                 vx = - vx;
@@ -85,7 +103,7 @@ public abstract class Beast extends DrawableThing {
         }
         if (random.nextInt(INEBRIATION) == 0) {
             if (vy == 0) {
-                vy = random.nextInt(3) - 1;
+                vy = random.nextInt(2 * tmpstep + 1) - tmpstep;
             }
             else {
                 vy = -vy;
@@ -94,19 +112,19 @@ public abstract class Beast extends DrawableThing {
         // bounce off walls
         if (next_xpos <= width) {
             next_xpos = width;
-            vx = 1;
+            vx = tmpstep;
         }
         if (next_ypos <= height) {
             next_ypos = height;
-            vy = 1;
+            vy = tmpstep;
         }
         if (next_xpos >= screenX - width) {
             next_xpos = screenX - width;
-            vx = -1;
+            vx = -tmpstep;
         }
         if (next_ypos >= screenY - height) {
             next_ypos = screenY - height;
-            vy = -1;
+            vy = -tmpstep;
         }
         // collision detect with other beasts
         for (Beast b: beasts) {
