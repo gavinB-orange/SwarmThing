@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class EndActivity extends AppCompatActivity {
 
@@ -26,5 +29,20 @@ public class EndActivity extends AppCompatActivity {
         long seconds = (now - start) / 1000;
         TextView durationTextView = findViewById(R.id.gameDurationValueTextView);
         durationTextView.setText("" + seconds + " seconds");
+        TextView paramsTextView = findViewById(R.id.paramSummaryTextView);
+        String paramsinfo = "Number beasts = " + sharedPreferences.getInt(getString(R.string.other_nbeasts_key), ConfigureOtherActivity.DEFAULT_N_BEASTS) + "\n" +
+                            "Ratio value = " + sharedPreferences.getInt(getString(R.string.other_ratio_key) + "/" + ConfigureOtherActivity.DEFAULT_MAX_RATIO, ConfigureOtherActivity.DEFAULT_RATIO) + "\n" +
+                            "Max beast age = " + sharedPreferences.getInt(getString(R.string.other_maxage_key), ConfigureOtherActivity.DEFAULT_AGE) + "\n" +
+                            "FoodBeast energy = " + sharedPreferences.getInt(getString(R.string.fb_init_energy_key), ConfigureFoodBeast.DEFAULT_INIT_ENERGY) + "\n" +
+                            "FoodBeast split = " + sharedPreferences.getInt(getString(R.string.fb_split_threshold_key), ConfigureFoodBeast.DEFAULT_SPLIT_THRESHOLD) + "\n" +
+                            "GrazingBeast energy = " + sharedPreferences.getInt(getString(R.string.gb_init_energy_key), ConfigureGrazingBeastActivity.DEFAULT_INIT_ENERGY) + "\n" +
+                            "GrazingBeast split = " + sharedPreferences.getInt(getString(R.string.gb_split_threshold_key), ConfigureGrazingBeastActivity.DEFAULT_SPLIT_THRESHOLD);
+        paramsTextView.setText(paramsinfo);
+
+    }
+
+    public void doPlayAgain(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

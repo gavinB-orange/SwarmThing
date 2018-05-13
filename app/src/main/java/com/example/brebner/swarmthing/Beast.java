@@ -3,10 +3,8 @@ package com.example.brebner.swarmthing;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -36,6 +34,8 @@ public abstract class Beast extends DrawableThing {
 
     private int myage;
 
+    private Context context;
+
     RectF rectF;
     ArrayList<Beast> beasts;
 
@@ -47,6 +47,7 @@ public abstract class Beast extends DrawableThing {
         this.ypos = y;
         this.screenX = screenX;
         this.screenY = screenY;
+        this.context = context;
         random = new Random();
         width = screenX / NPERX;
         height = screenY / NPERY;
@@ -57,6 +58,7 @@ public abstract class Beast extends DrawableThing {
         vy = random.nextInt(2 * tmpstep + 1) - tmpstep;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         myage = sharedPreferences.getInt(context.getString(R.string.other_maxage_key), ConfigureOtherActivity.DEFAULT_MAX_AGE);
+        myage += random.nextInt(ConfigureOtherActivity.DEFAULT_MAX_AGE / 10);
         Log.d(TAG, "Beast: " + id + " has age " + myage);
     }
 
@@ -168,6 +170,7 @@ public abstract class Beast extends DrawableThing {
         adjustRectF();
         myage--;
         if (myage <= 0) {
+            Log.d(TAG, "update: Beast " + id + " has died of old age");
            setActive(false);
         }
     }

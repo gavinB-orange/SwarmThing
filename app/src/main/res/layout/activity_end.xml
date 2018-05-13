@@ -17,6 +17,12 @@
         android:text="@string/endActivityTitle"
         android:textSize="24sp" />
 
+    <TextView
+        android:id="@+id/paramSummaryTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,5 +85,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/playAgainButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="doPlayAgain"
+        android:text="@string/play_again_button" />
 </LinearLayout>

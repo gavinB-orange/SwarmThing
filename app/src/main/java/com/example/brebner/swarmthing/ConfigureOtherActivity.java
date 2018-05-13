@@ -13,12 +13,12 @@ import android.widget.Toast;
 
 public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
-    public final static int DEFAULT_MAX_AGE = 10000;
-    public final static int DEFAULT_AGE = 5000;
+    public final static int DEFAULT_MAX_AGE = 20000;
+    public final static int DEFAULT_AGE = 8000;
     public final static int DEFAULT_N_BEASTS = 20;
     public final static int DEFAULT_MAX_BEASTS = 100;
     public static final int DEFAULT_MAX_RATIO = 20;
-    public final static int DEFAULT_RATIO = 2;
+    public final static int DEFAULT_RATIO = 8;
 
     private static final String TAG = "ConfigureOtherActivity";
 

@@ -1,6 +1,5 @@
 package com.example.brebner.swarmthing;
 
-// TODO EndActivity needs to show params used.
 // TODO Capture time sequence of beast numbers and graph at end.
 // TODO restart button in EndActivity
 // TODO store historical data and display

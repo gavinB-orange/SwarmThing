@@ -31,4 +31,5 @@
     <string name="config_gb_split_title">Configure split threshold</string>
     <string name="fb_split_threshold_key">com.example.brebner.swarmthing.fb_split_threshold_key</string>
     <string name="gb_split_threshold_key">com.example.brebner.swarmthing.gb_split_threshold_key</string>
+    <string name="play_again_button">Play Again</string>
 </resources>
