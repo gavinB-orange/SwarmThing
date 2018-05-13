@@ -1,11 +1,13 @@
 package com.example.brebner.swarmthing;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -30,11 +32,13 @@ public abstract class Beast extends DrawableThing {
     int height;
     int width;
     boolean splitReady = false;
+    boolean collided;
+
+    private int myage;
 
     RectF rectF;
     ArrayList<Beast> beasts;
 
-    Bundle configBundle;
 
     public Beast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
         super();
@@ -51,9 +55,24 @@ public abstract class Beast extends DrawableThing {
         int tmpstep = getStep();
         vx = random.nextInt(2 * tmpstep + 1) - tmpstep;
         vy = random.nextInt(2 * tmpstep + 1) - tmpstep;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        myage = sharedPreferences.getInt(context.getString(R.string.other_maxage_key), ConfigureOtherActivity.DEFAULT_MAX_AGE);
+        Log.d(TAG, "Beast: " + id + " has age " + myage);
     }
 
     abstract int getStep();
+
+    void setCollided() {
+        this.collided = true;
+    }
+
+    boolean hasCollided() {
+        return this.collided;
+    }
+
+    public void resetCollided() {
+        this.collided = false;
+    }
 
     private void adjustRectF() {
         rectF.left = xpos;
@@ -129,14 +148,17 @@ public abstract class Beast extends DrawableThing {
         for (Beast b: beasts) {
             if (b.getID() != id) {
                 if (RectF.intersects(b.getRectF(), getRectF())) {
-                    // Log.d(TAG, "update: Collision other = " + b.getID() + " me = " + id);
-                    collisionExchange(b);
-                    // Bounce and change direction
-                    next_xpos = xpos - vx;
-                    next_ypos = ypos - vy;
-                    vx = -vx;
-                    vy = -vy;
-                    // Log.d(TAG, "update: x = " + xpos + " y = " + ypos + " vx = " + vx + " vy = " + vy);
+                    if (! b.hasCollided()) {  // collided reset per cycle in SwarmPlaygroundView
+                        b.setCollided();  // so only one collision between beasts per cycle
+                        // Log.d(TAG, "update: Collision other = " + b.getID() + " me = " + id);
+                        collisionExchange(b);
+                        // Bounce and change direction
+                        next_xpos = xpos - vx;
+                        next_ypos = ypos - vy;
+                        vx = -vx;
+                        vy = -vy;
+                        // Log.d(TAG, "update: x = " + xpos + " y = " + ypos + " vx = " + vx + " vy = " + vy);
+                    }
                 }
             }
         }
@@ -144,6 +166,10 @@ public abstract class Beast extends DrawableThing {
         ypos = next_ypos;
         // now update the rect
         adjustRectF();
+        myage--;
+        if (myage <= 0) {
+           setActive(false);
+        }
     }
 
     // choose which bitmap to show

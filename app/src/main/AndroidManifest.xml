@@ -21,7 +21,9 @@
             android:name=".SwarmPlaygroundActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity android:name=".ConfigureGrazingBeastActivity"></activity>
+        <activity android:name=".ConfigureGrazingBeastActivity" />
+        <activity android:name=".ConfigureOtherActivity" />
+        <activity android:name=".EndActivity"></activity>
     </application>
 
 </manifest>

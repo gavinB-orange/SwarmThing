@@ -1,13 +1,13 @@
 package com.example.brebner.swarmthing;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -19,9 +19,6 @@ import java.util.Random;
 public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     private static final String TAG = "SwarmPlaygroundView";
-
-    private final int DEFAULT_OTHER_RATIO = 2;
-    private final int DEFAULT_BEAST_NUMBER = 12;
 
     private SurfaceHolder surfaceHolder;
 
@@ -48,14 +45,16 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private ArrayList<Beast> beasts;
     private long beastID;  // monotonic beast ID
 
+    private boolean started;
+
 
     public SwarmPlaygroundView(Context context, int screenX, int screenY) {
         super(context);
         this.context = context;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        nbeasts = sharedPreferences.getInt(context.getString(R.string.beast_number_key), DEFAULT_BEAST_NUMBER);
+        nbeasts = sharedPreferences.getInt(context.getString(R.string.other_nbeasts_key), ConfigureOtherActivity.DEFAULT_N_BEASTS);
         Log.w(TAG, "SwarmPlaygroundView: nbeasts = " + nbeasts, null);
-        other_ratio = sharedPreferences.getInt(context.getString(R.string.other_ratio_key), DEFAULT_OTHER_RATIO);
+        other_ratio = sharedPreferences.getInt(context.getString(R.string.other_ratio_key), ConfigureOtherActivity.DEFAULT_RATIO);
         Log.w(TAG, "SwarmPlaygroundView: other_ratio set to " + other_ratio, null);
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_3);
         bitmap = Bitmap.createScaledBitmap(bitmap, screenX, screenY, false);
@@ -76,7 +75,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         for (int i = 0; i < nbeasts; i++) {
             int bx = (screenX / n_beast_cols) * (i % n_beast_cols) + screenX / Beast.NPERX;
             int by = (screenY / n_beast_rows) * ((i / n_beast_cols) % n_beast_rows) + screenY / Beast.NPERY;
-            if (random.nextInt(other_ratio) == 0) {
+            if (random.nextInt(ConfigureOtherActivity.DEFAULT_MAX_RATIO) >= other_ratio) {
                 beasts.add(new FoodBeast(beastID, bx, by, screenX, screenY, beasts, context));
             }
             else {
@@ -89,6 +88,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             b.setEnergy(random.nextInt((int)b.getInitEnergy()));
         }
         loadSounds(context);
+        started = false;  // set to true once game has truly started.
     }
 
     void loadSounds(Context context) {
@@ -99,12 +99,24 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     void update(long cycle) {
         hud.setFps(fps);
         hud.setNbeasts(beasts.size());
+        int nFB = 0;
         for (Beast b: beasts) {
+            b.resetCollided();
+        }
+        for (Beast b: beasts) {
+            started = true;
             b.update();
             if (b.getClass() == FoodBeast.class) {
                 FoodBeast fb = (FoodBeast) b;
                 fb.grow((cycle / 100) % 10);
+                nFB ++;
             }
+        }
+        if (started && ((nFB == 0) || (nFB == beasts.size()))) {
+            Intent intent = new Intent(context, EndActivity.class);
+            intent.putExtra(context.getString(R.string.final_fb_value), nFB);
+            intent.putExtra(context.getString(R.string.final_gb_value), beasts.size() - nFB);
+            context.startActivity(intent);
         }
     }
     
@@ -131,7 +143,15 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 FoodBeast fb = (FoodBeast)b;
                 fb.setEnergy(fb.getEnergy() / 2);
                 fb.resetSplit();
-                FoodBeast newfb = new FoodBeast(beastID, fb.getXpos() + 8, fb.getYpos() + 8, screenX, screenY, beasts, context);
+                int newxpos = fb.getXpos() + screenX / (2 * Beast.NPERX);
+                if (newxpos > screenX)  {
+                    newxpos = screenX - screenX / (2 * Beast.NPERX);
+                }
+                int newypos = fb.getYpos() + screenY / (2 * Beast.NPERY);
+                if (newypos > screenY)  {
+                    newypos = screenY - screenY / (2 * Beast.NPERY);
+                }
+                FoodBeast newfb = new FoodBeast(beastID, newxpos, newypos, screenX, screenY, beasts, context);
                 beastID++;
                 newfb.setEnergy(fb.getEnergy());
                 beasts.add(newfb);
@@ -142,7 +162,15 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                     GrazingBeast gb = (GrazingBeast)b;
                     gb.energy = gb.energy / 2;
                     gb.resetSplit();
-                    GrazingBeast newgb = new GrazingBeast(beastID, gb.getXpos() + 8, gb.getYpos() + 8, screenX, screenY, beasts, context);
+                    int newxpos = gb.getXpos() + screenX / (2 * Beast.NPERX);
+                    if (newxpos > screenX)  {
+                        newxpos = screenX - screenX / (2 * Beast.NPERX);
+                    }
+                    int newypos = gb.getYpos() + screenY / (2 * Beast.NPERY);
+                    if (newypos > screenY)  {
+                        newypos = screenY - screenY / (2 * Beast.NPERY);
+                    }
+                    GrazingBeast newgb = new GrazingBeast(beastID, newxpos, newypos, screenX, screenY, beasts, context);
                     beastID++;
                     newgb.setEnergy(gb.energy);
                     beasts.add(newgb);

@@ -14,16 +14,21 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
     // TODO add input for gb_split_threshold
 
     private static final String TAG = "ConfigureGrazingBeast";
-    public final int DEFAULT_INIT_ENERGY = 8000;
+    public static final int DEFAULT_INIT_ENERGY = 8000;
+    public static final int MAX_INIT_ENERGY = 12000;
+    public static final int DEFAULT_SPLIT_THRESHOLD = 10;
+    public static final int MAX_SPLIT_THRESHOLD = 40;
 
-    private int initenergy = DEFAULT_INIT_ENERGY;
+    private int initenergy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_grazing_beast);
         SeekBar energySeekBar = (SeekBar)findViewById(R.id.gbEnergyseekBar);
+        energySeekBar.setProgress(DEFAULT_INIT_ENERGY * energySeekBar.getMax() / MAX_INIT_ENERGY);
         energySeekBar.setOnSeekBarChangeListener(this);
+        initenergy = DEFAULT_INIT_ENERGY;
     }
 
     public void reportGBConfigData(View view) {

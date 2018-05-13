@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public class GrazingBeast extends Beast {
 
-    public final static int DEFAULT_INIT_ENERGY = 8000;
-    public final int DEFAULT_SPLIT_THRESHOLD = 10;
 
     private int init_energy;
     private int split_threshold;
@@ -22,20 +20,30 @@ public class GrazingBeast extends Beast {
 
     private static final String TAG = "GrazingBeast";
 
+    private static Bitmap[] bitmapcache;
+
     public GrazingBeast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
         super(id, x, y, screenX, screenY, beasts, context);
-        bitmaps = new Bitmap[4];
-        bitmaps[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_1_50);
-        bitmaps[0] = Bitmap.createScaledBitmap(bitmaps[0], width, height, false);
-        bitmaps[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_1_66);
-        bitmaps[1] = Bitmap.createScaledBitmap(bitmaps[1], width, height, false);
-        bitmaps[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_1_75);
-        bitmaps[2] = Bitmap.createScaledBitmap(bitmaps[2], width, height, false);
-        bitmaps[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_1_100);
-        bitmaps[3] = Bitmap.createScaledBitmap(bitmaps[3], width, height, false);
+        if (bitmapcache == null) {
+            Log.d(TAG, "GrazingBeast: Creating bitmaps first time");
+            bitmaps = new Bitmap[4];
+            bitmaps[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_1_50);
+            bitmaps[0] = Bitmap.createScaledBitmap(bitmaps[0], width, height, false);
+            bitmaps[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_1_66);
+            bitmaps[1] = Bitmap.createScaledBitmap(bitmaps[1], width, height, false);
+            bitmaps[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_1_75);
+            bitmaps[2] = Bitmap.createScaledBitmap(bitmaps[2], width, height, false);
+            bitmaps[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_1_100);
+            bitmaps[3] = Bitmap.createScaledBitmap(bitmaps[3], width, height, false);
+            bitmapcache = bitmaps;
+        }
+        else {
+            Log.d(TAG, "GrazingBeast: Re-using cached bitmaps");
+            bitmaps = bitmapcache;
+        }
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        init_energy = sharedPreferences.getInt(context.getString(R.string.gb_init_energy), DEFAULT_INIT_ENERGY);
-        split_threshold = sharedPreferences.getInt(context.getString(R.string.gb_split_threshold), DEFAULT_SPLIT_THRESHOLD);
+        init_energy = sharedPreferences.getInt(context.getString(R.string.gb_init_energy), ConfigureGrazingBeastActivity.DEFAULT_INIT_ENERGY);
+        split_threshold = sharedPreferences.getInt(context.getString(R.string.gb_split_threshold), ConfigureGrazingBeastActivity.DEFAULT_SPLIT_THRESHOLD);
         Log.w(TAG, "GrazingBeast: init_energy = " + init_energy, null);
         Log.w(TAG, "GrazingBeast: split_threshold = " + split_threshold, null);
     }
@@ -68,7 +76,7 @@ public class GrazingBeast extends Beast {
             long meal = fb.ouch(init_energy - energy);  // cannot take more than INIT_ENERGY
             energy += meal;
             Log.d(TAG, "collisionExchange: grazer " + getID() + " taking " + meal + " from FoodBeast " + fb.getID());
-            if (energy > 3 * init_energy / 4 && meal > 0) {
+            if (energy > 3 * init_energy / 4 && meal > init_energy / 10) {
                 splitValue++;
                 if (splitValue > split_threshold) {
                     splitReady = true;

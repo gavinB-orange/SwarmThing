@@ -14,7 +14,11 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
     // TODO add fb_split_threshold
 
     private static final String TAG = "ConfigureFoodBeast";
-    public final int DEFAULT_INIT_ENERGY = 5000;
+    public static final int DEFAULT_INIT_ENERGY = 5000;
+    public static final int MAX_INIT_ENERGY = 10000;
+    public static final int DEFAULT_SPLIT_THRESHOLD = 1000;
+    public static final int MAX_SPLIT_THRESHOLD = 4000;
+
     private int initenergy;
 
     @Override
@@ -22,7 +26,9 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_food_beast);
         SeekBar energySeekBar = (SeekBar)findViewById(R.id.fbEnergyseekBar);
+        energySeekBar.setProgress(DEFAULT_INIT_ENERGY * energySeekBar.getMax() / MAX_INIT_ENERGY);
         energySeekBar.setOnSeekBarChangeListener(this);
+        initenergy = DEFAULT_INIT_ENERGY;
     }
 
     public void reportFBConfigData(View view) {

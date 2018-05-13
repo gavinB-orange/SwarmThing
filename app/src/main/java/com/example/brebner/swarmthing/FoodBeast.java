@@ -14,30 +14,37 @@ public class FoodBeast extends Beast {
 
     private static final String TAG = "FoodBeast";
 
-    public static final int DEFAULT_INIT_ENERGY = 5000;
-
-    public final int DEFAULT_SPLIT_THRESHOLD = 1000;
 
     private int splitValue;
     private int split_threshold;
 
     private long init_energy;
 
+    private static Bitmap[] cachedbitmaps;
+
     public FoodBeast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
         super(id, x, y, screenX, screenY, beasts, context);
-        bitmaps = new Bitmap[4];
-        bitmaps[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_50);
-        bitmaps[0] = Bitmap.createScaledBitmap(bitmaps[0], width, height, false);
-        bitmaps[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_66);
-        bitmaps[1] = Bitmap.createScaledBitmap(bitmaps[1], width, height, false);
-        bitmaps[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_75);
-        bitmaps[2] = Bitmap.createScaledBitmap(bitmaps[2], width, height, false);
-        bitmaps[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_100);
-        bitmaps[3] = Bitmap.createScaledBitmap(bitmaps[3], width, height, false);
+        if (cachedbitmaps == null) {
+            Log.d(TAG, "FoodBeast: Creating bitmaps");
+            bitmaps = new Bitmap[4];
+            bitmaps[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_50);
+            bitmaps[0] = Bitmap.createScaledBitmap(bitmaps[0], width, height, false);
+            bitmaps[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_66);
+            bitmaps[1] = Bitmap.createScaledBitmap(bitmaps[1], width, height, false);
+            bitmaps[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_75);
+            bitmaps[2] = Bitmap.createScaledBitmap(bitmaps[2], width, height, false);
+            bitmaps[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_100);
+            bitmaps[3] = Bitmap.createScaledBitmap(bitmaps[3], width, height, false);
+            cachedbitmaps = bitmaps;
+        }
+        else {
+            Log.d(TAG, "FoodBeast: using cached bitmaps");
+            bitmaps = cachedbitmaps;
+        }
         splitValue = 0;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        init_energy = sharedPreferences.getInt(context.getString(R.string.fb_init_energy), DEFAULT_INIT_ENERGY);
-        split_threshold = sharedPreferences.getInt(context.getString(R.string.fb_split_threshold), DEFAULT_SPLIT_THRESHOLD);
+        init_energy = sharedPreferences.getInt(context.getString(R.string.fb_init_energy), ConfigureFoodBeast.DEFAULT_INIT_ENERGY);
+        split_threshold = sharedPreferences.getInt(context.getString(R.string.fb_split_threshold), ConfigureFoodBeast.DEFAULT_SPLIT_THRESHOLD);
         Log.w(TAG, "FoodBeast: init_energy set to " + init_energy);
         Log.w(TAG, "FoodBeast: split_threshold set to " + split_threshold);
     }

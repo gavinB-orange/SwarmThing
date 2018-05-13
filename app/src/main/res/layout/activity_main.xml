@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical"
     android:paddingTop="64dp"
     tools:context=".MainActivity">
@@ -61,6 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@android:color/background_light"
             android:onClick="doFBConfigButtonClick"
             app:srcCompat="@drawable/beast_2_100" />
 
@@ -69,6 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@android:color/white"
             android:onClick="doPreferencesConfigButtonOnClick"
             app:srcCompat="@android:drawable/ic_menu_preferences" />
 
@@ -77,34 +80,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@android:color/white"
             android:onClick="doGBConfigButtonOnClick"
             app:srcCompat="@drawable/beast_1_50" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="24dp"
-        android:paddingTop="24dp">
-
-        <TextView
-            android:id="@+id/howManyTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/choose_n_beasts"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/userInputNBeasts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            tools:text="@string/hint_enter_number" />
-
     </LinearLayout>
 
     <LinearLayout
