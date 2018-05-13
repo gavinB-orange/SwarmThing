@@ -20,6 +20,7 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
     public static final int MAX_SPLIT_THRESHOLD = 4000;
 
     private int initenergy;
+    private int split_threshold;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,18 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
         energySeekBar.setProgress(DEFAULT_INIT_ENERGY * energySeekBar.getMax() / MAX_INIT_ENERGY);
         energySeekBar.setOnSeekBarChangeListener(this);
         initenergy = DEFAULT_INIT_ENERGY;
+        SeekBar splitSeekBar = (SeekBar)findViewById(R.id.configFBSplitSeekBar);
+        splitSeekBar.setProgress(DEFAULT_SPLIT_THRESHOLD * splitSeekBar.getMax() / MAX_SPLIT_THRESHOLD);
+        splitSeekBar.setOnSeekBarChangeListener(this);
+        split_threshold = DEFAULT_SPLIT_THRESHOLD;
+
     }
 
     public void reportFBConfigData(View view) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(getString(R.string.fb_init_energy), initenergy);
+        editor.putInt(getString(R.string.fb_init_energy_key), initenergy);
+        editor.putInt(getString(R.string.fb_split_threshold_key), split_threshold);
         editor.commit();
         Log.w(TAG, "reportFBConfigData: set FB init energy to " + initenergy);
         Intent intent = new Intent(this, MainActivity.class);

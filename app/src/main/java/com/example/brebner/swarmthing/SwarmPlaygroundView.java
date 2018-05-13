@@ -114,8 +114,8 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         }
         if (started && ((nFB == 0) || (nFB == beasts.size()))) {
             Intent intent = new Intent(context, EndActivity.class);
-            intent.putExtra(context.getString(R.string.final_fb_value), nFB);
-            intent.putExtra(context.getString(R.string.final_gb_value), beasts.size() - nFB);
+            intent.putExtra(context.getString(R.string.final_fb_value_key), nFB);
+            intent.putExtra(context.getString(R.string.final_gb_value_key), beasts.size() - nFB);
             context.startActivity(intent);
         }
     }

@@ -14,8 +14,8 @@ public class EndActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end);
         Intent intent = getIntent();
-        int nfb = intent.getIntExtra(getString(R.string.final_fb_value), 0);
-        int ngb = intent.getIntExtra(getString(R.string.final_gb_value), 0);
+        int nfb = intent.getIntExtra(getString(R.string.final_fb_value_key), 0);
+        int ngb = intent.getIntExtra(getString(R.string.final_gb_value_key), 0);
         TextView fbTextView = findViewById(R.id.nFBResultTextView);
         TextView gbTextView = findViewById(R.id.nGBTextView);
         fbTextView.setText("" + nfb);

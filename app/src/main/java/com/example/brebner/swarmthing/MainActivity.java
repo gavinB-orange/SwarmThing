@@ -1,8 +1,5 @@
 package com.example.brebner.swarmthing;
 
-// TODO age and nbeasts from config_other need to be connected
-// TODO Complete implementation of config selections - split thresholds missing today
-// TODO Connect up config info for GrazingBeast and main preferences.
 // TODO EndActivity needs to show params used.
 // TODO Capture time sequence of beast numbers and graph at end.
 // TODO restart button in EndActivity

@@ -43,8 +43,8 @@ public class FoodBeast extends Beast {
         }
         splitValue = 0;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        init_energy = sharedPreferences.getInt(context.getString(R.string.fb_init_energy), ConfigureFoodBeast.DEFAULT_INIT_ENERGY);
-        split_threshold = sharedPreferences.getInt(context.getString(R.string.fb_split_threshold), ConfigureFoodBeast.DEFAULT_SPLIT_THRESHOLD);
+        init_energy = sharedPreferences.getInt(context.getString(R.string.fb_init_energy_key), ConfigureFoodBeast.DEFAULT_INIT_ENERGY);
+        split_threshold = sharedPreferences.getInt(context.getString(R.string.fb_split_threshold_key), ConfigureFoodBeast.DEFAULT_SPLIT_THRESHOLD);
         Log.w(TAG, "FoodBeast: init_energy set to " + init_energy);
         Log.w(TAG, "FoodBeast: split_threshold set to " + split_threshold);
     }

@@ -42,8 +42,8 @@ public class GrazingBeast extends Beast {
             bitmaps = bitmapcache;
         }
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        init_energy = sharedPreferences.getInt(context.getString(R.string.gb_init_energy), ConfigureGrazingBeastActivity.DEFAULT_INIT_ENERGY);
-        split_threshold = sharedPreferences.getInt(context.getString(R.string.gb_split_threshold), ConfigureGrazingBeastActivity.DEFAULT_SPLIT_THRESHOLD);
+        init_energy = sharedPreferences.getInt(context.getString(R.string.gb_init_energy_key), ConfigureGrazingBeastActivity.DEFAULT_INIT_ENERGY);
+        split_threshold = sharedPreferences.getInt(context.getString(R.string.gb_split_threshold_key), ConfigureGrazingBeastActivity.DEFAULT_SPLIT_THRESHOLD);
         Log.w(TAG, "GrazingBeast: init_energy = " + init_energy, null);
         Log.w(TAG, "GrazingBeast: split_threshold = " + split_threshold, null);
     }

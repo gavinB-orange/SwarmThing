@@ -20,21 +20,29 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
     public static final int MAX_SPLIT_THRESHOLD = 40;
 
     private int initenergy;
+    private int split_threshold;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_grazing_beast);
+
         SeekBar energySeekBar = (SeekBar)findViewById(R.id.gbEnergyseekBar);
         energySeekBar.setProgress(DEFAULT_INIT_ENERGY * energySeekBar.getMax() / MAX_INIT_ENERGY);
         energySeekBar.setOnSeekBarChangeListener(this);
         initenergy = DEFAULT_INIT_ENERGY;
+
+        SeekBar splitSeekBar = (SeekBar)findViewById(R.id.configGBSplitSeekBar);
+        splitSeekBar.setProgress(DEFAULT_SPLIT_THRESHOLD * splitSeekBar.getMax() / MAX_SPLIT_THRESHOLD);
+        splitSeekBar.setOnSeekBarChangeListener(this);
+        split_threshold = DEFAULT_SPLIT_THRESHOLD;
     }
 
     public void reportGBConfigData(View view) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(getString(R.string.gb_init_energy), initenergy);
+        editor.putInt(getString(R.string.gb_init_energy_key), initenergy);
+        editor.putInt(getString(R.string.gb_split_threshold_key), split_threshold);
         editor.commit();
         Log.w(TAG, "reportGBConfigData: set GB init energy to " + initenergy);
         Intent intent = new Intent(this, MainActivity.class);
