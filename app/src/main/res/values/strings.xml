@@ -9,5 +9,13 @@
     <string name="configure_grazing_beast">Configure GrazingBeast</string>
     <string name="configure_simulation">Configure Simulation</string>
     <string name="configfb_init_energy">Initial Energy</string>
+    <string name="configgb_init_energy">Initial Energy</string>
     <string name="done_button">Done</string>
+    <string name="whoami_key">com.example.brebner.swarmthing.whoami</string>
+    <string name="beast_number_key">com.example.brebner.swarmthing.beast_number_key</string>
+    <string name="fb_init_energy">com.example.brebner.swarmthing.fb_init_energy</string>
+    <string name="gb_init_energy">com.example.brebner.swarmthing.gb_init_energy</string>
+    <string name="gb_split_threshold">com.example.brebner.swarmthing.gb_split_threshold</string>
+    <string name="fb_split_threshold">com.example.brebner.swarmthing.fb_split_threshold</string>
+    <string name="other_ratio_key">com.example.brebner.swarmthing.other_ratio_key</string>
 </resources>

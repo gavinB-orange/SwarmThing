@@ -9,28 +9,29 @@ import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 
-public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
+public class ConfigureGrazingBeastActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener{
 
-    // TODO add fb_split_threshold
+    // TODO add input for gb_split_threshold
 
-    private static final String TAG = "ConfigureFoodBeast";
-    public final int DEFAULT_INIT_ENERGY = 5000;
-    private int initenergy;
+    private static final String TAG = "ConfigureGrazingBeast";
+    public final int DEFAULT_INIT_ENERGY = 8000;
+
+    private int initenergy = DEFAULT_INIT_ENERGY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_configure_food_beast);
-        SeekBar energySeekBar = (SeekBar)findViewById(R.id.fbEnergyseekBar);
+        setContentView(R.layout.activity_configure_grazing_beast);
+        SeekBar energySeekBar = (SeekBar)findViewById(R.id.gbEnergyseekBar);
         energySeekBar.setOnSeekBarChangeListener(this);
     }
 
-    public void reportFBConfigData(View view) {
+    public void reportGBConfigData(View view) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(getString(R.string.fb_init_energy), initenergy);
+        editor.putInt(getString(R.string.gb_init_energy), initenergy);
         editor.commit();
-        Log.w(TAG, "reportFBConfigData: set FB init energy to " + initenergy);
+        Log.w(TAG, "reportGBConfigData: set GB init energy to " + initenergy);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

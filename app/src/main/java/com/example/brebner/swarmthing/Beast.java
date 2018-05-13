@@ -36,9 +36,8 @@ public abstract class Beast extends DrawableThing {
 
     Bundle configBundle;
 
-    public Beast(long id, int x, int y, int screenX, int screenY, Bundle configBundle, ArrayList<Beast> beasts, Context context) {
+    public Beast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
         super();
-        this.configBundle = configBundle;
         this.id = id;
         this.xpos = x;
         this.ypos = y;
@@ -130,14 +129,14 @@ public abstract class Beast extends DrawableThing {
         for (Beast b: beasts) {
             if (b.getID() != id) {
                 if (RectF.intersects(b.getRectF(), getRectF())) {
-                    Log.d(TAG, "update: Collision other = " + b.getID() + " me = " + id);
+                    // Log.d(TAG, "update: Collision other = " + b.getID() + " me = " + id);
                     collisionExchange(b);
                     // Bounce and change direction
                     next_xpos = xpos - vx;
                     next_ypos = ypos - vy;
                     vx = -vx;
                     vy = -vy;
-                    Log.d(TAG, "update: x = " + xpos + " y = " + ypos + " vx = " + vx + " vy = " + vy);
+                    // Log.d(TAG, "update: x = " + xpos + " y = " + ypos + " vx = " + vx + " vy = " + vy);
                 }
             }
         }

@@ -16,11 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConfigureFoodBeast"></activity>
+        <activity android:name=".ConfigureFoodBeast" />
         <activity
             android:name=".SwarmPlaygroundActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name=".ConfigureGrazingBeastActivity"></activity>
     </application>
 
 </manifest>

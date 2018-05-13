@@ -23,10 +23,8 @@ public class SwarmPlaygroundActivity extends Activity {
         display.getSize(size);
 
         Intent intent = getIntent();
-        Bundle configBundle = intent.getBundleExtra(SwarmPlaygroundActivity.CONFIG_BUNDLE_KEY);
-        int nbeasts = intent.getIntExtra(BEAST_NUMBER_KEY, 1);
 
-        swarmPlaygroundView = new SwarmPlaygroundView(this, size.x, size.y, configBundle);
+        swarmPlaygroundView = new SwarmPlaygroundView(this, size.x, size.y);
         setContentView(swarmPlaygroundView);
     }
 
