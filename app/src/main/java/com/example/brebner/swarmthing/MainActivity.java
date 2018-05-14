@@ -3,6 +3,7 @@ package com.example.brebner.swarmthing;
 // TODO Capture time sequence of beast numbers and graph at end.
 // TODO restart button in EndActivity
 // TODO store historical data and display
+// TODO Make beasts "walk"
 
 
 import android.content.Intent;

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class GrazingBeast extends Beast {
 
+    public static final int MIN_MEAL_FOR_SPLIT = 50;
 
     private int init_energy;
     private int split_threshold;
@@ -76,7 +77,7 @@ public class GrazingBeast extends Beast {
             long meal = fb.ouch(init_energy - energy);  // cannot take more than INIT_ENERGY
             energy += meal;
             Log.d(TAG, "collisionExchange: grazer " + getID() + " taking " + meal + " from FoodBeast " + fb.getID());
-            if (energy > 3 * init_energy / 4 && meal > init_energy / 10) {
+            if ((energy > 3 * init_energy / 4) && meal > MIN_MEAL_FOR_SPLIT) {
                 splitValue++;
                 if (splitValue > split_threshold) {
                     splitReady = true;

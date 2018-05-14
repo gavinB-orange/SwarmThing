@@ -51,7 +51,12 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        initenergy = (2 * progress * DEFAULT_INIT_ENERGY) / seekBar.getMax();
+        if (seekBar.getId() == R.id.gbEnergyseekBar) {
+            initenergy = (progress * MAX_INIT_ENERGY) / seekBar.getMax();
+        }
+        if (seekBar.getId() == R.id.configGBSplitSeekBar) {
+            split_threshold = (progress * MAX_SPLIT_THRESHOLD) / seekBar.getMax();
+        }
     }
 
     @Override

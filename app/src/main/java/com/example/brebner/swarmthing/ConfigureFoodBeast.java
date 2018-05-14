@@ -50,7 +50,12 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        initenergy = (2 * progress * DEFAULT_INIT_ENERGY) / seekBar.getMax();
+        if (seekBar.getId() == R.id.fbEnergyseekBar) {
+            initenergy = (progress * MAX_INIT_ENERGY) / seekBar.getMax();
+        }
+        if (seekBar.getId() == R.id.configFBSplitSeekBar) {
+            split_threshold = progress * MAX_SPLIT_THRESHOLD / seekBar.getMax();
+        }
     }
 
     @Override
