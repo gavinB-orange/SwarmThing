@@ -76,7 +76,7 @@ public class GrazingBeast extends Beast {
             FoodBeast fb = (FoodBeast)b;
             long meal = fb.ouch(init_energy - energy);  // cannot take more than INIT_ENERGY
             energy += meal;
-            Log.d(TAG, "collisionExchange: grazer " + getID() + " taking " + meal + " from FoodBeast " + fb.getID());
+            // Log.d(TAG, "collisionExchange: grazer " + getID() + " taking " + meal + " from FoodBeast " + fb.getID());
             if ((energy > 3 * init_energy / 4) && meal > MIN_MEAL_FOR_SPLIT) {
                 splitValue++;
                 if (splitValue > split_threshold) {

@@ -16,7 +16,8 @@
     <string name="gb_init_energy_key">com.example.brebner.swarmthing.gb_init_energy_key</string>
     <string name="other_ratio_key">com.example.brebner.swarmthing.other_ratio_key</string>
     <string name="enter_other_ratio">GB/FB ratio </string>
-    <string name="endActivityTitle">Game Over</string>
+    <string name="endActivityGameOverTitle">Game Over - no beasts!</string>
+    <string name="endActivityTimeUpTitle">Game Over - time up!</string>
     <string name="number_fb">Number of FB</string>
     <string name="number_gb">Number of GB</string>
     <string name="final_fb_value_key">com.example.brebner.swarmthing.final_fb_value_key</string>
@@ -32,4 +33,12 @@
     <string name="fb_split_threshold_key">com.example.brebner.swarmthing.fb_split_threshold_key</string>
     <string name="gb_split_threshold_key">com.example.brebner.swarmthing.gb_split_threshold_key</string>
     <string name="play_again_button">Play Again</string>
+    <string name="recorder_graph_file_name">recorder_graph_file</string>
+    <string name="other_config_max_time_title">Maximum simulation time</string>
+    <string name="other_maxtime_key">com.example.brebner.swarmthing.maxtime_key</string>
+    <string name="final_time_up_key">com.example.brebner.swarmthing.timeup_key</string>
+    <string name="show_fps_radio_title">Show FPS</string>
+    <string name="show_time_radio_title">Show Elapsed Time</string>
+    <string name="other_show_time">com.example.brebner.swarmthing.other_show_time_key</string>
+    <string name="other_show_fps">com.example.brebner.swarmthing.show_fps_key</string>
 </resources>

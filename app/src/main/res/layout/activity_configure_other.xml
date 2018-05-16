@@ -82,6 +82,52 @@
             android:layout_weight="4"
             android:max="50"
             android:progress="25" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/maxTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/other_config_max_time_title" />
+
+        <SeekBar
+            android:id="@+id/maxTimeSeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:max="50"
+            android:progress="25" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/showFpsRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="@string/show_fps_radio_title" />
+
+        <RadioButton
+            android:id="@+id/showTimeRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/show_time_radio_title" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -96,5 +142,6 @@
             android:layout_weight="1"
             android:onClick="doSimDone"
             android:text="@string/done_button" />
+
     </LinearLayout>
 </LinearLayout>

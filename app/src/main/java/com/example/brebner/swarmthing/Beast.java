@@ -88,7 +88,7 @@ public abstract class Beast extends DrawableThing {
     }
 
     void resetSplit() {
-        Log.d(TAG, "resetSplit: beast " + getID());
+        // Log.d(TAG, "resetSplit: beast " + getID());
         splitReady = false;
     }
 
@@ -109,6 +109,9 @@ public abstract class Beast extends DrawableThing {
         // move based on current velocity
         int next_xpos;
         int next_ypos;
+        if (xpos < 0 || xpos > screenX || ypos < 0 || ypos > screenY) {  // if somehow off screen - die
+            setActive(false);
+        }
         next_xpos = xpos + vx;
         next_ypos = ypos + vy;
         // randomly switch from time to time

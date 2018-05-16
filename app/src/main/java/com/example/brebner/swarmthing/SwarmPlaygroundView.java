@@ -13,10 +13,17 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class SwarmPlaygroundView extends SurfaceView implements Runnable {
+
+    public static final int SUNLIGHT = 200;
+    public static final int SANE_MAX_LIGHTLEVEL = 4;
+    private int lightlevel;
 
     private static final String TAG = "SwarmPlaygroundView";
 
@@ -33,6 +40,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private Thread gameThread;
 
     private long fps;
+    private long endtime;
     
     private Context context;
 
@@ -40,12 +48,19 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private Bitmap bitmap;
     private Paint paint;
 
+    // recorder to create graph at end
+    private Recorder recorder;
+
     // things
     private Hud hud;
     private ArrayList<Beast> beasts;
     private long beastID;  // monotonic beast ID
 
     private boolean started;
+
+    private Random random;
+
+    private boolean timeup = false;  // signal that time has expired
 
 
     public SwarmPlaygroundView(Context context, int screenX, int screenY) {
@@ -62,7 +77,6 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         surfaceHolder = getHolder();
         this.screenX = screenX;
         this.screenY = screenY;
-        hud = new Hud(40,40, nbeasts);
         int n_beast_cols = (int) Math.sqrt(nbeasts);
         int n_beast_rows = nbeasts / n_beast_cols;
         while (n_beast_rows * n_beast_cols < nbeasts) {
@@ -70,7 +84,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         }
         Log.d(TAG, "SwarmPlaygroundView: n_cols = " + n_beast_cols + " n_rows = " + n_beast_rows);
         beasts = new ArrayList<>();
-        Random random = new Random();
+        random = new Random();
         beastID = 0;
         for (int i = 0; i < nbeasts; i++) {
             int bx = (screenX / n_beast_cols) * (i % n_beast_cols) + screenX / Beast.NPERX;
@@ -88,7 +102,11 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             b.setEnergy(random.nextInt((int)b.getInitEnergy()));
         }
         loadSounds(context);
+        recorder = new Recorder();
+        lightlevel = SANE_MAX_LIGHTLEVEL;
         started = false;  // set to true once game has truly started.
+        endtime = System.currentTimeMillis() + sharedPreferences.getLong(context.getString(R.string.other_maxtime_key), ConfigureOtherActivity.DEFAULT_TIME);
+        hud = new Hud(40,40, nbeasts, endtime, sharedPreferences, context);
     }
 
     void loadSounds(Context context) {
@@ -108,14 +126,48 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             b.update();
             if (b.getClass() == FoodBeast.class) {
                 FoodBeast fb = (FoodBeast) b;
-                fb.grow((cycle / 100) % 10);
+                fb.grow(random.nextInt(lightlevel));
                 nFB ++;
             }
         }
-        if (started && ((nFB == 0) || (nFB == beasts.size()))) {
+        if (nFB > 0) {  // no divide by 0 please
+            lightlevel = SUNLIGHT / nFB;  // as more FBs, light/FB gets less.
+        }
+        else {
+            lightlevel = SANE_MAX_LIGHTLEVEL;
+        }
+        Log.d(TAG, "update: lightlevel now " + lightlevel);
+        if (lightlevel > SANE_MAX_LIGHTLEVEL) {
+            lightlevel = SANE_MAX_LIGHTLEVEL;
+        }
+        if (cycle % 50 == 0) { // roughly every second or so
+            recorder.putData(cycle, nFB, beasts.size());
+            // also check endtime and quit if we are done
+            if (System.currentTimeMillis() > endtime) {
+                timeup = true;
+            }
+        }
+        if (started && ((nFB == 0) || (nFB == beasts.size()) || timeup)) {
+            playing = false;
             Intent intent = new Intent(context, EndActivity.class);
             intent.putExtra(context.getString(R.string.final_fb_value_key), nFB);
             intent.putExtra(context.getString(R.string.final_gb_value_key), beasts.size() - nFB);
+            intent.putExtra(context.getString(R.string.final_time_up_key), timeup);
+            // create and save compressed graph image - should this be made async?
+            long start = PreferenceManager.getDefaultSharedPreferences(context).getLong(context.getString(R.string.start_time_key), 0);
+            long now = System.currentTimeMillis();
+            long seconds = (now - start) / 1000;
+            Bitmap graph = recorder.createBitmapDrawing(context, screenX - 10, screenY / 3, seconds);
+            context.deleteFile(context.getString(R.string.recorder_graph_file_name));  // just in case
+            try {
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                graph.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                FileOutputStream fo = context.openFileOutput(context.getString(R.string.recorder_graph_file_name), Context.MODE_PRIVATE);
+                fo.write(bytes.toByteArray());
+                fo.close();
+            } catch (Exception e) {
+                Log.e(TAG, "update: failed to write graph file", e);
+            }
             context.startActivity(intent);
         }
     }
@@ -206,7 +258,6 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-        Log.d(TAG, "run ");
         long cycle = 0;
         while (playing) {
             long startFrameTime = System.currentTimeMillis();

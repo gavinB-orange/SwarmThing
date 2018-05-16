@@ -1,9 +1,17 @@
 package com.example.brebner.swarmthing;
 
 // TODO Capture time sequence of beast numbers and graph at end.
-// TODO restart button in EndActivity
+// TODO separate age for FB and GB
+// TODO fix bug where rotation to landscape loses EndActivity graph
+// TODO average FPS display controlled by setting
+// TODO FB energy formula needs settings etc.
+// TODO add additional parameters to config activities.
 // TODO store historical data and display
 // TODO Make beasts "walk"
+// TODO User interaction - fingerBeast!
+// TODO Moving sun?
+// TODO allow user to create barriers.
+// TODO high score
 
 
 import android.content.Intent;
