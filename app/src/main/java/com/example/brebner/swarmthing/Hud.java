@@ -7,19 +7,15 @@ import android.graphics.Color;
 
 public class Hud extends DrawableThing {
 
-    private final int averagerange = 100;
-
     private final int HUD_TEXT_SIZE = 60;
-    private int displayColor = Color.argb(128, 0, 0, 255);
 
     private int nbeasts;
-    private long fps = 0;
     private float stablefps = 0;
     private boolean showtime;
     private boolean showfps;
     private long endtime;
 
-    public Hud(int x, int y, int nbeasts, long endtime, SharedPreferences sharedPreferences, Context context) {
+    Hud(int x, int y, int nbeasts, long endtime, SharedPreferences sharedPreferences, Context context) {
         super();
         this.xpos = x;
         this.ypos = y;
@@ -27,25 +23,14 @@ public class Hud extends DrawableThing {
         showtime = sharedPreferences.getBoolean(context.getString(R.string.other_show_time), false);
         showfps = sharedPreferences.getBoolean(context.getString(R.string.other_show_fps), false);
         this.endtime = endtime;
+        int displayColor = Color.argb(128, 0, 0, 255);
         this.paint.setColor(displayColor);
         this.paint.setTextSize(HUD_TEXT_SIZE);
     }
 
     public void setFps(long fps) {
-        this.fps = fps;
+        int averagerange = 100;
         stablefps = ((averagerange - 1) * stablefps + fps) / averagerange;
-    }
-
-    public void setDisplayColor(int displayColor) {
-        this.displayColor = displayColor;
-    }
-
-    public int getDisplayColor() {
-        return this.displayColor;
-    }
-
-    public int getNbeasts() {
-        return nbeasts;
     }
 
     public void setNbeasts(int nbeasts) {

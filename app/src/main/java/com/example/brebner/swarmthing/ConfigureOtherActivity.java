@@ -7,10 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
@@ -38,16 +36,16 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_other);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SeekBar ageSeekBar = (SeekBar)findViewById(R.id.ageBeastSeekBar);
+        SeekBar ageSeekBar = findViewById(R.id.ageBeastSeekBar);
         ageSeekBar.setProgress(DEFAULT_AGE * ageSeekBar.getMax() / DEFAULT_MAX_AGE);
         ageSeekBar.setOnSeekBarChangeListener(this);
-        SeekBar nbeastSeekBar = (SeekBar)findViewById(R.id.numberBeastSeekBar);
+        SeekBar nbeastSeekBar = findViewById(R.id.numberBeastSeekBar);
         nbeastSeekBar.setProgress(DEFAULT_N_BEASTS * nbeastSeekBar.getMax() / DEFAULT_MAX_BEASTS);
         nbeastSeekBar.setOnSeekBarChangeListener(this);
-        SeekBar ratioSeekBar = (SeekBar)findViewById(R.id.ratioSeekBar);
+        SeekBar ratioSeekBar = findViewById(R.id.ratioSeekBar);
         ratioSeekBar.setProgress(DEFAULT_RATIO * ratioSeekBar.getMax() / DEFAULT_MAX_RATIO);
         ratioSeekBar.setOnSeekBarChangeListener(this);
-        SeekBar timeSeekBar = (SeekBar)findViewById(R.id.maxTimeSeekBar);
+        SeekBar timeSeekBar = findViewById(R.id.maxTimeSeekBar);
         timeSeekBar.setProgress((int)(DEFAULT_TIME * timeSeekBar.getMax() / DEFAULT_MAX_TIME));
         timeSeekBar.setOnSeekBarChangeListener(this);
         maxage = DEFAULT_AGE;

@@ -12,7 +12,7 @@ public abstract class DrawableThing {
 
     Paint paint;
 
-    public DrawableThing() {
+    DrawableThing() {
         xpos = 0;
         ypos = 0;
         paint = new Paint();

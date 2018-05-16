@@ -26,11 +26,11 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_food_beast);
-        SeekBar energySeekBar = (SeekBar)findViewById(R.id.fbEnergyseekBar);
+        SeekBar energySeekBar = findViewById(R.id.fbEnergyseekBar);
         energySeekBar.setProgress(DEFAULT_INIT_ENERGY * energySeekBar.getMax() / MAX_INIT_ENERGY);
         energySeekBar.setOnSeekBarChangeListener(this);
         initenergy = DEFAULT_INIT_ENERGY;
-        SeekBar splitSeekBar = (SeekBar)findViewById(R.id.configFBSplitSeekBar);
+        SeekBar splitSeekBar = findViewById(R.id.configFBSplitSeekBar);
         splitSeekBar.setProgress(DEFAULT_SPLIT_THRESHOLD * splitSeekBar.getMax() / MAX_SPLIT_THRESHOLD);
         splitSeekBar.setOnSeekBarChangeListener(this);
         split_threshold = DEFAULT_SPLIT_THRESHOLD;

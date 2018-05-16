@@ -23,7 +23,9 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity android:name=".ConfigureGrazingBeastActivity" />
         <activity android:name=".ConfigureOtherActivity" />
-        <activity android:name=".EndActivity"></activity>
+        <activity
+            android:name=".EndActivity"
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

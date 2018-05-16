@@ -4,15 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
 
-public class GrazingBeast extends Beast {
+class GrazingBeast extends Beast {
 
-    public static final int MIN_MEAL_FOR_SPLIT = 50;
+    private static final int MIN_MEAL_FOR_SPLIT = 50;
 
     private int init_energy;
     private int split_threshold;
@@ -23,7 +22,7 @@ public class GrazingBeast extends Beast {
 
     private static Bitmap[] bitmapcache;
 
-    public GrazingBeast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
+    GrazingBeast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
         super(id, x, y, screenX, screenY, beasts, context);
         if (bitmapcache == null) {
             Log.d(TAG, "GrazingBeast: Creating bitmaps first time");

@@ -18,26 +18,26 @@ public abstract class Beast extends DrawableThing {
     public final static int NPERX = 30;
     public final static int NPERY = 30;
 
-    final int INEBRIATION = 50;
+    private final int INEBRIATION = 50;
 
     long id;
     Bitmap[] bitmaps;
-    Random random;
-    int screenX;
-    int screenY;
-    int vx;
-    int vy;
+    private Random random;
+    private int screenX;
+    private int screenY;
+    private int vx;
+    private int vy;
     int height;
     int width;
     boolean splitReady = false;
-    boolean collided;
+    private boolean collided;
 
     private int myage;
 
     private Context context;
 
-    RectF rectF;
-    ArrayList<Beast> beasts;
+    private RectF rectF;
+    private ArrayList<Beast> beasts;
 
 
     public Beast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {

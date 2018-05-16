@@ -27,12 +27,12 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_grazing_beast);
 
-        SeekBar energySeekBar = (SeekBar)findViewById(R.id.gbEnergyseekBar);
+        SeekBar energySeekBar = findViewById(R.id.gbEnergyseekBar);
         energySeekBar.setProgress(DEFAULT_INIT_ENERGY * energySeekBar.getMax() / MAX_INIT_ENERGY);
         energySeekBar.setOnSeekBarChangeListener(this);
         initenergy = DEFAULT_INIT_ENERGY;
 
-        SeekBar splitSeekBar = (SeekBar)findViewById(R.id.configGBSplitSeekBar);
+        SeekBar splitSeekBar = findViewById(R.id.configGBSplitSeekBar);
         splitSeekBar.setProgress(DEFAULT_SPLIT_THRESHOLD * splitSeekBar.getMax() / MAX_SPLIT_THRESHOLD);
         splitSeekBar.setOnSeekBarChangeListener(this);
         split_threshold = DEFAULT_SPLIT_THRESHOLD;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -22,7 +21,7 @@ public class FoodBeast extends Beast {
 
     private static Bitmap[] cachedbitmaps;
 
-    public FoodBeast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
+    FoodBeast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
         super(id, x, y, screenX, screenY, beasts, context);
         if (cachedbitmaps == null) {
             Log.d(TAG, "FoodBeast: Creating bitmaps");

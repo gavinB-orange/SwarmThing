@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
+import java.util.Locale;
 
 
 public class EndActivity extends AppCompatActivity {
@@ -27,10 +28,6 @@ public class EndActivity extends AppCompatActivity {
         int nfb = intent.getIntExtra(getString(R.string.final_fb_value_key), 0);
         int ngb = intent.getIntExtra(getString(R.string.final_gb_value_key), 0);
         boolean timeup = intent.getBooleanExtra(getString(R.string.final_time_up_key), false);
-        TextView fbTextView = findViewById(R.id.nFBResultTextView);
-        TextView gbTextView = findViewById(R.id.nGBTextView);
-        fbTextView.setText("" + nfb);
-        gbTextView.setText("" + ngb);
         TextView titleTextView = findViewById(R.id.endActivityTitleTextView);
         if (timeup) {
             titleTextView.setText(R.string.endActivityTimeUpTitle);
@@ -43,7 +40,7 @@ public class EndActivity extends AppCompatActivity {
         long now = System.currentTimeMillis();
         long seconds = (now - start) / 1000;
         TextView durationTextView = findViewById(R.id.gameDurationValueTextView);
-        durationTextView.setText("" + seconds + " seconds");
+        durationTextView.setText(String.format(Locale.UK, "%d seconds", seconds));
         TextView paramsTextView = findViewById(R.id.paramSummaryTextView);
         String paramsinfo = "Number beasts = " + sharedPreferences.getInt(getString(R.string.other_nbeasts_key), ConfigureOtherActivity.DEFAULT_N_BEASTS) + "\n" +
                             "Ratio value = " + sharedPreferences.getInt(getString(R.string.other_ratio_key) + "/" + ConfigureOtherActivity.DEFAULT_MAX_RATIO, ConfigureOtherActivity.DEFAULT_RATIO) + "\n" +

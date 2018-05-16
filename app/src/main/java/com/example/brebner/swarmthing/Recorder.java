@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Recorder {
 
-    ArrayList<DataItem> items;
+    private ArrayList<DataItem> items;
 
     private static final String TAG = "Recorder";
     private static final int TEXT_SIZE = 40;
@@ -23,13 +23,12 @@ public class Recorder {
 
     private int maxnbeasts;
 
-    public Recorder() {
+    Recorder() {
         items = new ArrayList<>();
         maxnbeasts = 0;
     }
 
     public void putData(long cycle, int nfb, int nbeasts) {
-        assert (items.get(items.size() - 1).cycle < cycle);  // should be monotonic
         Log.d(TAG, "putData: cycle = " + cycle + " nfb = " + nfb + " nbeasts = " + nbeasts);
         items.add(new DataItem(cycle, nfb, nbeasts));
         if (nbeasts > maxnbeasts) {  // keep a running max value for the y axis
@@ -43,10 +42,10 @@ public class Recorder {
         long xrange = xend - xstart;
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
-        assert (width > 0);
-        assert (height > 0);
+        if ((width <= 0)) throw new AssertionError();
+        if ((height <= 0)) throw new AssertionError();
         Path path = new Path();
-        float xval = 0;
+        float xval;
         if (items.size() <= 0) {
             return null;
         }
@@ -74,13 +73,20 @@ public class Recorder {
     private Path getNbeastPath(int rawwidth, int rawheight, int padding) {
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
-        assert (width > 0);
-        assert (height > 0);
+        if ((width <= 0)) throw new AssertionError();
+        if ((height <= 0)) throw new AssertionError();
         long xstart = items.get(0).getCycle();
         long xend = items.get(items.size() - 1).getCycle();
         long xrange = xend - xstart;
         Path path = new Path();
-        float xval = 0;
+        float xval;
+        if (xrange == 0) {
+            AssertionError e = new AssertionError();
+            Log.w(TAG, "getNbeastPath: xend = " + xend, null);
+            Log.w(TAG, "getNbeastPath: xstart = " + xstart, null);
+            Log.e(TAG, "getNbeastPath: xrange is 0!", e);;
+            throw e;
+        }
         for (int i = 0; i < items.size(); i++) {
             xval = (items.get(i).cycle - xstart) * width / xrange + padding;
             float yval = height - (items.get(i).nbeasts * height / maxnbeasts) + padding;
@@ -99,11 +105,7 @@ public class Recorder {
         return path;
     }
 
-    public ArrayList<DataItem> getDataItems() {
-       return items;
-    }
-
-    public Path getAxes(int width, int height, int padding) {
+    private Path getAxes(int width, int height, int padding) {
         Path path = new Path();
         path.moveTo(padding, height - padding);
         path.lineTo(width - padding, height - padding);
@@ -113,6 +115,11 @@ public class Recorder {
     }
 
     public Bitmap createBitmapDrawing(Context context, int width, int height, long seconds) {
+        if (items.size() < 1) {
+            AssertionError e = new AssertionError();
+            Log.e(TAG, "createBitmapDrawing: items is 0", e );
+            throw e;
+        }
         Canvas canvas = new Canvas();
         Bitmap bitmap;
         Bitmap srcbitmap;
@@ -133,13 +140,16 @@ public class Recorder {
         Path fbpath = getFBPath(width, height, PADDING);
         // paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(3);
-        // paint.setPathEffect(null);
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(FBCOLOUR);
-        canvas.drawPath(fbpath, paint);
+        if (fbpath != null) {
+            canvas.drawPath(fbpath, paint);
+        }
         canvas.drawText("FoodBeast numbers", PADDING, height - PADDING * 2, paint);
         paint.setColor(NBCOLOUR);
-        canvas.drawPath(nbpath, paint);
+        if (nbpath != null) {
+            canvas.drawPath(nbpath, paint);
+        }
         canvas.drawText("Overall Beast numbers", PADDING, height - PADDING, paint);
         paint.setColor(Color.BLACK);
         canvas.drawPath(getAxes(width, height, PADDING), paint);

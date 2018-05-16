@@ -14,7 +14,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,7 +21,7 @@ import java.util.Random;
 public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     public static final int SUNLIGHT = 200;
-    public static final int SANE_MAX_LIGHTLEVEL = 4;
+    public static final int SANE_MAX_LIGHTLEVEL = 10;
     private int lightlevel;
 
     private static final String TAG = "SwarmPlaygroundView";
@@ -31,11 +30,8 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     private int screenX;
     private int screenY;
-    private int nbeasts;
-    private int other_ratio;
 
     private boolean playing = false;
-    private boolean paused = false;
 
     private Thread gameThread;
 
@@ -63,13 +59,18 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private boolean timeup = false;  // signal that time has expired
 
 
+    // dummy for tools
+    public SwarmPlaygroundView(Context context) {
+        this(context, 100, 100);
+    }
+
     public SwarmPlaygroundView(Context context, int screenX, int screenY) {
         super(context);
         this.context = context;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        nbeasts = sharedPreferences.getInt(context.getString(R.string.other_nbeasts_key), ConfigureOtherActivity.DEFAULT_N_BEASTS);
+        int nbeasts = sharedPreferences.getInt(context.getString(R.string.other_nbeasts_key), ConfigureOtherActivity.DEFAULT_N_BEASTS);
         Log.w(TAG, "SwarmPlaygroundView: nbeasts = " + nbeasts, null);
-        other_ratio = sharedPreferences.getInt(context.getString(R.string.other_ratio_key), ConfigureOtherActivity.DEFAULT_RATIO);
+        int other_ratio = sharedPreferences.getInt(context.getString(R.string.other_ratio_key), ConfigureOtherActivity.DEFAULT_RATIO);
         Log.w(TAG, "SwarmPlaygroundView: other_ratio set to " + other_ratio, null);
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_3);
         bitmap = Bitmap.createScaledBitmap(bitmap, screenX, screenY, false);
@@ -111,7 +112,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     void loadSounds(Context context) {
         Log.w(TAG, "loadSounds: NOT IMPLEMENTED", null);
-        Resources res = context.getResources();
+        // Resources res = context.getResources();
     }
 
     void update(long cycle) {
@@ -261,6 +262,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         long cycle = 0;
         while (playing) {
             long startFrameTime = System.currentTimeMillis();
+            boolean paused = false;
             if (!paused) {
                 update(cycle);
                 cycle ++;

@@ -1,17 +1,23 @@
 package com.example.brebner.swarmthing;
 
-// TODO Capture time sequence of beast numbers and graph at end.
+// TODO SANE_LIGHT_LEVEL as parameter
+// TODO fix post-split overlap
 // TODO separate age for FB and GB
+// TODO unlimited time switch
 // TODO fix bug where rotation to landscape loses EndActivity graph
-// TODO average FPS display controlled by setting
 // TODO FB energy formula needs settings etc.
-// TODO add additional parameters to config activities.
 // TODO store historical data and display
 // TODO Make beasts "walk"
 // TODO User interaction - fingerBeast!
 // TODO Moving sun?
 // TODO allow user to create barriers.
+// TODO challenges :
+// TODO    most creatures killed in 5 mins
+// TODO    most creatures born in 5 mins.
+// TODO    most iterations in beast number over 5 mins
+// TODO    smallest number of creatures killed in 5 mins
 // TODO high score
+// TODO DNA exchange on collision with same type.
 
 
 import android.content.Intent;
@@ -21,14 +27,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
-    public final static String WHOAMI_KEY = "com.example.brebner.swarmthing.WHOAMI";
 
     public final static int MAXBEASTS = 100;
 
@@ -50,10 +51,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putLong(getString(R.string.start_time_key), System.currentTimeMillis());
         editor.commit();
         Intent playIntent = new Intent(this, SwarmPlaygroundActivity.class);
-        Map<String, ?> allEntries = sharedPreferences.getAll();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            Log.w("map values", entry.getKey() + ": " + entry.getValue().toString());
-        }
         startActivity(playIntent);
     }
 
