@@ -28,18 +28,16 @@ public class Recorder {
         maxnbeasts = 0;
     }
 
-    public void putData(long cycle, int nfb, int nbeasts) {
-        Log.d(TAG, "putData: cycle = " + cycle + " nfb = " + nfb + " nbeasts = " + nbeasts);
-        items.add(new DataItem(cycle, nfb, nbeasts));
+    public void putData(int nfb, int nbeasts) {
+        Log.d(TAG, "putData:  nfb = " + nfb + " nbeasts = " + nbeasts);
+        items.add(new DataItem(nfb, nbeasts));
         if (nbeasts > maxnbeasts) {  // keep a running max value for the y axis
             maxnbeasts = nbeasts;
         }
     }
 
     private Path getFBPath(int rawwidth, int rawheight, int padding) {
-        long xstart = items.get(0).getCycle();
-        long xend = items.get(items.size() - 1).getCycle();
-        long xrange = xend - xstart;
+        long xrange = items.size();
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
         if ((width <= 0)) throw new AssertionError("width must be > 0");
@@ -51,7 +49,7 @@ public class Recorder {
             return null;
         }
         for (int i = 0; i < items.size(); i++) {
-            xval = (items.get(i).cycle - xstart) * width / xrange + padding;
+            xval = (i * width) / xrange + padding;
             // scale using maxnbeasts as that will always be >= nfb
             // and invert yval as y = 0 is the top
             float yval = height - (items.get(i).nfb * height / maxnbeasts) + padding;
@@ -76,39 +74,20 @@ public class Recorder {
         int height = rawheight - 2 * padding;
         if ((width <= 0)) throw new AssertionError(TAG + " getNbeastPath: width must be > 0");
         if ((height <= 0)) throw new AssertionError(TAG + " getNbeastPath: height must be > 0");
-        long xstart = items.get(0).getCycle();
-        long xend = items.get(items.size() - 1).getCycle();
-        long xrange = xend - xstart;
-        // if (xrange <= 0) throw new AssertionError(TAG + " getNbestPath: xrange must be > 0");
+        long xrange = items.size();
+        if (xrange <= 0) throw new AssertionError(TAG + " getNbestPath: xrange must be > 0");
         // TODO replace larger dump below with the above
         Path path = new Path();
         float xval;
-        float oldxval = -1;
-        if (xrange == 0) {
-            AssertionError e = new AssertionError();
-            Log.w(TAG, "getNbeastPath: xend = " + xend, null);
-            Log.w(TAG, "getNbeastPath: xstart = " + xstart, null);
-            Log.e(TAG, "getNbeastPath: xrange is 0!", e);;
-            throw e;
-        }
         for (int i = 0; i < items.size(); i++) {
-            xval = (items.get(i).cycle - xstart) * width / xrange + padding;
-            if (oldxval >= 0) {
-                if (xval <= oldxval) {
-                    Log.w(TAG, "getNbeastPath: xval not monotonic", null);
-                    Log.w(TAG, "getNbeastPath: oldxval = " + oldxval);
-                    Log.w(TAG, "getNbeastPath: xval = " + xval);
-                    Log.w(TAG, "getNbeastPath: item number is " + i );
-                    Log.w(TAG, "getNbeastPath: item is " + items.get(i) );
-                }
-            }
+            xval = (i * width) / xrange + padding;
             float yval = height - (items.get(i).nbeasts * height / maxnbeasts) + padding;
             if (i == 0) {
                 path.moveTo(xval, yval);
             }
             else {
                 path.lineTo(xval, yval);
-                path.moveTo(xval, yval);
+                // path.moveTo(xval, yval);
             }
         }
         // path.lineTo(xval, 0);

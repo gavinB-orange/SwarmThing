@@ -110,6 +110,11 @@ public abstract class Beast extends DrawableThing {
 
     public void update() {
         super.update();
+        // if I'm out of energy, die
+        if (energy <= 0) {
+            setActive(false);
+            return;
+        }
         // move based on current velocity
         int next_xpos;
         int next_ypos;

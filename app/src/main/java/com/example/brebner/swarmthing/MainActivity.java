@@ -1,9 +1,6 @@
 package com.example.brebner.swarmthing;
 
-// TODO play again needs to reset values to default?
 // TODO fix post-split overlap
-// TODO unlimited time switch
-// TODO fix bug where rotation to landscape loses EndActivity graph
 // TODO FB energy formula needs settings etc.
 // TODO store historical data and display
 // TODO Make beasts "walk"
@@ -15,6 +12,7 @@ package com.example.brebner.swarmthing;
 // TODO    most creatures born in 5 mins.
 // TODO    most iterations in beast number over 5 mins
 // TODO    smallest number of creatures killed in 5 mins
+// TODO    skirting death - the lower trough of numbers.
 // TODO high score
 // TODO DNA exchange on collision with same type.
 

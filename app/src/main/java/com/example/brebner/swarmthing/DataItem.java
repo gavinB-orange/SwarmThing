@@ -7,19 +7,14 @@ public class DataItem {
     public int nfb;
     public int nbeasts;
 
-    public DataItem(long cycle, int nfb, int nbeasts) {
-        this.cycle = cycle;
+    public DataItem(int nfb, int nbeasts) {
         this.nfb = nfb;
         this.nbeasts = nbeasts;
     }
 
     @Override
     public String toString() {
-        return "DataItem: cycle = " + cycle + " nfb = " + nfb + " nbeasts = " + nbeasts;
-    }
-
-    public long getCycle() {
-        return cycle;
+        return "DataItem: nfb = " + nfb + " nbeasts = " + nbeasts;
     }
 
     public int getNfb() {

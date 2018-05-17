@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/maxTimeTextView"
@@ -75,14 +75,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/other_config_max_time_title" />
-
         <SeekBar
             android:id="@+id/maxTimeSeekBar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_weight="1"
             android:max="50"
             android:progress="25" />
+
 
         <Switch
             android:id="@+id/unlimitedTimeSwitch"
@@ -95,6 +95,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:paddingTop="24dp"
         android:orientation="horizontal">
 
         <RadioButton
@@ -135,4 +136,5 @@
             android:text="@string/done_button" />
 
     </LinearLayout>
+
 </LinearLayout>

@@ -147,7 +147,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             lightlevel = sane_light;
         }
         if (cycle % 50 == 0) { // roughly every second or so
-            recorder.putData(cycle, nFB, beasts.size());
+            recorder.putData(nFB, beasts.size());
             // also check endtime and quit if we are done
             if (! unlimited_time && System.currentTimeMillis() > endtime) {
                 timeup = true;
@@ -201,13 +201,13 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 FoodBeast fb = (FoodBeast)b;
                 fb.setEnergy(fb.getEnergy() / 2);
                 fb.resetSplit();
-                int newxpos = fb.getXpos() + screenX / (Beast.NPERX);
+                int newxpos = fb.getXpos() + screenX / (2 * Beast.NPERX);
                 if (newxpos > screenX)  {
-                    newxpos = screenX - screenX / (Beast.NPERX);
+                    newxpos = screenX - screenX / (2 * Beast.NPERX);
                 }
-                int newypos = fb.getYpos() + screenY / (Beast.NPERY);
+                int newypos = fb.getYpos() + screenY / (2 * Beast.NPERY);
                 if (newypos > screenY)  {
-                    newypos = screenY - screenY / (Beast.NPERY);
+                    newypos = screenY - screenY / (2 * Beast.NPERY);
                 }
                 FoodBeast newfb = new FoodBeast(beastID, newxpos, newypos, screenX, screenY, beasts, context);
                 beastID++;
