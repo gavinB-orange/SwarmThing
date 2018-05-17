@@ -43,8 +43,9 @@ public class EndActivity extends AppCompatActivity {
         durationTextView.setText(String.format(Locale.UK, "%d seconds", seconds));
         TextView paramsTextView = findViewById(R.id.paramSummaryTextView);
         String paramsinfo = "Number beasts = " + sharedPreferences.getInt(getString(R.string.other_nbeasts_key), ConfigureOtherActivity.DEFAULT_N_BEASTS) + "\n" +
-                            "Ratio value = " + sharedPreferences.getInt(getString(R.string.other_ratio_key) + "/" + ConfigureOtherActivity.DEFAULT_MAX_RATIO, ConfigureOtherActivity.DEFAULT_RATIO) + "\n" +
-                            "Max beast age = " + sharedPreferences.getInt(getString(R.string.other_maxage_key), ConfigureOtherActivity.DEFAULT_AGE) + "\n" +
+                            "Ratio value = " + sharedPreferences.getInt(getString(R.string.other_ratio_key), ConfigureOtherActivity.DEFAULT_RATIO) + "\n" +
+                            "Max FB age = " + sharedPreferences.getInt(getString(R.string.fb_max_age_key), ConfigureFoodBeast.DEFAULT_AGE) + "\n" +
+                            "Max GB age = " + sharedPreferences.getInt(getString(R.string.gb_max_age_key), ConfigureGrazingBeastActivity.DEFAULT_AGE) + "\n" +
                             "FoodBeast energy = " + sharedPreferences.getInt(getString(R.string.fb_init_energy_key), ConfigureFoodBeast.DEFAULT_INIT_ENERGY) + "\n" +
                             "FoodBeast split = " + sharedPreferences.getInt(getString(R.string.fb_split_threshold_key), ConfigureFoodBeast.DEFAULT_SPLIT_THRESHOLD) + "\n" +
                             "GrazingBeast energy = " + sharedPreferences.getInt(getString(R.string.gb_init_energy_key), ConfigureGrazingBeastActivity.DEFAULT_INIT_ENERGY) + "\n" +

@@ -13,16 +13,23 @@ public class Hud extends DrawableThing {
     private float stablefps = 0;
     private boolean showtime;
     private boolean showfps;
+    private boolean showelapsed;
     private long endtime;
+    private long starttime;
 
     Hud(int x, int y, int nbeasts, long endtime, SharedPreferences sharedPreferences, Context context) {
         super();
         this.xpos = x;
         this.ypos = y;
         this.nbeasts = nbeasts;
-        showtime = sharedPreferences.getBoolean(context.getString(R.string.other_show_time), false);
-        showfps = sharedPreferences.getBoolean(context.getString(R.string.other_show_fps), false);
+        showtime = sharedPreferences.getBoolean(context.getString(R.string.other_show_time), ConfigureOtherActivity.DEFAULT_SHOW_TIME);
+        showfps = sharedPreferences.getBoolean(context.getString(R.string.other_show_fps), ConfigureOtherActivity.DEFAULT_SHOW_FPS);
+        showelapsed = sharedPreferences.getBoolean(context.getString(R.string.other_elapsed_time_key), ConfigureOtherActivity.DEFAULT_SHOW_ELAPSED_TIME);
         this.endtime = endtime;
+        starttime = sharedPreferences.getLong(context.getString(R.string.start_time_key), 0);
+        if (starttime == 0) {
+            throw new AssertionError("Start time not initialized");
+        }
         int displayColor = Color.argb(128, 0, 0, 255);
         this.paint.setColor(displayColor);
         this.paint.setTextSize(HUD_TEXT_SIZE);
@@ -47,8 +54,14 @@ public class Hud extends DrawableThing {
             dy += HUD_TEXT_SIZE;
             canvas.drawText(text, xpos, ypos + dy, paint);
         }
+        if (showelapsed) {
+            long elapsed = (System.currentTimeMillis() - starttime) / 1000;
+            text = "Elapsed Time : " + elapsed;
+            dy += HUD_TEXT_SIZE;
+            canvas.drawText(text, xpos, ypos + dy, paint);
+        }
         if (showfps) {
-            text = "\nFPS : " + (int)stablefps;
+            text = "FPS : " + (int)stablefps;
             dy += HUD_TEXT_SIZE;
             canvas.drawText(text, xpos, ypos + dy, paint);
         }

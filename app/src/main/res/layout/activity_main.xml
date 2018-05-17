@@ -53,14 +53,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/foodBeastConfigImageButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:background="@android:color/background_light"
             android:onClick="doFBConfigButtonClick"
@@ -68,17 +68,19 @@
 
         <ImageButton
             android:id="@+id/simulatorPreferencesButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:background="@android:color/white"
             android:onClick="doPreferencesConfigButtonOnClick"
-            app:srcCompat="@android:drawable/ic_menu_preferences" />
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/globe" />
 
         <ImageButton
             android:id="@+id/grazingBeastConfigImageButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:background="@android:color/white"
             android:onClick="doGBConfigButtonOnClick"
@@ -91,6 +93,14 @@
         android:orientation="horizontal"
         android:paddingBottom="24dp"
         android:paddingTop="24dp">
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="resetAllParams"
+            android:text="@string/reset_all_params" />
 
         <Button
             android:id="@+id/runButton"

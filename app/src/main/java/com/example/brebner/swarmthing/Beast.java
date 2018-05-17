@@ -38,6 +38,7 @@ public abstract class Beast extends DrawableThing {
 
     private RectF rectF;
     private ArrayList<Beast> beasts;
+    SharedPreferences sharedPreferences;
 
 
     public Beast(long id, int x, int y, int screenX, int screenY, ArrayList<Beast> beasts, Context context) {
@@ -56,10 +57,13 @@ public abstract class Beast extends DrawableThing {
         int tmpstep = getStep();
         vx = random.nextInt(2 * tmpstep + 1) - tmpstep;
         vy = random.nextInt(2 * tmpstep + 1) - tmpstep;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        myage = sharedPreferences.getInt(context.getString(R.string.other_maxage_key), ConfigureOtherActivity.DEFAULT_MAX_AGE);
-        myage += random.nextInt(ConfigureOtherActivity.DEFAULT_MAX_AGE / 10);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        myage = 1000; // something long enough to last until we overwrite immediately
         Log.d(TAG, "Beast: " + id + " has age " + myage);
+    }
+
+    void set_max_age(int age) {
+        myage = age + random.nextInt(age / 10);
     }
 
     abstract int getStep();

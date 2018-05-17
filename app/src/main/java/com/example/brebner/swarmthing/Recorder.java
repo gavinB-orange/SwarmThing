@@ -42,8 +42,9 @@ public class Recorder {
         long xrange = xend - xstart;
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
-        if ((width <= 0)) throw new AssertionError();
-        if ((height <= 0)) throw new AssertionError();
+        if ((width <= 0)) throw new AssertionError("width must be > 0");
+        if ((height <= 0)) throw new AssertionError("height must be > 0");
+        if (xrange <= 0) throw new AssertionError("xrange must be > 0");
         Path path = new Path();
         float xval;
         if (items.size() <= 0) {
@@ -73,13 +74,16 @@ public class Recorder {
     private Path getNbeastPath(int rawwidth, int rawheight, int padding) {
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
-        if ((width <= 0)) throw new AssertionError();
-        if ((height <= 0)) throw new AssertionError();
+        if ((width <= 0)) throw new AssertionError(TAG + " getNbeastPath: width must be > 0");
+        if ((height <= 0)) throw new AssertionError(TAG + " getNbeastPath: height must be > 0");
         long xstart = items.get(0).getCycle();
         long xend = items.get(items.size() - 1).getCycle();
         long xrange = xend - xstart;
+        // if (xrange <= 0) throw new AssertionError(TAG + " getNbestPath: xrange must be > 0");
+        // TODO replace larger dump below with the above
         Path path = new Path();
         float xval;
+        float oldxval = -1;
         if (xrange == 0) {
             AssertionError e = new AssertionError();
             Log.w(TAG, "getNbeastPath: xend = " + xend, null);
@@ -89,6 +93,15 @@ public class Recorder {
         }
         for (int i = 0; i < items.size(); i++) {
             xval = (items.get(i).cycle - xstart) * width / xrange + padding;
+            if (oldxval >= 0) {
+                if (xval <= oldxval) {
+                    Log.w(TAG, "getNbeastPath: xval not monotonic", null);
+                    Log.w(TAG, "getNbeastPath: oldxval = " + oldxval);
+                    Log.w(TAG, "getNbeastPath: xval = " + xval);
+                    Log.w(TAG, "getNbeastPath: item number is " + i );
+                    Log.w(TAG, "getNbeastPath: item is " + items.get(i) );
+                }
+            }
             float yval = height - (items.get(i).nbeasts * height / maxnbeasts) + padding;
             if (i == 0) {
                 path.moveTo(xval, yval);
@@ -135,7 +148,7 @@ public class Recorder {
         canvas.drawColor(Color.argb(255,255 , 255, 255));
         paint.setColor(Color.argb(255, 255, 0, 0));
         paint.setTextSize(TEXT_SIZE);
-        canvas.drawText("" + items.size() + " items", PADDING, height - 3 * PADDING, paint);
+        // canvas.drawText("" + items.size() + " items", PADDING, height - 3 * PADDING, paint);
         Path nbpath = getNbeastPath(width, height, PADDING);
         Path fbpath = getFBPath(width, height, PADDING);
         // paint.setStyle(Paint.Style.FILL);

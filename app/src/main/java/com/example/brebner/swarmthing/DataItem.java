@@ -13,6 +13,11 @@ public class DataItem {
         this.nbeasts = nbeasts;
     }
 
+    @Override
+    public String toString() {
+        return "DataItem: cycle = " + cycle + " nfb = " + nfb + " nbeasts = " + nbeasts;
+    }
+
     public long getCycle() {
         return cycle;
     }

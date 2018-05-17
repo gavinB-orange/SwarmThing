@@ -21,8 +21,8 @@ import java.util.Random;
 public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     public static final int SUNLIGHT = 200;
-    public static final int SANE_MAX_LIGHTLEVEL = 10;
     private int lightlevel;
+    private int sane_light;
 
     private static final String TAG = "SwarmPlaygroundView";
 
@@ -57,6 +57,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private Random random;
 
     private boolean timeup = false;  // signal that time has expired
+    private boolean unlimited_time;
 
 
     // dummy for tools
@@ -69,9 +70,13 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         this.context = context;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int nbeasts = sharedPreferences.getInt(context.getString(R.string.other_nbeasts_key), ConfigureOtherActivity.DEFAULT_N_BEASTS);
-        Log.w(TAG, "SwarmPlaygroundView: nbeasts = " + nbeasts, null);
+        Log.d(TAG, "SwarmPlaygroundView: nbeasts = " + nbeasts, null);
         int other_ratio = sharedPreferences.getInt(context.getString(R.string.other_ratio_key), ConfigureOtherActivity.DEFAULT_RATIO);
-        Log.w(TAG, "SwarmPlaygroundView: other_ratio set to " + other_ratio, null);
+        Log.d(TAG, "SwarmPlaygroundView: other_ratio set to " + other_ratio, null);
+        sane_light = sharedPreferences.getInt(context.getString(R.string.fb_sane_light_key), ConfigureFoodBeast.DEFAULT_SANE_LIGHT);
+        Log.d(TAG, "SwarmPlaygroundView: sane_light set to " + sane_light);
+        unlimited_time = sharedPreferences.getBoolean(context.getString(R.string.other_unlimited_time_key), ConfigureOtherActivity.DEFAULT_UNLIMITED_TIME);
+        Log.d(TAG, "SwarmPlaygroundView: unlimited time is " + unlimited_time);
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_3);
         bitmap = Bitmap.createScaledBitmap(bitmap, screenX, screenY, false);
         paint = new Paint();
@@ -90,7 +95,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         for (int i = 0; i < nbeasts; i++) {
             int bx = (screenX / n_beast_cols) * (i % n_beast_cols) + screenX / Beast.NPERX;
             int by = (screenY / n_beast_rows) * ((i / n_beast_cols) % n_beast_rows) + screenY / Beast.NPERY;
-            if (random.nextInt(ConfigureOtherActivity.DEFAULT_MAX_RATIO) >= other_ratio) {
+            if (random.nextInt(ConfigureOtherActivity.MAX_RATIO) >= other_ratio) {
                 beasts.add(new FoodBeast(beastID, bx, by, screenX, screenY, beasts, context));
             }
             else {
@@ -104,7 +109,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         }
         loadSounds(context);
         recorder = new Recorder();
-        lightlevel = SANE_MAX_LIGHTLEVEL;
+        lightlevel = sane_light;
         started = false;  // set to true once game has truly started.
         endtime = System.currentTimeMillis() + sharedPreferences.getLong(context.getString(R.string.other_maxtime_key), ConfigureOtherActivity.DEFAULT_TIME);
         hud = new Hud(40,40, nbeasts, endtime, sharedPreferences, context);
@@ -135,16 +140,16 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             lightlevel = SUNLIGHT / nFB;  // as more FBs, light/FB gets less.
         }
         else {
-            lightlevel = SANE_MAX_LIGHTLEVEL;
+            lightlevel = sane_light;
         }
         Log.d(TAG, "update: lightlevel now " + lightlevel);
-        if (lightlevel > SANE_MAX_LIGHTLEVEL) {
-            lightlevel = SANE_MAX_LIGHTLEVEL;
+        if (lightlevel > sane_light) {
+            lightlevel = sane_light;
         }
         if (cycle % 50 == 0) { // roughly every second or so
             recorder.putData(cycle, nFB, beasts.size());
             // also check endtime and quit if we are done
-            if (System.currentTimeMillis() > endtime) {
+            if (! unlimited_time && System.currentTimeMillis() > endtime) {
                 timeup = true;
             }
         }
@@ -196,13 +201,13 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 FoodBeast fb = (FoodBeast)b;
                 fb.setEnergy(fb.getEnergy() / 2);
                 fb.resetSplit();
-                int newxpos = fb.getXpos() + screenX / (2 * Beast.NPERX);
+                int newxpos = fb.getXpos() + screenX / (Beast.NPERX);
                 if (newxpos > screenX)  {
-                    newxpos = screenX - screenX / (2 * Beast.NPERX);
+                    newxpos = screenX - screenX / (Beast.NPERX);
                 }
-                int newypos = fb.getYpos() + screenY / (2 * Beast.NPERY);
+                int newypos = fb.getYpos() + screenY / (Beast.NPERY);
                 if (newypos > screenY)  {
-                    newypos = screenY - screenY / (2 * Beast.NPERY);
+                    newypos = screenY - screenY / (Beast.NPERY);
                 }
                 FoodBeast newfb = new FoodBeast(beastID, newxpos, newypos, screenX, screenY, beasts, context);
                 beastID++;
