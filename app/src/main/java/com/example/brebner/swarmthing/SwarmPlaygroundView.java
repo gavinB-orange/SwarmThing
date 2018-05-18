@@ -194,45 +194,37 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         if (tosplit.size() < 1) {
             return;
         }
-        Log.d(TAG, "split: Have " + tosplit.size() + " beasts ready to split");
+        Log.w(TAG, "split: Have " + tosplit.size() + " beasts ready to split");
         for (Beast b: tosplit) {
+            int newxpos = b.getXpos() + 2 + b.getWidth();
+            if (newxpos > screenX)  {
+                newxpos = screenX - 2 - b.getWidth();
+            }
+            int newypos = b.getYpos();  // try leaving y alone
+            // int newypos = b.getYpos() + 1 + screenY / (2 * Beast.NPERY);
+            // if (newypos > screenY)  {
+            //     newypos = screenY - screenY / (2 * Beast.NPERY);
+            // }
             if (b.getClass() == FoodBeast.class) {
                 Log.w(TAG, "split: " + b.getID() + " Splitting to form new FoodBeast");
                 FoodBeast fb = (FoodBeast)b;
-                fb.setEnergy(fb.getEnergy() / 2);
-                fb.resetSplit();
-                int newxpos = fb.getXpos() + screenX / (2 * Beast.NPERX);
-                if (newxpos > screenX)  {
-                    newxpos = screenX - screenX / (2 * Beast.NPERX);
+            }
+            if (b.getNoCollision(newxpos, newypos)) {
+                b.setEnergy(b.getEnergy() / 2);
+                b.resetSplit();
+                Beast newb;
+                if (b.getClass() == FoodBeast.class) {
+                    newb = new FoodBeast(beastID, newxpos, newypos, screenX, screenY, beasts, context);
                 }
-                int newypos = fb.getYpos() + screenY / (2 * Beast.NPERY);
-                if (newypos > screenY)  {
-                    newypos = screenY - screenY / (2 * Beast.NPERY);
+                else {
+                    newb = new GrazingBeast(beastID, newxpos, newypos, screenX, screenY, beasts, context);
                 }
-                FoodBeast newfb = new FoodBeast(beastID, newxpos, newypos, screenX, screenY, beasts, context);
                 beastID++;
-                newfb.setEnergy(fb.getEnergy());
-                beasts.add(newfb);
+                newb.setEnergy(b.getEnergy());
+                beasts.add(newb);
             }
             else {
-                if (b.getClass() == GrazingBeast.class) {
-                    Log.w(TAG, "split: Splitting to form new GrazingBeast");
-                    GrazingBeast gb = (GrazingBeast)b;
-                    gb.energy = gb.energy / 2;
-                    gb.resetSplit();
-                    int newxpos = gb.getXpos() + screenX / (2 * Beast.NPERX);
-                    if (newxpos > screenX)  {
-                        newxpos = screenX - screenX / (2 * Beast.NPERX);
-                    }
-                    int newypos = gb.getYpos() + screenY / (2 * Beast.NPERY);
-                    if (newypos > screenY)  {
-                        newypos = screenY - screenY / (2 * Beast.NPERY);
-                    }
-                    GrazingBeast newgb = new GrazingBeast(beastID, newxpos, newypos, screenX, screenY, beasts, context);
-                    beastID++;
-                    newgb.setEnergy(gb.energy);
-                    beasts.add(newgb);
-                }
+                Log.w(TAG, "split: " + b.getClass() + " : " + b.id + " deferred split due to collision ...");
             }
         }
     }

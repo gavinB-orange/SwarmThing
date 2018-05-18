@@ -1,7 +1,6 @@
 package com.example.brebner.swarmthing;
 
-// TODO fix post-split overlap
-// TODO FB energy formula needs settings etc.
+// TODO fix beast sticking
 // TODO store historical data and display
 // TODO Make beasts "walk"
 // TODO User interaction - fingerBeast!
@@ -13,7 +12,6 @@ package com.example.brebner.swarmthing;
 // TODO    most iterations in beast number over 5 mins
 // TODO    smallest number of creatures killed in 5 mins
 // TODO    skirting death - the lower trough of numbers.
-// TODO high score
 // TODO DNA exchange on collision with same type.
 
 

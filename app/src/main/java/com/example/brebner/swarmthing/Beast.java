@@ -91,6 +91,30 @@ public abstract class Beast extends DrawableThing {
         return splitReady;
     }
 
+    RectF getPseudoRectF(int x, int y) {
+        // make a rectF of same size but at the new position.
+        RectF rf = new RectF();
+        rf.left = x;
+        rf.right = x + width;
+        rf.bottom = y + height;
+        rf.top = y;
+        return rf;
+    }
+
+    public boolean getNoCollision(int newxpos, int newypos) {
+        boolean collision;
+        for (Beast b: beasts) {
+            if (b.getID() != getID()) {
+                collision = RectF.intersects(getPseudoRectF(newxpos, newypos), b.getRectF());
+                if (collision) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
     void resetSplit() {
         // Log.d(TAG, "resetSplit: beast " + getID());
         splitReady = false;
@@ -98,6 +122,10 @@ public abstract class Beast extends DrawableThing {
 
     public RectF getRectF() {
         return rectF;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     public long getID() {
