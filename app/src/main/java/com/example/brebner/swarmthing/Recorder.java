@@ -25,7 +25,7 @@ public class Recorder {
     private static final int BKCOLOUR = Color.argb(255, 32, 32, 32);
     private static final int BBCOLOUR = Color.argb(255, 0, 0, 255);
 
-    public static final int CULL_SPLIT_SCALE = 4;
+    public static final int CULL_SPLIT_SCALE = 2;
 
     private Context context;
     private int maxnbeasts;

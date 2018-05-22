@@ -56,14 +56,11 @@
     <string name="display_options_title">Display Options</string>
     <string name="challenge_title_text">Available Challenges</string>
     <string name="beasts_died_title">Beasts died x </string>
-    <string name="number_beasts_title">No. beasts</string>
+    <string name="number_beasts_title">Beasts</string>
     <string name="beasts_born_title">Beasts born x </string>
-    <string name="number_fb_title">No. food beasts</string>
+    <string name="number_fb_title">Food beasts</string>
     <string name="challenge_fragment_description_key">com.example.brebner.swarmthing.challenge_fragment_description_key</string>
     <string name="fragment_description_title">Description :</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="choose_challenge_title">Choose challenge [0, 1, ...]</string>
     <string name="challenge_choose_button_text">Choose</string>
     <string name="challenge_choice_key">com.example.brebner.swarmthing.challenge_choice_key</string>

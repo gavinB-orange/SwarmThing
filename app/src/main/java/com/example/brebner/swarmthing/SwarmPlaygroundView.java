@@ -198,7 +198,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             }
             if (sound_effects_on && cullcount > 0) {
                 soundPool.play(cullSoundID, 1, 1, 0, 0, 1);
-                Log.w(TAG, "update: playing cullSoundID");
+                Log.d(TAG, "update: playing cullSoundID");
             }
             recorder.putData(nFB, beasts.size(), splitcount, cullcount);
             splitcount = 0;
