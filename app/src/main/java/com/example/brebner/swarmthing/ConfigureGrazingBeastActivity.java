@@ -69,7 +69,7 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
             split_threshold = (progress * MAX_SPLIT_THRESHOLD) / seekBar.getMax();
         }
         if (seekBar.getId() == R.id.configGBMaxAgeSeekBar) {
-            max_age = (progress * MAX_AGE) / seekBar.getMax();
+            max_age = (progress * MAX_AGE) / seekBar.getMax() + MAX_AGE / 10;
         }
     }
 

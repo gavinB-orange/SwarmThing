@@ -52,6 +52,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private SoundPool soundPool;
     private int collisionSoundID;
     private int splitSoundID;
+    private int cullSoundID;
 
     //background
     private Bitmap bitmap;
@@ -153,10 +154,10 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             AssetManager assetManager = context.getAssets();
             AssetFileDescriptor descriptor;
             // Load our fx in memory ready for use
-            // descriptor = assetManager.openFd("collision.ogg");
-            // collisionSoundID = soundPool.load(descriptor, 0);
             descriptor = assetManager.openFd("split.ogg");
             splitSoundID = soundPool.load(descriptor, 0);
+            descriptor = assetManager.openFd("big-bell.ogg");
+            cullSoundID = soundPool.load(descriptor, 0);
             Log.d(TAG, "loadSounds: OK");
         }
         catch(IOException e) {
@@ -187,13 +188,17 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         else {
             lightlevel = sane_light;
         }
-        Log.d(TAG, "update: lightlevel now " + lightlevel);
         if (lightlevel > sane_light) {
             lightlevel = sane_light;
         }
         if (cycle % 50 == 0) { // roughly every second or so
             if (sound_effects_on && splitcount > 0) {
                 soundPool.play(splitSoundID, 1, 1, 0, 0, 1);
+                Log.d(TAG, "update: playing splitSoundID");
+            }
+            if (sound_effects_on && cullcount > 0) {
+                soundPool.play(cullSoundID, 1, 1, 0, 0, 1);
+                Log.w(TAG, "update: playing cullSoundID");
             }
             recorder.putData(nFB, beasts.size(), splitcount, cullcount);
             splitcount = 0;

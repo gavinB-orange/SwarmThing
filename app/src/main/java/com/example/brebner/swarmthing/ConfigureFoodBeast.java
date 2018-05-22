@@ -72,7 +72,7 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
             split_threshold = progress * MAX_SPLIT_THRESHOLD / seekBar.getMax();
         }
         if (seekBar.getId() == R.id.configFBMaxAgeSeekBar) {
-            max_age = progress * MAX_AGE / seekBar.getMax();
+            max_age = progress * MAX_AGE / seekBar.getMax() + MAX_AGE / 10;  // no zero age please
         }
         if (seekBar.getId() == R.id.configFBSaneLightSeekBar) {
             sane_light = progress * MAX_SANE_LIGHT / seekBar.getMax();

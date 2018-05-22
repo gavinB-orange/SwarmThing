@@ -1,6 +1,6 @@
 package com.example.brebner.swarmthing;
 
-// TODO fix radio buttons are not uncheckable
+// TODO Challenge based analysis at end.
 // TODO Challenge choice - click per-challenge button
 // TODO fix beast sticking
 // TODO store historical data and display

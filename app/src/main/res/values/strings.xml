@@ -55,9 +55,9 @@
     <string name="sound_effects_on_key">com.example.brebner.swarmthing.sounds_effect_on_key</string>
     <string name="display_options_title">Display Options</string>
     <string name="challenge_title_text">Available Challenges</string>
-    <string name="beasts_died_title">Beasts died</string>
+    <string name="beasts_died_title">Beasts died x </string>
     <string name="number_beasts_title">No. beasts</string>
-    <string name="beasts_born_title">Beasts born</string>
+    <string name="beasts_born_title">Beasts born x </string>
     <string name="number_fb_title">No. food beasts</string>
     <string name="challenge_fragment_description_key">com.example.brebner.swarmthing.challenge_fragment_description_key</string>
     <string name="fragment_description_title">Description :</string>

@@ -25,6 +25,8 @@ public class Recorder {
     private static final int BKCOLOUR = Color.argb(255, 32, 32, 32);
     private static final int BBCOLOUR = Color.argb(255, 0, 0, 255);
 
+    public static final int CULL_SPLIT_SCALE = 4;
+
     private Context context;
     private int maxnbeasts;
 
@@ -39,8 +41,8 @@ public class Recorder {
     }
 
     public void putData(int nfb, int nbeasts, int nsplit, int ncull) {
-        Log.w(TAG, "putData:  nfb = " + nfb + " nbeasts = " + nbeasts + " nsplit = " + nsplit + " ncull " + ncull);
-        items.add(new DataItem(nfb, nbeasts, nsplit, ncull));
+        Log.d(TAG, "putData:  nfb = " + nfb + " nbeasts = " + nbeasts + " nsplit = " + nsplit + " ncull " + ncull);
+        items.add(new DataItem(nfb, nbeasts, CULL_SPLIT_SCALE * nsplit, CULL_SPLIT_SCALE * ncull));
         if (nbeasts > maxnbeasts) {  // keep a running max value for the y axis
             maxnbeasts = nbeasts;
         }
@@ -201,13 +203,13 @@ public class Recorder {
         if (bkpath != null) {
             canvas.drawPath(bkpath, paint);
         }
-        canvas.drawText(context.getString(R.string.beasts_died_title), PADDING, PADDING * 4, paint);
+        canvas.drawText(context.getString(R.string.beasts_died_title) + CULL_SPLIT_SCALE, PADDING, PADDING * 4, paint);
         // BB
         paint.setColor(BBCOLOUR);
         if (bbpath != null) {
             canvas.drawPath(bbpath, paint);
         }
-        canvas.drawText(context.getString(R.string.beasts_born_title), PADDING, PADDING * 3, paint);
+        canvas.drawText(context.getString(R.string.beasts_born_title) + CULL_SPLIT_SCALE, PADDING, PADDING * 3, paint);
         // FB
         paint.setColor(FBCOLOUR);
         if (fbpath != null) {
