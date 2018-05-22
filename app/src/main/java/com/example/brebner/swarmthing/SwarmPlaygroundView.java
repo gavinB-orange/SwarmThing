@@ -3,11 +3,17 @@ package com.example.brebner.swarmthing;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -15,12 +21,14 @@ import android.view.SurfaceView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class SwarmPlaygroundView extends SurfaceView implements Runnable {
 
     public static final int SUNLIGHT = 200;
+    private boolean sound_effects_on;
     private int lightlevel;
     private int sane_light;
 
@@ -40,12 +48,19 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     
     private Context context;
 
+    // sounds
+    private SoundPool soundPool;
+    private int collisionSoundID;
+    private int splitSoundID;
+
     //background
     private Bitmap bitmap;
     private Paint paint;
 
     // recorder to create graph at end
     private Recorder recorder;
+    private int splitcount;
+    private int cullcount;
 
     // things
     private Hud hud;
@@ -77,6 +92,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         Log.d(TAG, "SwarmPlaygroundView: sane_light set to " + sane_light);
         unlimited_time = sharedPreferences.getBoolean(context.getString(R.string.other_unlimited_time_key), ConfigureOtherActivity.DEFAULT_UNLIMITED_TIME);
         Log.d(TAG, "SwarmPlaygroundView: unlimited time is " + unlimited_time);
+        sound_effects_on = sharedPreferences.getBoolean(context.getString(R.string.sound_effects_on_key), ConfigureOtherActivity.DEFAULT_SOUND_EFFECTS_ON);
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_3);
         bitmap = Bitmap.createScaledBitmap(bitmap, screenX, screenY, false);
         paint = new Paint();
@@ -108,16 +124,45 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             b.setEnergy(random.nextInt((int)b.getInitEnergy()));
         }
         loadSounds(context);
-        recorder = new Recorder();
+        recorder = new Recorder(context);
+        splitcount = 0;
+        cullcount = 0;
         lightlevel = sane_light;
         started = false;  // set to true once game has truly started.
         endtime = System.currentTimeMillis() + sharedPreferences.getLong(context.getString(R.string.other_maxtime_key), ConfigureOtherActivity.DEFAULT_TIME);
         hud = new Hud(40,40, nbeasts, endtime, sharedPreferences, context);
     }
 
-    void loadSounds(Context context) {
-        Log.w(TAG, "loadSounds: NOT IMPLEMENTED", null);
-        // Resources res = context.getResources();
+    private void loadSounds(Context context) {
+        SoundPool.Builder spb;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            spb = new SoundPool.Builder();
+            spb.setMaxStreams(10);
+            AudioAttributes aa = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            spb.setAudioAttributes(aa);
+            soundPool = spb.build();
+        }
+        else {
+            soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        }
+        try {
+            // Create objects of the 2 required classes
+            AssetManager assetManager = context.getAssets();
+            AssetFileDescriptor descriptor;
+            // Load our fx in memory ready for use
+            // descriptor = assetManager.openFd("collision.ogg");
+            // collisionSoundID = soundPool.load(descriptor, 0);
+            descriptor = assetManager.openFd("split.ogg");
+            splitSoundID = soundPool.load(descriptor, 0);
+            Log.d(TAG, "loadSounds: OK");
+        }
+        catch(IOException e) {
+            // Print an error message to the console
+            Log.e(TAG, "loadSounds: FAILED to load", e);
+        }
     }
 
     void update(long cycle) {
@@ -147,7 +192,12 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             lightlevel = sane_light;
         }
         if (cycle % 50 == 0) { // roughly every second or so
-            recorder.putData(nFB, beasts.size());
+            if (sound_effects_on && splitcount > 0) {
+                soundPool.play(splitSoundID, 1, 1, 0, 0, 1);
+            }
+            recorder.putData(nFB, beasts.size(), splitcount, cullcount);
+            splitcount = 0;
+            cullcount = 0;
             // also check endtime and quit if we are done
             if (! unlimited_time && System.currentTimeMillis() > endtime) {
                 timeup = true;
@@ -163,7 +213,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             long start = PreferenceManager.getDefaultSharedPreferences(context).getLong(context.getString(R.string.start_time_key), 0);
             long now = System.currentTimeMillis();
             long seconds = (now - start) / 1000;
-            Bitmap graph = recorder.createBitmapDrawing(context, screenX - 10, screenY / 3, seconds);
+            Bitmap graph = recorder.createBitmapDrawing(screenX - 10, screenY / 3, seconds);
             context.deleteFile(context.getString(R.string.recorder_graph_file_name));  // just in case
             try {
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -191,10 +241,11 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 tosplit.add(b);
             }
         }
+        splitcount += tosplit.size();
         if (tosplit.size() < 1) {
             return;
         }
-        Log.w(TAG, "split: Have " + tosplit.size() + " beasts ready to split");
+        Log.d(TAG, "split: Have " + tosplit.size() + " beasts ready to split");
         for (Beast b: tosplit) {
             int newxpos = b.getXpos() + 2 + b.getWidth();
             if (newxpos > screenX)  {
@@ -206,7 +257,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             //     newypos = screenY - screenY / (2 * Beast.NPERY);
             // }
             if (b.getClass() == FoodBeast.class) {
-                Log.w(TAG, "split: " + b.getID() + " Splitting to form new FoodBeast");
+                Log.d(TAG, "split: " + b.getID() + " Splitting to form new FoodBeast");
                 FoodBeast fb = (FoodBeast)b;
             }
             if (b.getNoCollision(newxpos, newypos)) {
@@ -224,7 +275,8 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 beasts.add(newb);
             }
             else {
-                Log.w(TAG, "split: " + b.getClass() + " : " + b.id + " deferred split due to collision ...");
+                Log.d(TAG, "split: " + b.getClass() + " : " + b.id + " deferred split due to collision ...");
+                splitcount--;
             }
         }
     }
@@ -236,6 +288,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 todie.add(b);
             }
         }
+        cullcount += todie.size();
         for (Beast b: todie) {
             beasts.remove(b);
             Log.d(TAG, "cull: removing beast " + b.getID());
@@ -276,6 +329,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     }
 
     public void pause() {
+        Log.w(TAG, "pause: ");
         playing = false;
         try {
             gameThread.join();
@@ -285,6 +339,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     }
 
     public void resume() {
+        Log.w(TAG, "resume: ");
         playing = true;
         gameThread = new Thread(this);
         gameThread.start();

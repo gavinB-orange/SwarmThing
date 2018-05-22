@@ -25,7 +25,9 @@
         <activity android:name=".ConfigureOtherActivity" />
         <activity
             android:name=".EndActivity"
-            android:screenOrientation="portrait" ></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".ChallengeActivity" />
+        <activity android:name=".InformationActivity"></activity>
     </application>
 
 </manifest>

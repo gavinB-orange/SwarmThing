@@ -24,6 +24,7 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
     public final static boolean DEFAULT_SHOW_TIME = true;
     public final static boolean DEFAULT_UNLIMITED_TIME = false;
     public final static boolean DEFAULT_SHOW_ELAPSED_TIME = false;
+    public static final boolean DEFAULT_SOUND_EFFECTS_ON = false;
 
     private static final String TAG = "ConfigureOtherActivity";
 
@@ -57,6 +58,8 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
         showElapsedRadioButton.setChecked(DEFAULT_SHOW_ELAPSED_TIME);
         Switch unlimitedTimeSwitch = findViewById(R.id.unlimitedTimeSwitch);
         unlimitedTimeSwitch.setChecked(DEFAULT_UNLIMITED_TIME);
+        RadioButton soundEffectsOnRadioButton = findViewById(R.id.soundOnRadioButton);
+        soundEffectsOnRadioButton.setChecked(DEFAULT_SOUND_EFFECTS_ON);
 
         nbeasts = DEFAULT_N_BEASTS;
         ratio = DEFAULT_RATIO;
@@ -72,12 +75,14 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
         RadioButton showTimeRadioButton = findViewById(R.id.showTimeRadioButton);
         RadioButton showFpsRadioButton = findViewById(R.id.showFpsRadioButton);
         RadioButton showElapsedRadioButton = findViewById(R.id.showElapsedTimeRadioButton);
+        RadioButton soundEffectsOnRadioButton = findViewById(R.id.soundOnRadioButton);
         Switch unlimitedTimeSwitch = findViewById(R.id.unlimitedTimeSwitch);
         // unlimited time => disable time countdown.
         editor.putBoolean(getString(R.string.other_show_time), showTimeRadioButton.isChecked() && ! unlimitedTimeSwitch.isChecked());
         editor.putBoolean(getString(R.string.other_show_fps), showFpsRadioButton.isChecked());
         editor.putBoolean(getString(R.string.other_unlimited_time_key), unlimitedTimeSwitch.isChecked());
         editor.putBoolean(getString(R.string.other_elapsed_time_key), showElapsedRadioButton.isChecked());
+        editor.putBoolean(getString(R.string.sound_effects_on_key), soundEffectsOnRadioButton.isChecked());
         editor.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

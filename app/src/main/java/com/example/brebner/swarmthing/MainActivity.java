@@ -1,17 +1,13 @@
 package com.example.brebner.swarmthing;
 
+// TODO fix radio buttons are not uncheckable
+// TODO Challenge choice - click per-challenge button
 // TODO fix beast sticking
 // TODO store historical data and display
 // TODO Make beasts "walk"
 // TODO User interaction - fingerBeast!
 // TODO Moving sun?
 // TODO allow user to create barriers.
-// TODO challenges :
-// TODO    most creatures killed in 5 mins
-// TODO    most creatures born in 5 mins.
-// TODO    most iterations in beast number over 5 mins
-// TODO    smallest number of creatures killed in 5 mins
-// TODO    skirting death - the lower trough of numbers.
 // TODO DNA exchange on collision with same type.
 
 
@@ -93,5 +89,15 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
         Toast.makeText(this, "Parameters Reset!", Toast.LENGTH_LONG).show();
 
+    }
+
+    public void doChallengeActivity(View view) {
+        Intent intent = new Intent(this, ChallengeActivity.class);
+        startActivity(intent);
+    }
+
+    public void doShowInformation(View view) {
+        Intent intent = new Intent(this, InformationActivity.class);
+        startActivity(intent);
     }
 }

@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">SwarmThing</string>
-    <string name="splash">Welcome to Swarm Thing</string>
+    <string name="splash">Swarm Thing</string>
     <string name="hint_enter_number">10</string>
     <string name="run">Run</string>
-    <string name="configure_title">Configure beasts and the simulation world, then press RUN</string>
+    <string name="configure_title">Configure beasts and the simulation world, choose a challenge then press RUN</string>
     <string name="configure_food_beast">Configure FoodBeast</string>
     <string name="configure_grazing_beast">Configure GrazingBeast</string>
     <string name="configure_simulation">Configure Simulation</string>
@@ -35,8 +35,8 @@
     <string name="other_config_max_time_title">Simulation time</string>
     <string name="other_maxtime_key">com.example.brebner.swarmthing.maxtime_key</string>
     <string name="final_time_up_key">com.example.brebner.swarmthing.timeup_key</string>
-    <string name="show_fps_radio_title">Show FPS</string>
-    <string name="show_time_radio_title">Show Remaining Time</string>
+    <string name="show_fps_radio_title">FPS</string>
+    <string name="show_time_radio_title">Remaining Time</string>
     <string name="other_show_time">com.example.brebner.swarmthing.other_show_time_key</string>
     <string name="other_show_fps">com.example.brebner.swarmthing.show_fps_key</string>
     <string name="config_fb_sane_light_title">Max light energy per beast</string>
@@ -48,6 +48,37 @@
     <string name="reset_all_params">Reset All Params</string>
     <string name="no_time_limit">No time limit</string>
     <string name="other_unlimited_time_key">com.example.brebner.swarmthing.other_unlimited_time_key</string>
-    <string name="show_elapsed_time_title">Show elapsed time</string>
+    <string name="show_elapsed_time_title">Elapsed time</string>
     <string name="other_elapsed_time_key">com.example.brebner.swarmthing.show_elapsed_time_key</string>
+    <string name="sound_on_title">On</string>
+    <string name="sound_effect_title">Sound Effects</string>
+    <string name="sound_effects_on_key">com.example.brebner.swarmthing.sounds_effect_on_key</string>
+    <string name="display_options_title">Display Options</string>
+    <string name="challenge_title_text">Available Challenges</string>
+    <string name="beasts_died_title">Beasts died</string>
+    <string name="number_beasts_title">No. beasts</string>
+    <string name="beasts_born_title">Beasts born</string>
+    <string name="number_fb_title">No. food beasts</string>
+    <string name="challenge_fragment_description_key">com.example.brebner.swarmthing.challenge_fragment_description_key</string>
+    <string name="fragment_description_title">Description :</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="choose_challenge_title">Choose challenge [0, 1, ...]</string>
+    <string name="challenge_choose_button_text">Choose</string>
+    <string name="challenge_choice_key">com.example.brebner.swarmthing.challenge_choice_key</string>
+    <string name="select_challenge_title">Click on the cup to select a challenge :</string>
+    <string name="information_title">Background</string>
+    <string name="information_details">
+        This game is a simulation with two sorts of "beasts",
+        the FoodBeast (in green) and the GrazingBeast (in yellow).
+        The FoodBeast gets energy from the environment.
+        The GrazingBeast can only get energy by taking it from a
+        FoodBeast. You can configure many parameters on how this
+        all works, and that will result in differing outcomes when
+        you run the simulation.
+
+        Enjoy!
+    </string>
+    <string name="information_go_back_button_text">Go Back</string>
 </resources>
