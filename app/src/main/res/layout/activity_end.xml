@@ -12,9 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="cursive"
         android:paddingBottom="12dp"
         android:paddingTop="24dp"
         android:text="@string/endActivityTimeUpTitle"
+        android:textColor="@android:color/holo_blue_dark"
         android:textSize="24sp" />
 
     <TextView
@@ -34,7 +36,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/game_duration_title" />
+            android:fontFamily="cursive"
+            android:text="@string/game_duration_title"
+            android:textColor="@android:color/holo_blue_dark" />
 
         <TextView
             android:id="@+id/gameDurationValueTextView"

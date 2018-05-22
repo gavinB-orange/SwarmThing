@@ -1,5 +1,6 @@
 package com.example.brebner.swarmthing;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -7,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.RadioButton;
+import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
@@ -31,8 +32,12 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
     private int nbeasts = DEFAULT_N_BEASTS;
     private int ratio = DEFAULT_RATIO;
     private long max_time = MAX_TIME;
-    private boolean unlimited_time;
-    private boolean elapsed_time;
+
+    private CheckBox showTimeCheckBox;
+    private CheckBox showFpsCheckBox;
+    private CheckBox showElapsedCheckBox;
+    private CheckBox soundEffectsOnCheckBox;
+    private Switch unlimitedTimeSwitch;
 
     private SharedPreferences sharedPreferences;
 
@@ -50,39 +55,38 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
         SeekBar timeSeekBar = findViewById(R.id.maxTimeSeekBar);
         timeSeekBar.setProgress((int)(DEFAULT_TIME * timeSeekBar.getMax() / MAX_TIME));
         timeSeekBar.setOnSeekBarChangeListener(this);
-        RadioButton showTimeRadioButton = findViewById(R.id.showTimeRadioButton);
-        showTimeRadioButton.setChecked(DEFAULT_SHOW_TIME);
-        RadioButton showFpsRadioButton = findViewById(R.id.showFpsRadioButton);
-        showFpsRadioButton.setChecked(DEFAULT_SHOW_FPS);
-        RadioButton showElapsedRadioButton = findViewById(R.id.showElapsedTimeRadioButton);
-        showElapsedRadioButton.setChecked(DEFAULT_SHOW_ELAPSED_TIME);
-        Switch unlimitedTimeSwitch = findViewById(R.id.unlimitedTimeSwitch);
+        showTimeCheckBox = findViewById(R.id.showTimeCheckBox);
+        showTimeCheckBox.setChecked(DEFAULT_SHOW_TIME);
+        showFpsCheckBox = findViewById(R.id.showFpsCheckBox);
+        showFpsCheckBox.setChecked(DEFAULT_SHOW_FPS);
+        showElapsedCheckBox = findViewById(R.id.showElapsedTimeCheckBox);
+        showElapsedCheckBox.setChecked(DEFAULT_SHOW_ELAPSED_TIME);
+        unlimitedTimeSwitch = findViewById(R.id.unlimitedTimeSwitch);
         unlimitedTimeSwitch.setChecked(DEFAULT_UNLIMITED_TIME);
-        RadioButton soundEffectsOnRadioButton = findViewById(R.id.soundOnRadioButton);
-        soundEffectsOnRadioButton.setChecked(DEFAULT_SOUND_EFFECTS_ON);
+        soundEffectsOnCheckBox = findViewById(R.id.soundOnCheckBox);
+        soundEffectsOnCheckBox.setChecked(DEFAULT_SOUND_EFFECTS_ON);
+//        showTimeCheckBox.setOnCheckedChangeListener(this);
+//        showFpsCheckBox.setOnCheckedChangeListener(this);
+//        showElapsedCheckBox.setOnCheckedChangeListener(this);
+//        soundEffectsOnCheckBox.setOnCheckedChangeListener(this);
 
         nbeasts = DEFAULT_N_BEASTS;
         ratio = DEFAULT_RATIO;
         max_time = DEFAULT_TIME;
-        unlimited_time = DEFAULT_UNLIMITED_TIME;
     }
 
+    @SuppressLint("ApplySharedPref")
     public void doSimDone(View view) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(getString(R.string.other_ratio_key), ratio);
         editor.putInt(getString(R.string.other_nbeasts_key), nbeasts);
         editor.putLong(getString(R.string.other_maxtime_key), max_time);
-        RadioButton showTimeRadioButton = findViewById(R.id.showTimeRadioButton);
-        RadioButton showFpsRadioButton = findViewById(R.id.showFpsRadioButton);
-        RadioButton showElapsedRadioButton = findViewById(R.id.showElapsedTimeRadioButton);
-        RadioButton soundEffectsOnRadioButton = findViewById(R.id.soundOnRadioButton);
-        Switch unlimitedTimeSwitch = findViewById(R.id.unlimitedTimeSwitch);
         // unlimited time => disable time countdown.
-        editor.putBoolean(getString(R.string.other_show_time), showTimeRadioButton.isChecked() && ! unlimitedTimeSwitch.isChecked());
-        editor.putBoolean(getString(R.string.other_show_fps), showFpsRadioButton.isChecked());
+        editor.putBoolean(getString(R.string.other_show_time), showTimeCheckBox.isChecked() && ! unlimitedTimeSwitch.isChecked());
+        editor.putBoolean(getString(R.string.other_show_fps), showFpsCheckBox.isChecked());
         editor.putBoolean(getString(R.string.other_unlimited_time_key), unlimitedTimeSwitch.isChecked());
-        editor.putBoolean(getString(R.string.other_elapsed_time_key), showElapsedRadioButton.isChecked());
-        editor.putBoolean(getString(R.string.sound_effects_on_key), soundEffectsOnRadioButton.isChecked());
+        editor.putBoolean(getString(R.string.other_elapsed_time_key), showElapsedCheckBox.isChecked());
+        editor.putBoolean(getString(R.string.sound_effects_on_key), soundEffectsOnCheckBox.isChecked());
         editor.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -116,4 +120,5 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
+
 }

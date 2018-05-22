@@ -11,9 +11,11 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="cursive"
         android:paddingBottom="24dp"
         android:paddingTop="16dp"
-        android:text="@string/configure_grazing_beast"/>
+        android:text="@string/configure_grazing_beast"
+        android:textColor="@android:color/holo_blue_dark" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/configgb_init_energy" />
+            android:fontFamily="cursive"
+            android:text="@string/configgb_init_energy"
+            android:textColor="@android:color/holo_blue_dark" />
 
         <SeekBar
             android:id="@+id/gbEnergyseekBar"
@@ -46,7 +50,9 @@
             android:id="@+id/configGBSplitTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/config_gb_split_title" />
+            android:fontFamily="cursive"
+            android:text="@string/config_gb_split_title"
+            android:textColor="@android:color/holo_blue_dark" />
 
         <SeekBar
             android:id="@+id/configGBSplitSeekBar"
@@ -64,7 +70,9 @@
             android:id="@+id/configGBMaxAgeTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/config_gb_max_age_title" />
+            android:fontFamily="cursive"
+            android:text="@string/config_gb_max_age_title"
+            android:textColor="@android:color/holo_blue_dark" />
 
         <SeekBar
             android:id="@+id/configGBMaxAgeSeekBar"

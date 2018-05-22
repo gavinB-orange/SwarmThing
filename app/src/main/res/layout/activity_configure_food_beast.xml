@@ -11,9 +11,11 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="cursive"
         android:paddingBottom="24dp"
         android:paddingTop="16dp"
-        android:text="@string/configure_food_beast"/>
+        android:text="@string/configure_food_beast"
+        android:textColor="@android:color/holo_blue_dark" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/configfb_init_energy" />
+            android:fontFamily="cursive"
+            android:text="@string/configfb_init_energy"
+            android:textColor="@android:color/holo_blue_dark" />
 
         <SeekBar
             android:id="@+id/fbEnergyseekBar"
@@ -47,7 +51,9 @@
             android:id="@+id/configFBSplitTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/config_fb_split_title" />
+            android:fontFamily="cursive"
+            android:text="@string/config_fb_split_title"
+            android:textColor="@android:color/holo_blue_dark" />
 
         <SeekBar
             android:id="@+id/configFBSplitSeekBar"
@@ -65,7 +71,9 @@
             android:id="@+id/configFBMaxAgeTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/config_fb_max_age_title" />
+            android:fontFamily="cursive"
+            android:text="@string/config_fb_max_age_title"
+            android:textColor="@android:color/holo_blue_dark" />
 
         <SeekBar
             android:id="@+id/configFBMaxAgeSeekBar"
@@ -83,7 +91,9 @@
             android:id="@+id/configFBSaneLightTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/config_fb_sane_light_title" />
+            android:fontFamily="cursive"
+            android:text="@string/config_fb_sane_light_title"
+            android:textColor="@android:color/holo_blue_dark" />
 
         <SeekBar
             android:id="@+id/configFBSaneLightSeekBar"
