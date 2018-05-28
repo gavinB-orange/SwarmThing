@@ -68,7 +68,9 @@ public class EndActivity extends AppCompatActivity {
         else {
             imageView.setImageBitmap(graph);
         }
-
+        String challengeResult = intent.getStringExtra(getString(R.string.challenge_result_key));
+        TextView challengeResultTextView = findViewById(R.id.challengeResultValue);
+        challengeResultTextView.setText(challengeResult);
     }
 
     public void doPlayAgain(View view) {

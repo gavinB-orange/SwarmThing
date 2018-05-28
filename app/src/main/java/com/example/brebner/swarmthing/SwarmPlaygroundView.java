@@ -75,6 +75,10 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private boolean timeup = false;  // signal that time has expired
     private boolean unlimited_time;
 
+    // challenge
+    private int whichChallenge;
+    private String challengResult;
+
 
     // dummy for tools
     public SwarmPlaygroundView(Context context) {
@@ -94,6 +98,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         unlimited_time = sharedPreferences.getBoolean(context.getString(R.string.other_unlimited_time_key), ConfigureOtherActivity.DEFAULT_UNLIMITED_TIME);
         Log.d(TAG, "SwarmPlaygroundView: unlimited time is " + unlimited_time);
         sound_effects_on = sharedPreferences.getBoolean(context.getString(R.string.sound_effects_on_key), ConfigureOtherActivity.DEFAULT_SOUND_EFFECTS_ON);
+        whichChallenge = sharedPreferences.getInt(context.getString(R.string.challenge_choice_key), ChallengeActivity.NO_CHALLENGE_SELECTED);
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_3);
         bitmap = Bitmap.createScaledBitmap(bitmap, screenX, screenY, false);
         paint = new Paint();
@@ -229,6 +234,43 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             } catch (Exception e) {
                 Log.e(TAG, "update: failed to write graph file", e);
             }
+            ChallengeChecker challengeChecker = null;
+            String challengeResult;
+            switch (whichChallenge) {
+                case ChallengeActivity.NO_CHALLENGE_SELECTED:
+                    Log.d(TAG, "update: No challenge selected");
+                    break;
+                case ChallengeActivity.CHALLENGE_MOST_DEAD:
+                    Log.d(TAG, "update: most dead not implemented");
+                    challengeChecker = null;
+                    break;
+                case ChallengeActivity.CHALLENGE_MOST_BORN:
+                    challengeChecker = new ChallengeOneChecker(ChallengeActivity.CHALLENGE_MOST_BORN_DESC);
+                    break;
+                case ChallengeActivity.CHALLENGE_MOST_BEAST_ITERATIONS:
+                    challengeChecker = null;
+                    Log.d(TAG, "update: most beast iterations not implemented");
+                    break;
+                case ChallengeActivity.CHALLENGE_MOST_PROTECTED:
+                    challengeChecker = null;
+                    Log.d(TAG, "update: most protected not implemented");
+                    break;
+                case ChallengeActivity.CHALLENGE_PHOENIX:
+                    challengeChecker = null;
+                    Log.d(TAG, "update: phoenix not implemented");
+                    break;
+                default:
+                    challengeChecker = null;
+                    Log.w(TAG, "update: Unknown challenge");
+                    break;
+            }
+            if (challengeChecker == null) {
+                challengeResult = "";
+            }
+            else {
+                challengeResult = challengeChecker.validate(recorder);
+            }
+            intent.putExtra(context.getString(R.string.challenge_result_key), challengeResult);
             context.startActivity(intent);
         }
     }

@@ -48,6 +48,10 @@ public class Recorder {
         }
     }
 
+    public ArrayList<DataItem> getData() {
+        return items;
+    }
+
     private Path getBKPath(int rawwidth, int rawheight, int padding) {
         long xrange = items.size();
         int width = rawwidth - 2 * padding;

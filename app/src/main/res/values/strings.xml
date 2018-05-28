@@ -78,4 +78,6 @@
         Enjoy!
     </string>
     <string name="information_go_back_button_text">Go Back</string>
+    <string name="challenge_result_title">Challenge Result</string>
+    <string name="challenge_result_key">com.example.brebner.swarmthing.challenge_result_key</string>
 </resources>
