@@ -13,11 +13,7 @@ public class ChallengeBeastIterationsChecker extends ChallengeChecker {
     @Override
     public String validate(Recorder recorder) {
         ArrayList<DataItem> items = recorder.getData();
-        double average = 0;
-        for (int i = 0; i < items.size(); i++) {
-            average += items.get(i).nbeasts;
-        }
-        average /= items.size();
+        float average = recorder.getAverageNBeasts();
         cross_count = 0;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(recorder.getContext());
         int initial = sharedPreferences.getInt(recorder.getContext().getString(R.string.other_nbeasts_key), 0);

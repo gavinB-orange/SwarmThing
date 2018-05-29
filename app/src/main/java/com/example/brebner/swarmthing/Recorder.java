@@ -24,11 +24,13 @@ public class Recorder {
     private static final int NBCOLOUR = Color.argb(255, 255, 0, 0);
     private static final int BKCOLOUR = Color.argb(255, 32, 32, 32);
     private static final int BBCOLOUR = Color.argb(255, 0, 0, 255);
+    private static final int AVCOLOUR = Color.argb(128, 200, 32, 32);
 
     public static final int CULL_SPLIT_SCALE = 2;
 
     private Context context;
     private int maxnbeasts;
+    private int nbeastssum;
 
     private int challengeChoice;
 
@@ -36,6 +38,7 @@ public class Recorder {
         this.context = context;
         items = new ArrayList<>();
         maxnbeasts = 0;
+        nbeastssum = 0;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         challengeChoice = sharedPreferences.getInt(context.getString(R.string.challenge_choice_key), ChallengeActivity.NO_CHALLENGE_SELECTED);
     }
@@ -46,6 +49,7 @@ public class Recorder {
         if (nbeasts > maxnbeasts) {  // keep a running max value for the y axis
             maxnbeasts = nbeasts;
         }
+        nbeastssum += nbeasts;
     }
 
     public Context getContext() {
@@ -54,6 +58,10 @@ public class Recorder {
 
     public int getMaxnbeasts() {
         return maxnbeasts;
+    }
+
+    public float getAverageNBeasts() {
+        return nbeastssum / items.size();
     }
 
     public ArrayList<DataItem> getData() {
@@ -141,6 +149,24 @@ public class Recorder {
                 path.moveTo(xval, yval);
             }
         }
+        return path;
+    }
+
+    private Path getNBeastsAveragePath(int rawwidth, int rawheight, int padding) {
+        long xrange = items.size();
+        int width = rawwidth - 2 * padding;
+        int height = rawheight - 2 * padding;
+        if ((width <= 0)) throw new AssertionError("width must be > 0");
+        if ((height <= 0)) throw new AssertionError("height must be > 0");
+        if (xrange <= 0) throw new AssertionError("xrange must be > 0");
+        Path path = new Path();
+        if (items.size() <= 0) {
+            return null;
+        }
+        float yval;
+        yval = height - (getAverageNBeasts() * height / maxnbeasts) + padding;
+        path.moveTo(padding, yval);
+        path.lineTo(width + padding, yval);
         return path;
     }
 
@@ -245,6 +271,8 @@ public class Recorder {
             toto /= 10;
         }
         canvas.drawText("" + seconds, width - TEXT_SIZE * multiplier, height, paint);
+        paint.setColor(AVCOLOUR);
+        canvas.drawPath(getNBeastsAveragePath(width, height, PADDING), paint);
         Log.d(TAG, "createBitmapDrawing: returning bitmap");
         return bitmap;
     }
