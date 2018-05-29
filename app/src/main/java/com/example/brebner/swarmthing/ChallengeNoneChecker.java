@@ -17,7 +17,7 @@ public class ChallengeNoneChecker extends ChallengeChecker {
     }
 
     @Override
-    public boolean timeMatches(int time) {
+    public boolean timeMatches(long time) {
         return true;
     }
 

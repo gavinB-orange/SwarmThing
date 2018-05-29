@@ -20,7 +20,7 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
     public final static int DEFAULT_RATIO = 8;
     public final static long MAX_TIME = 60 * 60 * 1000;  // 60 minutes
     public final static long DEFAULT_TIME = 5 * 60 * 1000;  // 5 minutes
-    public final static long DEFAULT_MIN_TIME = 20 * 1000;  // 20 seconds min run
+    public final static long DEFAULT_MIN_TIME = 60 * 1000;  // 60 seconds min run
     public final static boolean DEFAULT_SHOW_FPS = false;
     public final static boolean DEFAULT_SHOW_TIME = true;
     public final static boolean DEFAULT_UNLIMITED_TIME = false;

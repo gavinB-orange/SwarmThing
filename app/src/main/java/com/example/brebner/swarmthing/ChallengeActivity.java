@@ -88,7 +88,7 @@ public class ChallengeActivity extends AppCompatActivity implements ChallengeFra
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(getString(R.string.challenge_choice_key), choice);
         // all challenges currently work with 5 mins, so ...
-        editor.putInt(getString(R.string.other_maxtime_key), ChallengeChecker.MINS_5);
+        editor.putLong(getString(R.string.other_maxtime_key), ChallengeChecker.MINS_5);
         editor.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

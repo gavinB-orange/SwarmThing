@@ -22,7 +22,7 @@ public class ChallengeMaxDeadChecker extends ChallengeChecker {
     @Override
     public String validate(Recorder recorder) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(recorder.getContext());
-        if (! timeMatches(sharedPreferences.getInt(recorder.getContext().getString(R.string.other_maxtime_key), 0))) {
+        if (! timeMatches(sharedPreferences.getLong(recorder.getContext().getString(R.string.other_maxtime_key), 0))) {
             return "time does not match";
         }
         deaths = 0;

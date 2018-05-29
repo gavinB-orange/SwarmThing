@@ -136,6 +136,8 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         lightlevel = sane_light;
         started = false;  // set to true once game has truly started.
         endtime = System.currentTimeMillis() + sharedPreferences.getLong(context.getString(R.string.other_maxtime_key), ConfigureOtherActivity.DEFAULT_TIME);
+        Log.d(TAG, "SwarmPlaygroundView: maxtime set to " + sharedPreferences.getLong(context.getString(R.string.other_maxtime_key), -999));
+        Log.d(TAG, "SwarmPlaygroundView:   so endtime is " + endtime);
         hud = new Hud(40,40, nbeasts, endtime, sharedPreferences, context);
     }
 

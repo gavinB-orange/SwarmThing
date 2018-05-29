@@ -2,7 +2,7 @@ package com.example.brebner.swarmthing;
 
 public abstract class ChallengeChecker {
 
-    public final static int MINS_5 = 300;
+    public final static int MINS_5 = 5 * 60 * 1000;
 
     String name;
 
@@ -15,7 +15,7 @@ public abstract class ChallengeChecker {
     public abstract int getPoints();
     // return a number of points, or 0 if validate() has not been run
 
-    public boolean timeMatches(int time) {
+    public boolean timeMatches(long time) {
         return time >= MINS_5 * 0.9 && time <= MINS_5 * 1.1;  // provide some margin
     }
 

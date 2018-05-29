@@ -21,7 +21,7 @@ public class ChallengeBeastIterationsChecker extends ChallengeChecker {
         cross_count = 0;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(recorder.getContext());
         int initial = sharedPreferences.getInt(recorder.getContext().getString(R.string.other_nbeasts_key), 0);
-        if (! timeMatches(sharedPreferences.getInt(recorder.getContext().getString(R.string.other_maxtime_key), 0))) {
+        if (! timeMatches(sharedPreferences.getLong(recorder.getContext().getString(R.string.other_maxtime_key), 0))) {
            return "time does not match";
         }
         boolean increasing = (initial < average);
