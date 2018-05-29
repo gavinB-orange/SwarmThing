@@ -236,24 +236,22 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             }
             ChallengeChecker challengeChecker = null;
             String challengeResult;
+            int challengePoints;
             switch (whichChallenge) {
                 case ChallengeActivity.NO_CHALLENGE_SELECTED:
-                    Log.d(TAG, "update: No challenge selected");
+                    challengeChecker = new ChallengeNoneChecker(ChallengeActivity.CHALLENGE_NONE_DESC);
                     break;
                 case ChallengeActivity.CHALLENGE_MOST_DEAD:
-                    Log.d(TAG, "update: most dead not implemented");
-                    challengeChecker = null;
+                    challengeChecker = new ChallengeMaxDeadChecker(ChallengeActivity.CHALLENGE_MOST_DEAD_DESC);
                     break;
                 case ChallengeActivity.CHALLENGE_MOST_BORN:
-                    challengeChecker = new ChallengeOneChecker(ChallengeActivity.CHALLENGE_MOST_BORN_DESC);
+                    challengeChecker = new ChallengeMaxBornChecker(ChallengeActivity.CHALLENGE_MOST_BORN_DESC);
                     break;
                 case ChallengeActivity.CHALLENGE_MOST_BEAST_ITERATIONS:
-                    challengeChecker = null;
-                    Log.d(TAG, "update: most beast iterations not implemented");
+                    challengeChecker = new ChallengeBeastIterationsChecker(ChallengeActivity.CHALLENGE_MOST_BEAST_ITERATIONS_DESC);
                     break;
                 case ChallengeActivity.CHALLENGE_MOST_PROTECTED:
-                    challengeChecker = null;
-                    Log.d(TAG, "update: most protected not implemented");
+                    challengeChecker = new ChallengeProtectedChecker(ChallengeActivity.CHALLENGE_MOST_PROTECTED_DESC);
                     break;
                 case ChallengeActivity.CHALLENGE_PHOENIX:
                     challengeChecker = null;
@@ -265,12 +263,15 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                     break;
             }
             if (challengeChecker == null) {
-                challengeResult = "";
+                challengeResult = "Unknown";
+                challengePoints = 0;
             }
             else {
                 challengeResult = challengeChecker.validate(recorder);
+                challengePoints = challengeChecker.getPoints();
             }
             intent.putExtra(context.getString(R.string.challenge_result_key), challengeResult);
+            intent.putExtra(context.getString(R.string.challenge_result_points_key), challengePoints);
             context.startActivity(intent);
         }
     }

@@ -7,6 +7,7 @@ import android.graphics.Color;
 
 public class Hud extends DrawableThing {
 
+    private static final int PADDING = 10;
     private final int HUD_TEXT_SIZE = 60;
 
     private int nbeasts;
@@ -51,18 +52,18 @@ public class Hud extends DrawableThing {
         if (showtime) {
             long timeleft = (endtime - System.currentTimeMillis()) / 1000;
             text = "Time left : " + timeleft + "s";
-            dy += HUD_TEXT_SIZE;
+            dy += HUD_TEXT_SIZE + PADDING;
             canvas.drawText(text, xpos, ypos + dy, paint);
         }
         if (showelapsed) {
             long elapsed = (System.currentTimeMillis() - starttime) / 1000;
             text = "Elapsed Time : " + elapsed;
-            dy += HUD_TEXT_SIZE;
+            dy += HUD_TEXT_SIZE + PADDING;
             canvas.drawText(text, xpos, ypos + dy, paint);
         }
         if (showfps) {
             text = "FPS : " + (int)stablefps;
-            dy += HUD_TEXT_SIZE;
+            dy += HUD_TEXT_SIZE + PADDING;
             canvas.drawText(text, xpos, ypos + dy, paint);
         }
     }

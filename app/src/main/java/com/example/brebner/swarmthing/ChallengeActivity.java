@@ -26,6 +26,7 @@ public class ChallengeActivity extends AppCompatActivity implements ChallengeFra
     private static final String TAG = "ChallengeActivity";
 
     public static final int NO_CHALLENGE_SELECTED = -1;
+    public static final String CHALLENGE_NONE_DESC = "No challenge selected";
     public static final int N_CHALLENGES = 5;
     public static final int CHALLENGE_MOST_DEAD = 0;
     public static final String CHALLENGE_MOST_DEAD_DESC = "Most beasts killed in 5 minutes";
@@ -86,6 +87,8 @@ public class ChallengeActivity extends AppCompatActivity implements ChallengeFra
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(getString(R.string.challenge_choice_key), choice);
+        // all challenges currently work with 5 mins, so ...
+        editor.putInt(getString(R.string.other_maxtime_key), ChallengeChecker.MINS_5);
         editor.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

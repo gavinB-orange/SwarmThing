@@ -71,6 +71,8 @@ public class EndActivity extends AppCompatActivity {
         String challengeResult = intent.getStringExtra(getString(R.string.challenge_result_key));
         TextView challengeResultTextView = findViewById(R.id.challengeResultValue);
         challengeResultTextView.setText(challengeResult);
+        TextView challengeResultPointsTextView = findViewById(R.id.challengeResultPointsTextView);
+        challengeResultPointsTextView.setText(String.format("%d", intent.getIntExtra(getString(R.string.challenge_result_points_key), 0)));
     }
 
     public void doPlayAgain(View view) {

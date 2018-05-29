@@ -1,7 +1,9 @@
 package com.example.brebner.swarmthing;
 
 // TODO Challenge based analysis at end.
+// TODO Challenge time must match - or time set when pick a challenge?
 // TODO Challenge choice - click per-challenge button
+// TODO Challenge result points should add to overall persistent score.
 // TODO fix beast sticking
 // TODO store historical data and display
 // TODO Make beasts "walk"
@@ -85,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt(getString(R.string.fb_split_threshold_key), ConfigureFoodBeast.DEFAULT_SPLIT_THRESHOLD);
         editor.putInt(getString(R.string.fb_max_age_key), ConfigureFoodBeast.DEFAULT_AGE);
         editor.putInt(getString(R.string.fb_sane_light_key), ConfigureFoodBeast.DEFAULT_SANE_LIGHT);
+        // sound
+        editor.putBoolean(getString(R.string.sound_effects_on_key), ConfigureOtherActivity.DEFAULT_SOUND_EFFECTS_ON);
+        // challenges
+        editor.putInt(getString(R.string.challenge_choice_key), ChallengeActivity.NO_CHALLENGE_SELECTED);
         // and now commit
         editor.commit();
         Toast.makeText(this, "Parameters Reset!", Toast.LENGTH_LONG).show();

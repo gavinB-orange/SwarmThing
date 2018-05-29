@@ -48,6 +48,14 @@ public class Recorder {
         }
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public int getMaxnbeasts() {
+        return maxnbeasts;
+    }
+
     public ArrayList<DataItem> getData() {
         return items;
     }
