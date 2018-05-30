@@ -8,7 +8,6 @@ import android.graphics.Color;
 public class Hud extends DrawableThing {
 
     private static final int PADDING = 10;
-    private final int HUD_TEXT_SIZE = 60;
 
     private int nbeasts;
     private float stablefps = 0;
@@ -18,7 +17,10 @@ public class Hud extends DrawableThing {
     private long endtime;
     private long starttime;
 
-    Hud(int x, int y, int nbeasts, long endtime, SharedPreferences sharedPreferences, Context context) {
+
+    private int hud_text_size;
+
+    Hud(int x, int y, int height, int nbeasts, long endtime, SharedPreferences sharedPreferences, Context context) {
         super();
         this.xpos = x;
         this.ypos = y;
@@ -33,7 +35,8 @@ public class Hud extends DrawableThing {
         }
         int displayColor = Color.argb(128, 0, 0, 255);
         this.paint.setColor(displayColor);
-        this.paint.setTextSize(HUD_TEXT_SIZE);
+        hud_text_size = height / 40;
+        this.paint.setTextSize(hud_text_size);
     }
 
     public void setFps(long fps) {
@@ -52,18 +55,18 @@ public class Hud extends DrawableThing {
         if (showtime) {
             long timeleft = (endtime - System.currentTimeMillis()) / 1000;
             text = "Time left : " + timeleft + "s";
-            dy += HUD_TEXT_SIZE + PADDING;
+            dy += hud_text_size + PADDING;
             canvas.drawText(text, xpos, ypos + dy, paint);
         }
         if (showelapsed) {
             long elapsed = (System.currentTimeMillis() - starttime) / 1000;
             text = "Elapsed Time : " + elapsed;
-            dy += HUD_TEXT_SIZE + PADDING;
+            dy += hud_text_size + PADDING;
             canvas.drawText(text, xpos, ypos + dy, paint);
         }
         if (showfps) {
             text = "FPS : " + (int)stablefps;
-            dy += HUD_TEXT_SIZE + PADDING;
+            dy += hud_text_size + PADDING;
             canvas.drawText(text, xpos, ypos + dy, paint);
         }
     }

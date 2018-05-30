@@ -1,5 +1,6 @@
 package com.example.brebner.swarmthing;
 
+// DONE Make text size relative in HUD and animation.
 // TODO Challenge based analysis at end.
 // TODO Challenge time must match - or time set when pick a challenge?
 // TODO Challenge choice - click per-challenge button

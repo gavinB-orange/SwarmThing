@@ -18,18 +18,18 @@ public class Recorder {
     private ArrayList<DataItem> items;
 
     private static final String TAG = "Recorder";
-    private static final int TEXT_SIZE = 40;
     private static final int PADDING = 30;
     private static final int FBCOLOUR = Color.argb(128, 0, 255, 0);
     private static final int NBCOLOUR = Color.argb(255, 255, 0, 0);
     private static final int BKCOLOUR = Color.argb(255, 32, 32, 32);
     private static final int BBCOLOUR = Color.argb(255, 0, 0, 255);
-    private static final int AVCOLOUR = Color.argb(128, 200, 32, 32);
+    private static final int AVCOLOUR = Color.argb(128, 255, 125, 160);
 
     public static final int CULL_SPLIT_SCALE = 2;
 
     private Context context;
     private int maxnbeasts;
+    private int minnbeasts;
     private int nbeastssum;
 
     private int challengeChoice;
@@ -41,6 +41,7 @@ public class Recorder {
         nbeastssum = 0;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         challengeChoice = sharedPreferences.getInt(context.getString(R.string.challenge_choice_key), ChallengeActivity.NO_CHALLENGE_SELECTED);
+        minnbeasts = MainActivity.MAXBEASTS;
     }
 
     public void putData(int nfb, int nbeasts, int nsplit, int ncull) {
@@ -48,6 +49,9 @@ public class Recorder {
         items.add(new DataItem(nfb, nbeasts, CULL_SPLIT_SCALE * nsplit, CULL_SPLIT_SCALE * ncull));
         if (nbeasts > maxnbeasts) {  // keep a running max value for the y axis
             maxnbeasts = nbeasts;
+        }
+        if (nbeasts < minnbeasts) {
+            minnbeasts = nbeasts;
         }
         nbeastssum += nbeasts;
     }
@@ -58,6 +62,10 @@ public class Recorder {
 
     public int getMaxnbeasts() {
         return maxnbeasts;
+    }
+
+    public int getMinnbeasts() {
+        return minnbeasts;
     }
 
     public float getAverageNBeasts() {
@@ -213,6 +221,7 @@ public class Recorder {
             Log.e(TAG, "createBitmapDrawing: items is 0", e );
             throw e;
         }
+        int text_size = height / 20;
         Canvas canvas = new Canvas();
         Bitmap bitmap;
         Bitmap srcbitmap;
@@ -227,7 +236,7 @@ public class Recorder {
         Paint paint = new Paint();
         canvas.drawColor(Color.argb(255,255 , 255, 255));
         paint.setColor(Color.argb(255, 255, 0, 0));
-        paint.setTextSize(TEXT_SIZE);
+        paint.setTextSize(text_size);
         // canvas.drawText("" + items.size() + " items", PADDING, height - 3 * PADDING, paint);
         Path nbpath = getNbeastPath(width, height, PADDING);
         Path fbpath = getFBPath(width, height, PADDING);
@@ -270,7 +279,7 @@ public class Recorder {
             multiplier ++;
             toto /= 10;
         }
-        canvas.drawText("" + seconds, width - TEXT_SIZE * multiplier, height, paint);
+        canvas.drawText("" + seconds, width - text_size * multiplier, height, paint);
         paint.setColor(AVCOLOUR);
         canvas.drawPath(getNBeastsAveragePath(width, height, PADDING), paint);
         Log.d(TAG, "createBitmapDrawing: returning bitmap");
