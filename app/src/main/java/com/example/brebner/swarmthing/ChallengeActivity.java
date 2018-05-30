@@ -1,12 +1,5 @@
 package com.example.brebner.swarmthing;
 
-// TODO challenges :
-// TODO    most creatures killed in 5 mins
-// TODO    most creatures born in 5 mins.
-// TODO    most iterations in beast number over 5 mins
-// TODO    smallest number of creatures killed in 5 mins
-// TODO    skirting death - the lower trough of numbers.
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -70,27 +63,4 @@ public class ChallengeActivity extends AppCompatActivity implements ChallengeFra
         Log.w(TAG, "onFragmentInteraction: stuff");
     }
 
-    public void validateChallengeChoice(View view) {
-        EditText editText = findViewById(R.id.challengeChoiceEditText);
-        String rawinput = editText.getText().toString();
-        try {
-            choice = Integer.parseInt(rawinput);
-        }
-        catch (NumberFormatException e) {
-            Toast.makeText(this, "Must be a valid number", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (choice >= N_CHALLENGES) {
-            Toast.makeText(this, "Please choose a valid challenge", Toast.LENGTH_LONG).show();
-            return;
-        }
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(getString(R.string.challenge_choice_key), choice);
-        // all challenges currently work with 5 mins, so ...
-        editor.putLong(getString(R.string.other_maxtime_key), ChallengeChecker.MINS_5);
-        editor.commit();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
 }

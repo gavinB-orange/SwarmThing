@@ -25,4 +25,12 @@
         android:text=""
         android:textColor="@android:color/holo_blue_dark" />
 
+    <Button
+        android:id="@+id/challengeChoiceFragmentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/challenge_choice_fragment_button_text"
+        android:textColor="@android:color/holo_orange_dark" />
+
 </LinearLayout>

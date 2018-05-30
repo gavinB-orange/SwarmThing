@@ -81,4 +81,5 @@
     <string name="challenge_result_title">Challenge Result</string>
     <string name="challenge_result_key">com.example.brebner.swarmthing.challenge_result_key</string>
     <string name="challenge_result_points_key">com.example.brebner.swarmthing.challenge_result_points_key</string>
+    <string name="challenge_choice_fragment_button_text"><![CDATA[<]]></string>
 </resources>
