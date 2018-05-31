@@ -29,21 +29,26 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_grazing_beast);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        int initial_init_energy = sharedPreferences.getInt(getString(R.string.gb_init_energy_key), DEFAULT_INIT_ENERGY);
+        int initial_split_threshold = sharedPreferences.getInt(getString(R.string.gb_split_threshold_key), DEFAULT_SPLIT_THRESHOLD);
+        int initial_max_age = sharedPreferences.getInt(getString(R.string.gb_max_age_key), DEFAULT_AGE);
 
         SeekBar energySeekBar = findViewById(R.id.gbEnergyseekBar);
-        energySeekBar.setProgress(DEFAULT_INIT_ENERGY * energySeekBar.getMax() / MAX_INIT_ENERGY);
+        energySeekBar.setProgress(initial_init_energy * energySeekBar.getMax() / MAX_INIT_ENERGY);
         energySeekBar.setOnSeekBarChangeListener(this);
-        initenergy = DEFAULT_INIT_ENERGY;
+        initenergy = initial_init_energy;
 
         SeekBar splitSeekBar = findViewById(R.id.configGBSplitSeekBar);
-        splitSeekBar.setProgress(DEFAULT_SPLIT_THRESHOLD * splitSeekBar.getMax() / MAX_SPLIT_THRESHOLD);
+        splitSeekBar.setProgress(initial_split_threshold * splitSeekBar.getMax() / MAX_SPLIT_THRESHOLD);
         splitSeekBar.setOnSeekBarChangeListener(this);
-        split_threshold = DEFAULT_SPLIT_THRESHOLD;
+        split_threshold = initial_split_threshold;
 
         SeekBar maxAgeSeekBar = findViewById(R.id.configGBMaxAgeSeekBar);
-        maxAgeSeekBar.setProgress(DEFAULT_AGE * maxAgeSeekBar.getMax() / MAX_AGE);
+        maxAgeSeekBar.setProgress(initial_max_age * maxAgeSeekBar.getMax() / MAX_AGE);
         maxAgeSeekBar.setOnSeekBarChangeListener(this);
-        max_age = DEFAULT_AGE;
+        max_age = initial_max_age;
     }
 
     public void reportGBConfigData(View view) {

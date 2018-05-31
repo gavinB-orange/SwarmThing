@@ -32,22 +32,28 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_food_beast);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        int initial_init_energy = sharedPreferences.getInt(getString(R.string.fb_init_energy_key), DEFAULT_INIT_ENERGY);
+        int initial_split_threshold = sharedPreferences.getInt(getString(R.string.fb_split_threshold_key), DEFAULT_SPLIT_THRESHOLD);
+        int initial_max_age = sharedPreferences.getInt(getString(R.string.fb_max_age_key), DEFAULT_AGE);
+        int initial_sane_light = sharedPreferences.getInt(getString(R.string.fb_sane_light_key), DEFAULT_SANE_LIGHT);
         SeekBar energySeekBar = findViewById(R.id.fbEnergyseekBar);
-        energySeekBar.setProgress(DEFAULT_INIT_ENERGY * energySeekBar.getMax() / MAX_INIT_ENERGY);
+        energySeekBar.setProgress(initial_init_energy * energySeekBar.getMax() / MAX_INIT_ENERGY);
         energySeekBar.setOnSeekBarChangeListener(this);
-        initenergy = DEFAULT_INIT_ENERGY;
+        initenergy = initial_init_energy;
         SeekBar splitSeekBar = findViewById(R.id.configFBSplitSeekBar);
-        splitSeekBar.setProgress(DEFAULT_SPLIT_THRESHOLD * splitSeekBar.getMax() / MAX_SPLIT_THRESHOLD);
+        splitSeekBar.setProgress(initial_split_threshold * splitSeekBar.getMax() / MAX_SPLIT_THRESHOLD);
         splitSeekBar.setOnSeekBarChangeListener(this);
-        split_threshold = DEFAULT_SPLIT_THRESHOLD;
+        split_threshold = initial_split_threshold;
         SeekBar maxAgeSeekBar = findViewById(R.id.configFBMaxAgeSeekBar);
         maxAgeSeekBar.setOnSeekBarChangeListener(this);
-        maxAgeSeekBar.setProgress(DEFAULT_AGE * maxAgeSeekBar.getMax() / MAX_AGE);
-        max_age = DEFAULT_AGE;
+        maxAgeSeekBar.setProgress(initial_max_age * maxAgeSeekBar.getMax() / MAX_AGE);
+        max_age = initial_max_age;
         SeekBar saneLightSeekBar = findViewById(R.id.configFBSaneLightSeekBar);
         saneLightSeekBar.setOnSeekBarChangeListener(this);
-        saneLightSeekBar.setProgress(DEFAULT_SANE_LIGHT * saneLightSeekBar.getMax() / MAX_SANE_LIGHT);
-        sane_light = DEFAULT_SANE_LIGHT;
+        saneLightSeekBar.setProgress(initial_sane_light * saneLightSeekBar.getMax() / MAX_SANE_LIGHT);
+        sane_light = initial_sane_light;
     }
 
     public void reportFBConfigData(View view) {

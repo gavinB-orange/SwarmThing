@@ -241,22 +241,22 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             int challengePoints;
             switch (whichChallenge) {
                 case ChallengeActivity.NO_CHALLENGE_SELECTED:
-                    challengeChecker = new ChallengeNoneChecker(ChallengeActivity.CHALLENGE_NONE_DESC);
+                    challengeChecker = new ChallengeNoneChecker(getResources().getString(R.string.challenge_none_description));
                     break;
                 case ChallengeActivity.CHALLENGE_MOST_DEAD:
-                    challengeChecker = new ChallengeMaxDeadChecker(ChallengeActivity.CHALLENGE_MOST_DEAD_DESC);
+                    challengeChecker = new ChallengeMaxDeadChecker(getResources().getString(R.string.challenge_most_dead_5m_description));
                     break;
                 case ChallengeActivity.CHALLENGE_MOST_BORN:
-                    challengeChecker = new ChallengeMaxBornChecker(ChallengeActivity.CHALLENGE_MOST_BORN_DESC);
+                    challengeChecker = new ChallengeMaxBornChecker(getResources().getString(R.string.challenge_most_born_5m_description));
                     break;
                 case ChallengeActivity.CHALLENGE_MOST_BEAST_ITERATIONS:
-                    challengeChecker = new ChallengeBeastIterationsChecker(ChallengeActivity.CHALLENGE_MOST_BEAST_ITERATIONS_DESC);
+                    challengeChecker = new ChallengeBeastIterationsChecker(getResources().getString(R.string.challenge_most_beast_iterations_5m_description));
                     break;
                 case ChallengeActivity.CHALLENGE_MOST_PROTECTED:
-                    challengeChecker = new ChallengeProtectedChecker(ChallengeActivity.CHALLENGE_MOST_PROTECTED_DESC);
+                    challengeChecker = new ChallengeProtectedChecker(getResources().getString(R.string.challenge_most_protected_5m_description));
                     break;
                 case ChallengeActivity.CHALLENGE_PHOENIX:
-                    challengeChecker = new ChallengePhoenixChecker(ChallengeActivity.CHALLENGE_PHOENIX_DESC);
+                    challengeChecker = new ChallengePhoenixChecker(getResources().getString(R.string.challenge_phoenix_5m_description));
                     break;
                 default:
                     challengeChecker = null;

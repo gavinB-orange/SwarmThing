@@ -46,33 +46,43 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_other);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SeekBar nbeastSeekBar = findViewById(R.id.numberBeastSeekBar);
-        nbeastSeekBar.setProgress(DEFAULT_N_BEASTS * nbeastSeekBar.getMax() / MAX_BEASTS);
-        nbeastSeekBar.setOnSeekBarChangeListener(this);
-        SeekBar ratioSeekBar = findViewById(R.id.ratioSeekBar);
-        ratioSeekBar.setProgress(DEFAULT_RATIO * ratioSeekBar.getMax() / MAX_RATIO);
-        ratioSeekBar.setOnSeekBarChangeListener(this);
-        SeekBar timeSeekBar = findViewById(R.id.maxTimeSeekBar);
-        timeSeekBar.setProgress((int)(DEFAULT_TIME * timeSeekBar.getMax() / MAX_TIME));
-        timeSeekBar.setOnSeekBarChangeListener(this);
-        showTimeCheckBox = findViewById(R.id.showTimeCheckBox);
-        showTimeCheckBox.setChecked(DEFAULT_SHOW_TIME);
-        showFpsCheckBox = findViewById(R.id.showFpsCheckBox);
-        showFpsCheckBox.setChecked(DEFAULT_SHOW_FPS);
-        showElapsedCheckBox = findViewById(R.id.showElapsedTimeCheckBox);
-        showElapsedCheckBox.setChecked(DEFAULT_SHOW_ELAPSED_TIME);
-        unlimitedTimeSwitch = findViewById(R.id.unlimitedTimeSwitch);
-        unlimitedTimeSwitch.setChecked(DEFAULT_UNLIMITED_TIME);
-        soundEffectsOnCheckBox = findViewById(R.id.soundOnCheckBox);
-        soundEffectsOnCheckBox.setChecked(DEFAULT_SOUND_EFFECTS_ON);
-//        showTimeCheckBox.setOnCheckedChangeListener(this);
-//        showFpsCheckBox.setOnCheckedChangeListener(this);
-//        showElapsedCheckBox.setOnCheckedChangeListener(this);
-//        soundEffectsOnCheckBox.setOnCheckedChangeListener(this);
 
-        nbeasts = DEFAULT_N_BEASTS;
-        ratio = DEFAULT_RATIO;
-        max_time = DEFAULT_TIME;
+        int initial_default_n_beasts = sharedPreferences.getInt(getString(R.string.other_nbeasts_key), DEFAULT_N_BEASTS);
+        int initial_ratio = sharedPreferences.getInt(getString(R.string.other_ratio_key), DEFAULT_RATIO);
+        long initial_max_time = sharedPreferences.getLong(getString(R.string.other_maxtime_key), DEFAULT_TIME);
+
+        boolean initial_show_remaining_time = sharedPreferences.getBoolean(getString(R.string.other_show_time), DEFAULT_SHOW_TIME);
+        boolean initial_show_fps = sharedPreferences.getBoolean(getString(R.string.other_show_fps), DEFAULT_SHOW_FPS);
+        boolean initial_unlimited_time = sharedPreferences.getBoolean(getString(R.string.other_unlimited_time_key), DEFAULT_UNLIMITED_TIME);
+        boolean initial_show_elapsed_time = sharedPreferences.getBoolean(getString(R.string.other_elapsed_time_key), DEFAULT_SHOW_ELAPSED_TIME);
+        boolean initial_sound_effects_on = sharedPreferences.getBoolean(getString(R.string.sound_effects_on_key), DEFAULT_SOUND_EFFECTS_ON);
+
+        SeekBar nbeastSeekBar = findViewById(R.id.numberBeastSeekBar);
+        nbeastSeekBar.setProgress(initial_default_n_beasts * nbeastSeekBar.getMax() / MAX_BEASTS);
+        nbeastSeekBar.setOnSeekBarChangeListener(this);
+        nbeasts = initial_default_n_beasts;
+
+        SeekBar ratioSeekBar = findViewById(R.id.ratioSeekBar);
+        ratioSeekBar.setProgress(initial_ratio * ratioSeekBar.getMax() / MAX_RATIO);
+        ratioSeekBar.setOnSeekBarChangeListener(this);
+        ratio = initial_ratio;
+
+        SeekBar timeSeekBar = findViewById(R.id.maxTimeSeekBar);
+        timeSeekBar.setProgress((int)(initial_max_time * timeSeekBar.getMax() / MAX_TIME));
+        timeSeekBar.setOnSeekBarChangeListener(this);
+        max_time = initial_max_time;
+
+        showTimeCheckBox = findViewById(R.id.showTimeCheckBox);
+        showTimeCheckBox.setChecked(initial_show_remaining_time);
+        showFpsCheckBox = findViewById(R.id.showFpsCheckBox);
+        showFpsCheckBox.setChecked(initial_show_fps);
+        showElapsedCheckBox = findViewById(R.id.showElapsedTimeCheckBox);
+        showElapsedCheckBox.setChecked(initial_show_elapsed_time);
+        unlimitedTimeSwitch = findViewById(R.id.unlimitedTimeSwitch);
+        unlimitedTimeSwitch.setChecked(initial_unlimited_time);
+        soundEffectsOnCheckBox = findViewById(R.id.soundOnCheckBox);
+        soundEffectsOnCheckBox.setChecked(initial_sound_effects_on);
+
     }
 
     @SuppressLint("ApplySharedPref")

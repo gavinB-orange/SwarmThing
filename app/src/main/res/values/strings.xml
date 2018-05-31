@@ -82,4 +82,10 @@
     <string name="challenge_result_key">com.example.brebner.swarmthing.challenge_result_key</string>
     <string name="challenge_result_points_key">com.example.brebner.swarmthing.challenge_result_points_key</string>
     <string name="challenge_choice_fragment_button_text"><![CDATA[<]]></string>
+    <string name="challenge_none_description">No challenge selected</string>
+    <string name="challenge_most_dead_5m_description">Most beasts killed in 5 minutes</string>
+    <string name="challenge_most_born_5m_description">Most beasts born in 5 minutes</string>
+    <string name="challenge_most_beast_iterations_5m_description">Most peaks of beast numbers in 5 minutes</string>
+    <string name="challenge_most_protected_5m_description">Least beasts killed in 5 minutes</string>
+    <string name="challenge_phoenix_5m_description">Recovery from the lowest beast number in 5 mins</string>
 </resources>
