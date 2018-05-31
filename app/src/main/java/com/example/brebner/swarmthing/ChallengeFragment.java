@@ -8,12 +8,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 
@@ -70,7 +72,7 @@ public class ChallengeFragment extends Fragment implements View.OnClickListener 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_challenge, container, false);
         // make this fragment a listener for the button click
-        Button choiceButton = (Button)view.findViewById(R.id.challengeChoiceFragmentButton);
+        ImageButton choiceButton = (ImageButton)view.findViewById(R.id.challengeChoiceFragmentButton);
         choiceButton.setOnClickListener(this);
         return view;
     }
@@ -114,7 +116,9 @@ public class ChallengeFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        Log.w(TAG, "onClick: Hello from fragment" + getTag() + " choice is " + choice );
+        ImageButton imageButton = (ImageButton)v;
+        imageButton.setImageResource(android.R.drawable.checkbox_on_background);
+        // save the choice
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(getString(R.string.challenge_choice_key), choice);

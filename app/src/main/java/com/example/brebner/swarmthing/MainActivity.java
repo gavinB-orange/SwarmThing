@@ -1,6 +1,5 @@
 package com.example.brebner.swarmthing;
 
-// TODO fix challenge button cosmetics
 // TODO Challenge result points should add to overall persistent score.
 // TODO fix beast sticking
 // TODO store historical data and display
