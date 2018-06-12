@@ -19,6 +19,8 @@ public class Hud extends DrawableThing {
 
 
     private int hud_text_size;
+    private static final int HUD_COLOR = Color.argb(128, 200, 200, 200);
+
 
     Hud(int x, int y, int height, int nbeasts, long endtime, SharedPreferences sharedPreferences, Context context) {
         super();
@@ -33,7 +35,7 @@ public class Hud extends DrawableThing {
         if (starttime == 0) {
             throw new AssertionError("Start time not initialized");
         }
-        int displayColor = Color.argb(128, 0, 0, 255);
+        int displayColor = HUD_COLOR;
         this.paint.setColor(displayColor);
         hud_text_size = height / 40;
         this.paint.setTextSize(hud_text_size);

@@ -90,16 +90,12 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         this.context = context;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int nbeasts = sharedPreferences.getInt(context.getString(R.string.other_nbeasts_key), ConfigureOtherActivity.DEFAULT_N_BEASTS);
-        Log.d(TAG, "SwarmPlaygroundView: nbeasts = " + nbeasts, null);
         int other_ratio = sharedPreferences.getInt(context.getString(R.string.other_ratio_key), ConfigureOtherActivity.DEFAULT_RATIO);
-        Log.d(TAG, "SwarmPlaygroundView: other_ratio set to " + other_ratio, null);
         sane_light = sharedPreferences.getInt(context.getString(R.string.fb_sane_light_key), ConfigureFoodBeast.DEFAULT_SANE_LIGHT);
-        Log.d(TAG, "SwarmPlaygroundView: sane_light set to " + sane_light);
         unlimited_time = sharedPreferences.getBoolean(context.getString(R.string.other_unlimited_time_key), ConfigureOtherActivity.DEFAULT_UNLIMITED_TIME);
-        Log.d(TAG, "SwarmPlaygroundView: unlimited time is " + unlimited_time);
         sound_effects_on = sharedPreferences.getBoolean(context.getString(R.string.sound_effects_on_key), ConfigureOtherActivity.DEFAULT_SOUND_EFFECTS_ON);
         whichChallenge = sharedPreferences.getInt(context.getString(R.string.challenge_choice_key), ChallengeActivity.NO_CHALLENGE_SELECTED);
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_3);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_4);
         bitmap = Bitmap.createScaledBitmap(bitmap, screenX, screenY, false);
         paint = new Paint();
         surfaceHolder = getHolder();
@@ -110,7 +106,6 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         while (n_beast_rows * n_beast_cols < nbeasts) {
             n_beast_cols++;
         }
-        Log.d(TAG, "SwarmPlaygroundView: n_cols = " + n_beast_cols + " n_rows = " + n_beast_rows);
         beasts = new ArrayList<>();
         random = new Random();
         beastID = 0;
@@ -136,8 +131,6 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         lightlevel = sane_light;
         started = false;  // set to true once game has truly started.
         endtime = System.currentTimeMillis() + sharedPreferences.getLong(context.getString(R.string.other_maxtime_key), ConfigureOtherActivity.DEFAULT_TIME);
-        Log.d(TAG, "SwarmPlaygroundView: maxtime set to " + sharedPreferences.getLong(context.getString(R.string.other_maxtime_key), -999));
-        Log.d(TAG, "SwarmPlaygroundView:   so endtime is " + endtime);
         hud = new Hud(40,40, screenY, nbeasts, endtime, sharedPreferences, context);
     }
 
@@ -165,7 +158,6 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             splitSoundID = soundPool.load(descriptor, 0);
             descriptor = assetManager.openFd("big-bell.ogg");
             cullSoundID = soundPool.load(descriptor, 0);
-            Log.d(TAG, "loadSounds: OK");
         }
         catch(IOException e) {
             // Print an error message to the console
@@ -201,11 +193,9 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         if (cycle % 50 == 0) { // roughly every second or so
             if (sound_effects_on && splitcount > 0) {
                 soundPool.play(splitSoundID, 1, 1, 0, 0, 1);
-                Log.d(TAG, "update: playing splitSoundID");
             }
             if (sound_effects_on && cullcount > 0) {
                 soundPool.play(cullSoundID, 1, 1, 0, 0, 1);
-                Log.d(TAG, "update: playing cullSoundID");
             }
             recorder.putData(nFB, beasts.size(), splitcount, cullcount);
             splitcount = 0;
@@ -294,7 +284,6 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         if (tosplit.size() < 1) {
             return;
         }
-        Log.d(TAG, "split: Have " + tosplit.size() + " beasts ready to split");
         for (Beast b: tosplit) {
             int newxpos = b.getXpos() + 2 + b.getWidth();
             if (newxpos > screenX)  {
@@ -306,7 +295,6 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             //     newypos = screenY - screenY / (2 * Beast.NPERY);
             // }
             if (b.getClass() == FoodBeast.class) {
-                Log.d(TAG, "split: " + b.getID() + " Splitting to form new FoodBeast");
                 FoodBeast fb = (FoodBeast)b;
             }
             if (b.getNoCollision(newxpos, newypos)) {
@@ -324,7 +312,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 beasts.add(newb);
             }
             else {
-                Log.d(TAG, "split: " + b.getClass() + " : " + b.id + " deferred split due to collision ...");
+                Log.w(TAG, "split: " + b.getClass() + " : " + b.id + " deferred split due to collision ...");
                 splitcount--;
             }
         }
@@ -340,7 +328,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         cullcount += todie.size();
         for (Beast b: todie) {
             beasts.remove(b);
-            Log.d(TAG, "cull: removing beast " + b.getID());
+            // Log.d(TAG, "cull: removing beast " + b.getID());
         }
     }
 

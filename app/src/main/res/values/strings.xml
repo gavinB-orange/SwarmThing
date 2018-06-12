@@ -2,8 +2,8 @@
     <string name="app_name">SwarmThing</string>
     <string name="splash">Swarm Thing</string>
     <string name="hint_enter_number">10</string>
-    <string name="run">Run</string>
-    <string name="configure_title">Configure beasts and the simulation world, choose a challenge then press RUN</string>
+    <string name="run">RUN</string>
+    <string name="configure_title">Configure beasts and the simulation world, choose a challenge then run</string>
     <string name="configure_food_beast">Configure FoodBeast</string>
     <string name="configure_grazing_beast">Configure GrazingBeast</string>
     <string name="configure_simulation">Configure Simulation</string>
@@ -45,7 +45,7 @@
     <string name="fb_sane_light_key">com.example.brebner.swarmthing.fb_sane_light_key</string>
     <string name="config_gb_max_age_title">Max age</string>
     <string name="gb_max_age_key">com.example.brebner/swarmthing.gb_max_age_key</string>
-    <string name="reset_all_params">Reset All Params</string>
+    <string name="reset_all_params">RESET</string>
     <string name="no_time_limit">No time limit</string>
     <string name="other_unlimited_time_key">com.example.brebner.swarmthing.other_unlimited_time_key</string>
     <string name="show_elapsed_time_title">Elapsed time</string>
@@ -88,4 +88,8 @@
     <string name="challenge_most_beast_iterations_5m_description">Most peaks of beast numbers in 5 minutes</string>
     <string name="challenge_most_protected_5m_description">Least beasts killed in 5 minutes</string>
     <string name="challenge_phoenix_5m_description">Recovery from the lowest beast number in 5 mins</string>
+    <string name="overall_score_key">com.example.brebner.swarmthing.overall_score_key</string>
+    <string name="show_history_button_text">History</string>
+    <string name="com.example.brebner.swarmthing.show_history_title_text">HISTORY</string>
+    <string name="overall_score_title">Overall Score :</string>
 </resources>

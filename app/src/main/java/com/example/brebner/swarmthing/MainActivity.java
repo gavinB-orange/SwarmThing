@@ -103,4 +103,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, InformationActivity.class);
         startActivity(intent);
     }
+
+    public void doShowHistory(View view) {
+        Intent intent = new Intent(this, ShowHistoryActivity.class);
+        startActivity(intent);
+    }
 }

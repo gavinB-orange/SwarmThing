@@ -19,6 +19,7 @@ import java.util.Locale;
 public class EndActivity extends AppCompatActivity {
 
     private static final String TAG = "EndActivity";
+    private ScoreLogger scoreLogger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +73,21 @@ public class EndActivity extends AppCompatActivity {
         TextView challengeResultTextView = findViewById(R.id.challengeResultValue);
         challengeResultTextView.setText(challengeResult);
         TextView challengeResultPointsTextView = findViewById(R.id.challengeResultPointsTextView);
-        challengeResultPointsTextView.setText(String.format("%d", intent.getIntExtra(getString(R.string.challenge_result_points_key), 0)));
+        int points = intent.getIntExtra(getString(R.string.challenge_result_points_key), 0);
+        challengeResultPointsTextView.setText(String.format("%d", points));
+        scoreLogger = new ScoreLogger(this);
+        scoreLogger.add_score_data(System.currentTimeMillis(), sharedPreferences.getInt(getString(R.string.challenge_choice_key), ChallengeActivity.NO_CHALLENGE_SELECTED), points);
+        TextView overallScoreTextView = findViewById(R.id.overallScoreValueTextView);
+        overallScoreTextView.setText(scoreLogger.getOverallScore());
     }
 
     public void doPlayAgain(View view) {
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void doShowHistory(View view) {
+        Intent intent = new Intent(this, ShowHistoryActivity.class);
         startActivity(intent);
     }
 }

@@ -29,7 +29,6 @@ public class ChallengeActivity extends AppCompatActivity implements ChallengeFra
     private String[] c_descriptions;
     private int choice;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

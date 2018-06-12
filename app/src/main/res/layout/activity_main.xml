@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingTop="64dp"
+    android:paddingTop="32dp"
     tools:context=".MainActivity">
 
 
@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
 
         <ImageView
             android:id="@+id/leftImageView"
@@ -145,35 +144,51 @@
         android:paddingTop="24dp">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/informationImageButton"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:background="@android:color/white"
+            android:hint="Background Information"
             android:onClick="doShowInformation"
             android:scaleType="fitCenter"
-            android:layout_gravity="center_vertical"
             app:srcCompat="@drawable/information" />
 
-        <Button
-            android:id="@+id/resetButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="resetAllParams"
+        <ImageButton
+            android:id="@+id/showHistoryFromMainImageButton"
+            android:background="@android:color/white"
+            app:srcCompat="@drawable/scroll"
+            android:onClick="doShowHistory"
+            android:hint="Show History"
+            android:scaleType="fitCenter"
             android:layout_gravity="center_vertical"
-            android:text="@string/reset_all_params" />
+            android:layout_width="32dp"
+            android:layout_height="32dp" />
 
-        <Button
-            android:id="@+id/runButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="runOnClick"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
+        <ImageButton
+            android:id="@+id/resetButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center_vertical"
-            android:text="@string/run" />
+            android:scaleType="fitCenter"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:onClick="resetAllParams"
+            android:src="@drawable/restart" />
+
+        <ImageButton
+            android:id="@+id/runButton"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:onClick="runOnClick"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitCenter"
+            android:src="@drawable/start"
+            />
+
     </LinearLayout>
 </LinearLayout>

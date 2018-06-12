@@ -59,7 +59,7 @@ public abstract class Beast extends DrawableThing {
         vy = random.nextInt(2 * tmpstep + 1) - tmpstep;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         myage = 1000; // something long enough to last until we overwrite immediately
-        Log.d(TAG, "Beast: " + id + " has age " + myage);
+        // Log.d(TAG, "Beast: " + id + " has age " + myage);
     }
 
     void set_max_age(int age) {
@@ -210,7 +210,7 @@ public abstract class Beast extends DrawableThing {
         adjustRectF();
         myage--;
         if (myage <= 0) {
-            Log.d(TAG, "update: Beast " + id + " has died of old age");
+            // Log.d(TAG, "update: Beast " + id + " has died of old age");
            setActive(false);
         }
     }

@@ -85,6 +85,29 @@
             android:textColor="@android:color/holo_green_dark" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/overallScoreTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="cursive"
+            android:text="@string/overall_score_title"
+            android:textColor="@android:color/holo_blue_dark" />
+
+        <TextView
+            android:id="@+id/overallScoreValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="cursive"
+            android:textColor="@android:color/holo_green_dark" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/graphImageView"
@@ -93,11 +116,24 @@
         android:layout_weight="3"
         app:srcCompat="@drawable/beast_1_100" />
 
-    <Button
-        android:id="@+id/playAgainButton"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="doPlayAgain"
-        android:text="@string/play_again_button" />
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/showHistoryImageButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:onClick="doShowHistory"
+            android:src="@drawable/scroll"
+            android:text="@string/show_history_button_text" />
+
+        <Button
+            android:id="@+id/playAgainButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="doPlayAgain"
+            android:text="@string/play_again_button" />
+    </LinearLayout>
 </LinearLayout>
