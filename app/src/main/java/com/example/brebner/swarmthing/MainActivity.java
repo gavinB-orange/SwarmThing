@@ -1,6 +1,7 @@
 package com.example.brebner.swarmthing;
 
-// TODO Challenge result points should add to overall persistent score.
+// TODO Make history show challenge name not int
+// TODO reset button for overall score
 // TODO fix beast sticking
 // TODO store historical data and display
 // TODO Make beasts "walk"

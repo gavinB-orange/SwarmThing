@@ -6,45 +6,58 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".InformationActivity">
-
-    <TextView
-        android:id="@+id/informationTitleTextView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:fontFamily="cursive"
-        android:text="@string/information_title"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="18sp" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
 
-    <TextView
-        android:id="@+id/informationDetailsTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:fontFamily="cursive"
-        android:textColor="@android:color/holo_blue_dark"
-        android:text="@string/information_details" />
+            <TextView
+                android:id="@+id/informationTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp"
+                android:fontFamily="cursive"
+                android:text="@string/information_title"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="18sp" />
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
 
-    <Button
-        android:id="@+id/information_go_back_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="informationGoBack"
-        android:text="@string/information_go_back_button_text" />
+            <TextView
+                android:id="@+id/informationDetailsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="cursive"
+                android:paddingBottom="24dp"
+                android:paddingTop="24dp"
+                android:text="@string/information_details"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <Button
+                android:id="@+id/information_go_back_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="informationGoBack"
+                android:text="@string/information_go_back_button_text" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

@@ -23,4 +23,8 @@ public class ShowHistoryActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    public void doResetScores(View view) {
+        scoreLogger.reset_score_data();
+    }
 }

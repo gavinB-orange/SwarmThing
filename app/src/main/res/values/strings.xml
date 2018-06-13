@@ -67,15 +67,19 @@
     <string name="select_challenge_title">Click on the cup to select a challenge :</string>
     <string name="information_title">Background</string>
     <string name="information_details">
-        This game is a simulation with two sorts of "beasts",
-        the FoodBeast (in green) and the GrazingBeast (in yellow).
-        The FoodBeast gets energy from the environment.
+        This game is a simulation with two sorts of "beasts", that swarm in the world.
+        The FoodBeast (in green) and the GrazingBeast (in yellow).
+        The FoodBeast gets energy from the environment - it basks in the sun.
         The GrazingBeast can only get energy by taking it from a
-        FoodBeast. You can configure many parameters on how this
+        FoodBeast. A beast with too little energy, will die, and beasts have a maximum age.\n\n
+        You can configure many parameters on how this
         all works, and that will result in differing outcomes when
-        you run the simulation.
-
-        Enjoy!
+        you run the simulation. There are challenges you can accept that will get you points, or
+        you can just explore.\n
+        \n
+        Enjoy!\n
+        \n
+        The Gadgets and Games team\n
     </string>
     <string name="information_go_back_button_text">Go Back</string>
     <string name="challenge_result_title">Challenge Result</string>
@@ -92,4 +96,5 @@
     <string name="show_history_button_text">History</string>
     <string name="com.example.brebner.swarmthing.show_history_title_text">HISTORY</string>
     <string name="overall_score_title">Overall Score :</string>
+    <string name="reset_score_button">Reset Scores</string>
 </resources>
