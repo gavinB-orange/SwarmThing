@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ShowHistoryActivity extends AppCompatActivity {
 
@@ -26,5 +27,8 @@ public class ShowHistoryActivity extends AppCompatActivity {
 
     public void doResetScores(View view) {
         scoreLogger.reset_score_data();
+        Toast.makeText(this, "Scores reset", Toast.LENGTH_LONG).show();
+        TextView textView = findViewById(R.id.historyDataGoesHereTextView);
+        textView.setText(scoreLogger.get_all_score_data());
     }
 }

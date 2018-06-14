@@ -45,8 +45,8 @@ public class FoodBeast extends Beast {
         split_threshold = sharedPreferences.getInt(context.getString(R.string.fb_split_threshold_key), ConfigureFoodBeast.DEFAULT_SPLIT_THRESHOLD);
         int fb_max_age = sharedPreferences.getInt(context.getString(R.string.fb_max_age_key), ConfigureFoodBeast.DEFAULT_AGE);
         set_max_age(fb_max_age);
-        Log.w(TAG, "FoodBeast: init_energy set to " + init_energy);
-        Log.w(TAG, "FoodBeast: split_threshold set to " + split_threshold);
+        Log.d(TAG, "FoodBeast: init_energy set to " + init_energy);
+        Log.d(TAG, "FoodBeast: split_threshold set to " + split_threshold);
     }
 
     @Override

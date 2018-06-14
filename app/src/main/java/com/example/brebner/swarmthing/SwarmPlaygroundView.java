@@ -16,6 +16,7 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -78,6 +79,10 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     // challenge
     private int whichChallenge;
     private String challengResult;
+
+    private boolean add_finger_beast = false;  // used to signal time to add a FingerBeast
+    private int finger_x;
+    private int finger_y;
 
 
     // dummy for tools
@@ -355,6 +360,12 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 cycle ++;
                 cull();
                 split();
+                if (add_finger_beast) {
+                    FingerBeast tmpfb = new FingerBeast(beasts.size(), finger_x, finger_y, screenX, screenY, beasts, context);
+                    tmpfb.set_max_age((int)(FingerBeast.MAX_AGE * fps));
+                    beasts.add(tmpfb);
+                    clear_add_finger_beast();
+                }
             }
             draw();
 
@@ -380,6 +391,26 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         playing = true;
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    private synchronized void set_add_finger_beast() {
+        add_finger_beast = true;
+    }
+
+    private synchronized void clear_add_finger_beast() {
+        add_finger_beast = false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                finger_x = (int)motionEvent.getX();
+                finger_y = (int)motionEvent.getY();
+                set_add_finger_beast();
+                return true;
+        }
+        return false;
     }
 
 }

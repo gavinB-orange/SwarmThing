@@ -122,17 +122,23 @@
 
         <ImageButton
             android:id="@+id/showHistoryImageButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@android:color/background_light"
+            android:layout_gravity="center_vertical"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             android:onClick="doShowHistory"
             android:src="@drawable/scroll"
             android:text="@string/show_history_button_text" />
 
         <Button
             android:id="@+id/playAgainButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:background="@android:color/background_light"
             android:onClick="doPlayAgain"
             android:text="@string/play_again_button" />
     </LinearLayout>

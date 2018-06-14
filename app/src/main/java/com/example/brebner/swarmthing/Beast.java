@@ -32,7 +32,7 @@ public abstract class Beast extends DrawableThing {
     boolean splitReady = false;
     private boolean collided;
 
-    private int myage;
+    protected int myage;
 
     private Context context;
 
