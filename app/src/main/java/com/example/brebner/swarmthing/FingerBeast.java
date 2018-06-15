@@ -40,6 +40,11 @@ public class FingerBeast extends Beast {
     }
 
     @Override
+    void collisionExchange(Beast b) {
+        Log.w(TAG, "collisionExchange: ");
+    }
+
+    @Override
     Bitmap whichBitmap() {
         return bitmaps[0];
     }

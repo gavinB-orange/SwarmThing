@@ -82,6 +82,11 @@ public class FoodBeast extends Beast {
         splitValue = 0;
     }
 
+    @Override
+    void collisionExchange(Beast b) {
+        // FoodBeast does not take action on a collision
+    }
+
     public void grow(long amount) {
         energy += amount;
         if (energy > init_energy) {

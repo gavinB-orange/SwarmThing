@@ -66,7 +66,6 @@ class GrazingBeast extends Beast {
 
     @Override
     void collisionExchange(Beast b) {
-        super.collisionExchange(b);
         // I am grazing beast - can I eat?
         if (energy > init_energy) {
             // I am full

@@ -132,9 +132,7 @@ public abstract class Beast extends DrawableThing {
         return id;
     }
 
-    void collisionExchange(Beast b){
-        // extended by descendants
-    }
+    abstract void collisionExchange(Beast b);
 
     public void update() {
         super.update();

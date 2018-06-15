@@ -1,11 +1,9 @@
 package com.example.brebner.swarmthing;
 
 // TODO Make history show challenge name not int
-// TODO reset button for overall score
+// TODO do something when collision with FingerBeast
 // TODO fix beast sticking
-// TODO store historical data and display
 // TODO Make beasts "walk"
-// TODO User interaction - fingerBeast!
 // TODO Moving sun?
 // TODO allow user to create barriers.
 // TODO DNA exchange on collision with same type.
