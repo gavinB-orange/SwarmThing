@@ -1,6 +1,7 @@
 package com.example.brebner.swarmthing;
 
 // TODO Make history show challenge name not int
+// TODO do not include FingerBeasts in overall count - currently game will continue to run  ...
 // TODO do something when collision with FingerBeast
 // TODO fix beast sticking
 // TODO Make beasts "walk"

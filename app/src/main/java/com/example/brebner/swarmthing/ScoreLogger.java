@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.security.InvalidParameterException;
 
 public class ScoreLogger {
 
@@ -59,6 +60,28 @@ public class ScoreLogger {
         return String.format("%d", sharedPreferences.getInt(context.getString(R.string.overall_score_key), 0));
     }
 
+    private String getDescription(int which) {
+        if (which < 0) {
+            return context.getString(R.string.challenge_none_description);
+        }
+        if (which == ChallengeActivity.CHALLENGE_MOST_DEAD) {
+            return context.getString(R.string.challenge_most_dead_5m_description);
+        }
+        if (which == ChallengeActivity.CHALLENGE_MOST_BORN){
+            return context.getString(R.string.challenge_most_born_5m_description);
+        }
+        if (which == ChallengeActivity.CHALLENGE_MOST_BEAST_ITERATIONS) {
+            return context.getString(R.string.challenge_most_beast_iterations_5m_description);
+        }
+        if (which == ChallengeActivity.CHALLENGE_MOST_PROTECTED) {
+            return context.getString(R.string.challenge_most_protected_5m_description);
+        }
+        if (which == ChallengeActivity.CHALLENGE_PHOENIX) {
+            return context.getString(R.string.challenge_phoenix_5m_description);
+        }
+        throw new InvalidParameterException("Unknown choice provided");
+    }
+
     public String get_all_score_data() {
         File file = new File(context.getFilesDir(), SCORE_FILE);
         if (! file.exists()) {
@@ -69,9 +92,23 @@ public class ScoreLogger {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                // TODO process line to swap challenge name for int value. Not storing like
-                // TODO that to save file space.
-                results.append(line + "\n");
+                String[] parts = line.split(" ");
+                String challengenumberstr = parts[parts.length - 2];
+                int which = -1;
+                try {
+                    which = Integer.parseInt(challengenumberstr);
+                }
+                catch (NumberFormatException e){
+                    Log.e(TAG, "get_all_score_data: ", e);
+                    throw e;
+                }
+                parts[parts.length - 2] = getDescription(which);
+                StringBuilder sb = new StringBuilder();
+                for (String p: parts) {
+                    sb.append(p);
+                    sb.append(" ");
+                }
+                results.append(sb.toString() + "\n");
             }
             bufferedReader.close();
         }
