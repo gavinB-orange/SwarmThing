@@ -219,7 +219,7 @@ public class Recorder {
         return path;
     }
 
-    public Bitmap createBitmapDrawing(int width, int height, long seconds, Bitmap srcbitmap) {
+    public Bitmap createBitmapDrawing(int width, int height, long seconds) {
         /*
         Create a bit map of the graph
         int width : width of the bitmap
@@ -235,9 +235,7 @@ public class Recorder {
         int text_size = height / 20;
         Canvas canvas = new Canvas();
         // start with an existing bitmap of the right size
-        if (srcbitmap == null) {
-            srcbitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_50);
-        }
+        Bitmap srcbitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_50);
         srcbitmap = srcbitmap.createScaledBitmap(srcbitmap, width, height, false);
         // make a mutable copy
         Bitmap bitmap = srcbitmap.copy(srcbitmap.getConfig(), true);

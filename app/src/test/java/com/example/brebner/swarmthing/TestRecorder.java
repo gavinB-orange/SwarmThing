@@ -25,7 +25,6 @@ import static org.mockito.Mockito.when;
 public class TestRecorder {
 
     String PREFERENCES = "com.example.brebner.swarmthing.preferences";
-    String A_STRING = "whatever";
     String CHALLENGE_CHOICE_KEY = "com.example.brebner.swarmthing.challenge_choice_key";
 
     @Rule
@@ -40,6 +39,9 @@ public class TestRecorder {
     @Mock
     SharedPreferences mockSharedPreferences;
 
+    @Mock
+    Bitmap mockBitMap;
+
 
     @Before
     public void init_test_env() {
@@ -47,7 +49,6 @@ public class TestRecorder {
         when(mockContext.getString(R.string.shared_preference_name)).thenReturn(PREFERENCES);
         when(mockContext.getString(R.string.challenge_choice_key)).thenReturn(CHALLENGE_CHOICE_KEY);
         when(mockSharedPreferences.getInt(CHALLENGE_CHOICE_KEY, ChallengeActivity.NO_CHALLENGE_SELECTED)).thenReturn(ChallengeActivity.CHALLENGE_MOST_DEAD);
-        when(mockContext.getResources()).thenReturn(mockResources);
     }
 
     @Test
@@ -65,31 +66,6 @@ public class TestRecorder {
         assertTrue(recorder.getContext() == mockContext);
         recorder.putData(1,1, 1,1);
         assertEquals(4, (int)recorder.getAverageNBeasts());
-    }
-
-    @Test
-    public void test_recorder_paths() {
-        int WIDTH = 300;
-        int HEIGHT = 256;
-        int SECONDS = 100;
-        Recorder recorder = new Recorder(mockContext);
-        assertTrue (recorder != null);
-        Random random = new Random();
-        // dump some random data
-        for (int i = 0; i < 100; i++) {
-            int fb = random.nextInt(i + 1);
-            int nb = fb + random.nextInt(10);
-            int ns = random.nextInt(10);
-            int nc = random.nextInt(10);
-            recorder.putData(fb, nb, ns, nc);
-        }
-        Bitmap srcbitmap =
-        Bitmap bitmap = recorder.createBitmapDrawing(WIDTH, HEIGHT, SECONDS);
-        assertTrue("Bitmap should be non null", bitmap != null);
-        assertTrue(bitmap.getByteCount() > 1000);
-        assertEquals(HEIGHT, bitmap.getHeight());
-        assertEquals(WIDTH, bitmap.getWidth());
-
     }
 
 }

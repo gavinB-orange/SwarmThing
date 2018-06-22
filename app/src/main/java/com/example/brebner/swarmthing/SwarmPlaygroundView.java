@@ -201,7 +201,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         long start = sharedPreferences.getLong(context.getString(R.string.start_time_key), 0);
         long now = System.currentTimeMillis();
         long seconds = (now - start) / 1000;
-        Bitmap graph = recorder.createBitmapDrawing(screenX - 10, screenY / 3, seconds, null);
+        Bitmap graph = recorder.createBitmapDrawing(screenX - 10, screenY / 3, seconds);
         context.deleteFile(context.getString(R.string.recorder_graph_file_name));  // just in case
         FileOutputStream fileOutputStream = null;
         try {
