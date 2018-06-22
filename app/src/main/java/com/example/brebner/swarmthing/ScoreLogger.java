@@ -36,7 +36,7 @@ public class ScoreLogger {
         long timestamp : the timestamp from the (end of) the run.
         int challenge : an int representing which challenge was chose.
         int score : the score for the run.
-         */
+        */
         Log.d(TAG, "add_score_data: ts = " + timestamp + " challenge = " + challenge + " score = " + score);
         int total = sharedPreferences.getInt(context.getString(R.string.overall_score_key), 0);
         total += score;
@@ -44,15 +44,30 @@ public class ScoreLogger {
         editor.putInt(context.getString(R.string.overall_score_key), total);
         editor.commit();
         String line = String.format("%tc %d %d\n", timestamp, challenge, score);
+        PrintStream printStream = null;
+        FileOutputStream fileOutputStream = null;
         try {
             File file = new File(context.getFilesDir(), SCORE_FILE);
-            FileOutputStream fileOutputStream = new FileOutputStream(file, true);
-            PrintStream printStream = new PrintStream(fileOutputStream);
+            fileOutputStream = new FileOutputStream(file, true);
+            printStream = new PrintStream(fileOutputStream);
             printStream.print(line);
-            fileOutputStream.close();
+            printStream.flush();
         }
         catch (IOException e) {
             Log.e(TAG, "add_score_data: ", e);
+        }
+        finally {
+            if (printStream != null) {
+                printStream.close();
+            }
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                }
+                catch (IOException e) {
+                    Log.e(TAG, "add_score_data: exception during fileOutputStream close", e);
+                }
+            }
         }
     }
 
@@ -88,8 +103,9 @@ public class ScoreLogger {
             return "No Scores Saved";
         }
         StringBuilder results = new StringBuilder();
+        BufferedReader bufferedReader = null;
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            bufferedReader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] parts = line.split(" ");
@@ -114,6 +130,16 @@ public class ScoreLogger {
         }
         catch (IOException e) {
             Log.e(TAG, "get_all_score_data: ", e);
+        }
+        finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                }
+                catch (IOException e) {
+                    Log.e(TAG, "get_all_score_data: exception closing bufferedReader", e);
+                }
+            }
         }
         return results.toString();
     }

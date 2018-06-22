@@ -31,7 +31,7 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
 
     private int nbeasts = DEFAULT_N_BEASTS;
     private int ratio = DEFAULT_RATIO;
-    private long max_time = MAX_TIME;
+    private long maxTime = MAX_TIME;
 
     private CheckBox showTimeCheckBox;
     private CheckBox showFpsCheckBox;
@@ -70,7 +70,7 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
         SeekBar timeSeekBar = findViewById(R.id.maxTimeSeekBar);
         timeSeekBar.setProgress((int)(initial_max_time * timeSeekBar.getMax() / MAX_TIME));
         timeSeekBar.setOnSeekBarChangeListener(this);
-        max_time = initial_max_time;
+        maxTime = initial_max_time;
 
         showTimeCheckBox = findViewById(R.id.showTimeCheckBox);
         showTimeCheckBox.setChecked(initial_show_remaining_time);
@@ -90,7 +90,7 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(getString(R.string.other_ratio_key), ratio);
         editor.putInt(getString(R.string.other_nbeasts_key), nbeasts);
-        editor.putLong(getString(R.string.other_maxtime_key), max_time);
+        editor.putLong(getString(R.string.other_maxtime_key), maxTime);
         // unlimited time => disable time countdown.
         editor.putBoolean(getString(R.string.other_show_time), showTimeCheckBox.isChecked() && ! unlimitedTimeSwitch.isChecked());
         editor.putBoolean(getString(R.string.other_show_fps), showFpsCheckBox.isChecked());
@@ -117,18 +117,19 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
             Log.d(TAG, "onProgressChanged: ratio = " + ratio);
         }
         if (seekBar.getId() == R.id.maxTimeSeekBar) {
-            max_time = DEFAULT_MIN_TIME + (progress * MAX_TIME) / seekBar.getMax();
-            Log.d(TAG, "onProgressChanged: max_time = " + max_time);
+            maxTime = DEFAULT_MIN_TIME + (progress * MAX_TIME) / seekBar.getMax();
+            Log.d(TAG, "onProgressChanged: maxTime = " + maxTime);
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
+        Log.d(TAG, "onStartTrackingTouch: ");
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-
+        Log.d(TAG, "onStopTrackingTouch: ");
     }
 
 }

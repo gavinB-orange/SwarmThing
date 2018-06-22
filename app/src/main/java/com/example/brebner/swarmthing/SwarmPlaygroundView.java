@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -170,6 +169,100 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         }
     }
 
+    void setLightLevel(int nFB, int sane_light) {
+        if (nFB > 0) {  // no divide by 0 please
+            lightlevel = SUNLIGHT / nFB;  // as more FBs, light/FB gets less.
+        }
+        else {
+            lightlevel = sane_light;
+        }
+        if (lightlevel > sane_light) {
+            lightlevel = sane_light;
+        }
+    }
+
+    void soundEffects() {
+        if (sound_effects_on && splitcount > 0) {
+            soundPool.play(splitSoundID, 1, 1, 0, 0, 1);
+        }
+        if (sound_effects_on && cullcount > 0) {
+            soundPool.play(cullSoundID, 1, 1, 0, 0, 1);
+        }
+    }
+
+    void doEndGame(int nFB) {
+        playing = false;
+        Intent intent = new Intent(context, EndActivity.class);
+        intent.putExtra(context.getString(R.string.final_fb_value_key), nFB);
+        intent.putExtra(context.getString(R.string.final_gb_value_key), beasts.size() - nFB);
+        intent.putExtra(context.getString(R.string.final_time_up_key), timeup);
+        // create and save compressed graph image - should this be made async?
+        long start = PreferenceManager.getDefaultSharedPreferences(context).getLong(context.getString(R.string.start_time_key), 0);
+        long now = System.currentTimeMillis();
+        long seconds = (now - start) / 1000;
+        Bitmap graph = recorder.createBitmapDrawing(screenX - 10, screenY / 3, seconds);
+        context.deleteFile(context.getString(R.string.recorder_graph_file_name));  // just in case
+        FileOutputStream fileOutputStream = null;
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            graph.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            fileOutputStream = context.openFileOutput(context.getString(R.string.recorder_graph_file_name), Context.MODE_PRIVATE);
+            fileOutputStream.write(bytes.toByteArray());
+        } catch (Exception e) {
+            Log.e(TAG, "update: failed to write graph file", e);
+        }
+        finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                }
+                catch (IOException e) {
+                    Log.e(TAG, "update: exception closing fileOutputStream", e);
+                }
+            }
+
+        }
+        ChallengeChecker challengeChecker = null;
+        String challengeResult;
+        int challengePoints;
+        switch (whichChallenge) {
+            case ChallengeActivity.NO_CHALLENGE_SELECTED:
+                challengeChecker = new ChallengeNoneChecker(getResources().getString(R.string.challenge_none_description));
+                break;
+            case ChallengeActivity.CHALLENGE_MOST_DEAD:
+                challengeChecker = new ChallengeMaxDeadChecker(getResources().getString(R.string.challenge_most_dead_5m_description));
+                break;
+            case ChallengeActivity.CHALLENGE_MOST_BORN:
+                challengeChecker = new ChallengeMaxBornChecker(getResources().getString(R.string.challenge_most_born_5m_description));
+                break;
+            case ChallengeActivity.CHALLENGE_MOST_BEAST_ITERATIONS:
+                challengeChecker = new ChallengeBeastIterationsChecker(getResources().getString(R.string.challenge_most_beast_iterations_5m_description));
+                break;
+            case ChallengeActivity.CHALLENGE_MOST_PROTECTED:
+                challengeChecker = new ChallengeProtectedChecker(getResources().getString(R.string.challenge_most_protected_5m_description));
+                break;
+            case ChallengeActivity.CHALLENGE_PHOENIX:
+                challengeChecker = new ChallengePhoenixChecker(getResources().getString(R.string.challenge_phoenix_5m_description));
+                break;
+            default:
+                challengeChecker = null;
+                Log.w(TAG, "update: Unknown challenge");
+                break;
+        }
+        if (challengeChecker == null) {
+            challengeResult = "Unknown";
+            challengePoints = 0;
+        }
+        else {
+            challengeResult = challengeChecker.validate(recorder);
+            challengePoints = challengeChecker.getPoints();
+        }
+        intent.putExtra(context.getString(R.string.challenge_result_key), challengeResult);
+        intent.putExtra(context.getString(R.string.challenge_result_points_key), challengePoints);
+        context.startActivity(intent);
+
+    }
+
     void update(long cycle) {
         hud.setFps(fps);
         hud.setNbeasts(beasts.size());
@@ -186,22 +279,9 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 nFB ++;
             }
         }
-        if (nFB > 0) {  // no divide by 0 please
-            lightlevel = SUNLIGHT / nFB;  // as more FBs, light/FB gets less.
-        }
-        else {
-            lightlevel = sane_light;
-        }
-        if (lightlevel > sane_light) {
-            lightlevel = sane_light;
-        }
+        setLightLevel(nFB, sane_light);
         if (cycle % 50 == 0) { // roughly every second or so
-            if (sound_effects_on && splitcount > 0) {
-                soundPool.play(splitSoundID, 1, 1, 0, 0, 1);
-            }
-            if (sound_effects_on && cullcount > 0) {
-                soundPool.play(cullSoundID, 1, 1, 0, 0, 1);
-            }
+            soundEffects();
             recorder.putData(nFB, beasts.size(), splitcount, cullcount);
             splitcount = 0;
             cullcount = 0;
@@ -211,64 +291,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
             }
         }
         if (started && ((nFB == 0) || (nFB == beasts.size()) || timeup)) {
-            playing = false;
-            Intent intent = new Intent(context, EndActivity.class);
-            intent.putExtra(context.getString(R.string.final_fb_value_key), nFB);
-            intent.putExtra(context.getString(R.string.final_gb_value_key), beasts.size() - nFB);
-            intent.putExtra(context.getString(R.string.final_time_up_key), timeup);
-            // create and save compressed graph image - should this be made async?
-            long start = PreferenceManager.getDefaultSharedPreferences(context).getLong(context.getString(R.string.start_time_key), 0);
-            long now = System.currentTimeMillis();
-            long seconds = (now - start) / 1000;
-            Bitmap graph = recorder.createBitmapDrawing(screenX - 10, screenY / 3, seconds);
-            context.deleteFile(context.getString(R.string.recorder_graph_file_name));  // just in case
-            try {
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                graph.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                FileOutputStream fo = context.openFileOutput(context.getString(R.string.recorder_graph_file_name), Context.MODE_PRIVATE);
-                fo.write(bytes.toByteArray());
-                fo.close();
-            } catch (Exception e) {
-                Log.e(TAG, "update: failed to write graph file", e);
-            }
-            ChallengeChecker challengeChecker = null;
-            String challengeResult;
-            int challengePoints;
-            switch (whichChallenge) {
-                case ChallengeActivity.NO_CHALLENGE_SELECTED:
-                    challengeChecker = new ChallengeNoneChecker(getResources().getString(R.string.challenge_none_description));
-                    break;
-                case ChallengeActivity.CHALLENGE_MOST_DEAD:
-                    challengeChecker = new ChallengeMaxDeadChecker(getResources().getString(R.string.challenge_most_dead_5m_description));
-                    break;
-                case ChallengeActivity.CHALLENGE_MOST_BORN:
-                    challengeChecker = new ChallengeMaxBornChecker(getResources().getString(R.string.challenge_most_born_5m_description));
-                    break;
-                case ChallengeActivity.CHALLENGE_MOST_BEAST_ITERATIONS:
-                    challengeChecker = new ChallengeBeastIterationsChecker(getResources().getString(R.string.challenge_most_beast_iterations_5m_description));
-                    break;
-                case ChallengeActivity.CHALLENGE_MOST_PROTECTED:
-                    challengeChecker = new ChallengeProtectedChecker(getResources().getString(R.string.challenge_most_protected_5m_description));
-                    break;
-                case ChallengeActivity.CHALLENGE_PHOENIX:
-                    challengeChecker = new ChallengePhoenixChecker(getResources().getString(R.string.challenge_phoenix_5m_description));
-                    break;
-                default:
-                    challengeChecker = null;
-                    Log.w(TAG, "update: Unknown challenge");
-                    break;
-            }
-            if (challengeChecker == null) {
-                challengeResult = "Unknown";
-                challengePoints = 0;
-            }
-            else {
-                challengeResult = challengeChecker.validate(recorder);
-                challengePoints = challengeChecker.getPoints();
-            }
-            intent.putExtra(context.getString(R.string.challenge_result_key), challengeResult);
-            intent.putExtra(context.getString(R.string.challenge_result_points_key), challengePoints);
-            context.startActivity(intent);
+            doEndGame(nFB);
         }
     }
     
@@ -285,23 +308,16 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 tosplit.add(b);
             }
         }
-        splitcount += tosplit.size();
         if (tosplit.size() < 1) {
             return;
         }
+        splitcount += tosplit.size();
         for (Beast b: tosplit) {
             int newxpos = b.getXpos() + 2 + b.getWidth();
             if (newxpos > screenX)  {
                 newxpos = screenX - 2 - b.getWidth();
             }
             int newypos = b.getYpos();  // try leaving y alone
-            // int newypos = b.getYpos() + 1 + screenY / (2 * Beast.NPERY);
-            // if (newypos > screenY)  {
-            //     newypos = screenY - screenY / (2 * Beast.NPERY);
-            // }
-            if (b.getClass() == FoodBeast.class) {
-                FoodBeast fb = (FoodBeast)b;
-            }
             if (b.getNoCollision(newxpos, newypos)) {
                 b.setEnergy(b.getEnergy() / 2);
                 b.resetSplit();
@@ -362,7 +378,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 split();
                 if (add_finger_beast) {
                     FingerBeast tmpfb = new FingerBeast(beasts.size(), finger_x, finger_y, screenX, screenY, beasts, context);
-                    tmpfb.set_max_age((int)(FingerBeast.MAX_AGE * fps));
+                    tmpfb.setMaxAge((int)(FingerBeast.MAX_AGE * fps));
                     beasts.add(tmpfb);
                     clear_add_finger_beast();
                 }
@@ -409,8 +425,10 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
                 finger_y = (int)motionEvent.getY();
                 set_add_finger_beast();
                 return true;
+            default:
+                return false;
+
         }
-        return false;
     }
 
 }

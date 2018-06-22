@@ -13,12 +13,10 @@ import java.util.Random;
 
 public abstract class Beast extends DrawableThing {
 
-    private static final String TAG = "Beast";
+    public static final int NPERX = 30;
+    public static final int NPERY = 30;
 
-    public final static int NPERX = 30;
-    public final static int NPERY = 30;
-
-    private final int INEBRIATION = 50;
+    private static final int INEBRIATION = 50;
 
     long id;
     Bitmap[] bitmaps;
@@ -27,14 +25,14 @@ public abstract class Beast extends DrawableThing {
     private int screenY;
     private int vx;
     private int vy;
+    private int nextXpos;
+    private int nextYpos;
     int height;
     int width;
     boolean splitReady = false;
     private boolean collided;
 
     protected int myage;
-
-    private Context context;
 
     private RectF rectF;
     private ArrayList<Beast> beasts;
@@ -48,7 +46,6 @@ public abstract class Beast extends DrawableThing {
         this.ypos = y;
         this.screenX = screenX;
         this.screenY = screenY;
-        this.context = context;
         random = new Random();
         width = screenX / NPERX;
         height = screenY / NPERY;
@@ -59,10 +56,9 @@ public abstract class Beast extends DrawableThing {
         vy = random.nextInt(2 * tmpstep + 1) - tmpstep;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         myage = 1000; // something long enough to last until we overwrite immediately
-        // Log.d(TAG, "Beast: " + id + " has age " + myage);
     }
 
-    void set_max_age(int age) {
+    void setMaxAge(int age) {
         myage = age + random.nextInt(age / 10);
     }
 
@@ -81,10 +77,10 @@ public abstract class Beast extends DrawableThing {
     }
 
     private void adjustRectF() {
-        rectF.left = xpos;
-        rectF.right = xpos + width;
-        rectF.top = ypos;
-        rectF.bottom = ypos + height;
+        rectF.left = (float)xpos;
+        rectF.right = (float)xpos + (float)width;
+        rectF.top = (float)ypos;
+        rectF.bottom = (float)ypos + (float)height;
     }
 
     boolean isSplitReady() {
@@ -94,10 +90,10 @@ public abstract class Beast extends DrawableThing {
     RectF getPseudoRectF(int x, int y) {
         // make a rectF of same size but at the new position.
         RectF rf = new RectF();
-        rf.left = x;
-        rf.right = x + width;
-        rf.bottom = y + height;
-        rf.top = y;
+        rf.left = (float)x;
+        rf.right = (float)x + (float)width;
+        rf.bottom = (float)y + (float)height;
+        rf.top = (float)y;
         return rf;
     }
 
@@ -116,7 +112,6 @@ public abstract class Beast extends DrawableThing {
 
 
     void resetSplit() {
-        // Log.d(TAG, "resetSplit: beast " + getID());
         splitReady = false;
     }
 
@@ -134,21 +129,13 @@ public abstract class Beast extends DrawableThing {
 
     abstract void collisionExchange(Beast b);
 
-    public void update() {
-        super.update();
-        // if I'm out of energy, die
-        if (energy <= 0) {
-            setActive(false);
-            return;
-        }
+    private void doMoves() {
         // move based on current velocity
-        int next_xpos;
-        int next_ypos;
         if (xpos < 0 || xpos > screenX || ypos < 0 || ypos > screenY) {  // if somehow off screen - die
             setActive(false);
         }
-        next_xpos = xpos + vx;
-        next_ypos = ypos + vy;
+        nextXpos = xpos + vx;
+        nextYpos = ypos + vy;
         // randomly switch from time to time
         int tmpstep = getStep();
         if (random.nextInt(INEBRIATION) == 0) {
@@ -168,42 +155,48 @@ public abstract class Beast extends DrawableThing {
             }
         }
         // bounce off walls
-        if (next_xpos <= width) {
-            next_xpos = width;
+        if (nextXpos <= width) {
+            nextXpos = width;
             vx = tmpstep;
         }
-        if (next_ypos <= height) {
-            next_ypos = height;
+        if (nextYpos <= height) {
+            nextYpos = height;
             vy = tmpstep;
         }
-        if (next_xpos >= screenX - width) {
-            next_xpos = screenX - width;
+        if (nextXpos >= screenX - width) {
+            nextXpos = screenX - width;
             vx = -tmpstep;
         }
-        if (next_ypos >= screenY - height) {
-            next_ypos = screenY - height;
+        if (nextYpos >= screenY - height) {
+            nextYpos = screenY - height;
             vy = -tmpstep;
         }
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        // if I'm out of energy, die
+        if (energy <= 0) {
+            setActive(false);
+            return;
+        }
+        doMoves();
         // collision detect with other beasts
+        // collided reset per cycle in SwarmPlaygroundView
         for (Beast b: beasts) {
-            if (b.getID() != id) {
-                if (RectF.intersects(b.getRectF(), getRectF())) {
-                    if (! b.hasCollided()) {  // collided reset per cycle in SwarmPlaygroundView
-                        b.setCollided();  // so only one collision between beasts per cycle
-                        // Log.d(TAG, "update: Collision other = " + b.getID() + " me = " + id);
-                        collisionExchange(b);
-                        // Bounce and change direction
-                        next_xpos = xpos - vx;
-                        next_ypos = ypos - vy;
-                        vx = -vx;
-                        vy = -vy;
-                        // Log.d(TAG, "update: x = " + xpos + " y = " + ypos + " vx = " + vx + " vy = " + vy);
-                    }
-                }
+            if ((b.getID() != id) && ! b.hasCollided() &&  RectF.intersects(b.getRectF(), getRectF())) {
+                b.setCollided();  // so only one collision between beasts per cycle
+                collisionExchange(b);
+                // Bounce and change direction
+                nextXpos = xpos - vx;
+                nextYpos = ypos - vy;
+                vx = -vx;
+                vy = -vy;
             }
         }
-        xpos = next_xpos;
-        ypos = next_ypos;
+        xpos = nextXpos;
+        ypos = nextYpos;
         // now update the rect
         adjustRectF();
         myage--;

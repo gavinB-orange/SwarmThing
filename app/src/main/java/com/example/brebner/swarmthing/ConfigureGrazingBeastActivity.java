@@ -23,7 +23,7 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
 
     private int initenergy;
     private int split_threshold;
-    private int max_age;
+    private int maxAge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
         SeekBar maxAgeSeekBar = findViewById(R.id.configGBMaxAgeSeekBar);
         maxAgeSeekBar.setProgress(initial_max_age * maxAgeSeekBar.getMax() / MAX_AGE);
         maxAgeSeekBar.setOnSeekBarChangeListener(this);
-        max_age = initial_max_age;
+        maxAge = initial_max_age;
     }
 
     public void reportGBConfigData(View view) {
@@ -58,8 +58,8 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
         Log.d(TAG, "reportGBConfigData: set GB init energy to " + initenergy);
         editor.putInt(getString(R.string.gb_split_threshold_key), split_threshold);
         Log.d(TAG, "reportGBConfigData: set gb_split_threshold to " + split_threshold);
-        editor.putInt(getString(R.string.gb_max_age_key), max_age);
-        Log.d(TAG, "reportGBConfigData: set gb_max_age to " + max_age);
+        editor.putInt(getString(R.string.gb_max_age_key), maxAge);
+        Log.d(TAG, "reportGBConfigData: set gb_max_age to " + maxAge);
         editor.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -74,17 +74,17 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
             split_threshold = (progress * MAX_SPLIT_THRESHOLD) / seekBar.getMax();
         }
         if (seekBar.getId() == R.id.configGBMaxAgeSeekBar) {
-            max_age = (progress * MAX_AGE) / seekBar.getMax() + MAX_AGE / 10;
+            maxAge = (progress * MAX_AGE) / seekBar.getMax() + MAX_AGE / 10;
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-
+        Log.d(TAG, "onStartTrackingTouch: ");
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-
+        Log.d(TAG, "onStopTrackingTouch: ");
     }
 }

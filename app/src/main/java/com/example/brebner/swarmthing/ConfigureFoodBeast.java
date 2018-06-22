@@ -25,7 +25,7 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
 
     private int initenergy;
     private int split_threshold;
-    private int max_age;
+    private int maxAge;
     private int sane_light;
 
     @Override
@@ -49,7 +49,7 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
         SeekBar maxAgeSeekBar = findViewById(R.id.configFBMaxAgeSeekBar);
         maxAgeSeekBar.setOnSeekBarChangeListener(this);
         maxAgeSeekBar.setProgress(initial_max_age * maxAgeSeekBar.getMax() / MAX_AGE);
-        max_age = initial_max_age;
+        maxAge = initial_max_age;
         SeekBar saneLightSeekBar = findViewById(R.id.configFBSaneLightSeekBar);
         saneLightSeekBar.setOnSeekBarChangeListener(this);
         saneLightSeekBar.setProgress(initial_sane_light * saneLightSeekBar.getMax() / MAX_SANE_LIGHT);
@@ -61,7 +61,7 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(getString(R.string.fb_init_energy_key), initenergy);
         editor.putInt(getString(R.string.fb_split_threshold_key), split_threshold);
-        editor.putInt(getString(R.string.fb_max_age_key), max_age);
+        editor.putInt(getString(R.string.fb_max_age_key), maxAge);
         editor.putInt(getString(R.string.fb_sane_light_key), sane_light);
         editor.commit();
         Log.w(TAG, "reportFBConfigData: set FB init energy to " + initenergy);
@@ -79,7 +79,7 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
             split_threshold = progress * MAX_SPLIT_THRESHOLD / seekBar.getMax() + DEFAULT_SPLIT_THRESHOLD / 100;
         }
         if (seekBar.getId() == R.id.configFBMaxAgeSeekBar) {
-            max_age = progress * MAX_AGE / seekBar.getMax() + DEFAULT_AGE / 100;  // no zero age please
+            maxAge = progress * MAX_AGE / seekBar.getMax() + DEFAULT_AGE / 100;  // no zero age please
         }
         if (seekBar.getId() == R.id.configFBSaneLightSeekBar) {
             sane_light = progress * MAX_SANE_LIGHT / seekBar.getMax() + 1;
@@ -88,11 +88,11 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-
+        Log.d(TAG, "onStartTrackingTouch: ");
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-
+        Log.d(TAG, "onStopTrackingTouch: ");
     }
 }

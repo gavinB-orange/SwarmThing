@@ -25,6 +25,10 @@ public class Recorder {
     private static final int BBCOLOUR = Color.argb(255, 0, 0, 255);
     private static final int AVCOLOUR = Color.argb(128, 255, 125, 160);
 
+    private static final String WIDTH_MUST_GT_0 = "width must be > 0";
+    private static final String HEIGHT_MUST_GT_0 = "height must be > 0";
+    private static final String XRANGE_MUST_GT_0 = "xrange must be > 0";
+
     public static final int CULL_SPLIT_SCALE = 2;
 
     private Context context;
@@ -80,9 +84,9 @@ public class Recorder {
         long xrange = items.size();
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
-        if ((width <= 0)) throw new AssertionError("width must be > 0");
-        if ((height <= 0)) throw new AssertionError("height must be > 0");
-        if (xrange <= 0) throw new AssertionError("xrange must be > 0");
+        if ((width <= 0)) throw new AssertionError(WIDTH_MUST_GT_0);
+        if ((height <= 0)) throw new AssertionError(HEIGHT_MUST_GT_0);
+        if (xrange <= 0) throw new AssertionError(XRANGE_MUST_GT_0);
         Path path = new Path();
         float xval;
         if (items.size() <= 0) {
@@ -108,9 +112,9 @@ public class Recorder {
         long xrange = items.size();
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
-        if ((width <= 0)) throw new AssertionError("width must be > 0");
-        if ((height <= 0)) throw new AssertionError("height must be > 0");
-        if (xrange <= 0) throw new AssertionError("xrange must be > 0");
+        if ((width <= 0)) throw new AssertionError(WIDTH_MUST_GT_0);
+        if ((height <= 0)) throw new AssertionError(HEIGHT_MUST_GT_0);
+        if (xrange <= 0) throw new AssertionError(XRANGE_MUST_GT_0);
         Path path = new Path();
         float xval;
         if (items.size() <= 0) {
@@ -136,9 +140,9 @@ public class Recorder {
         long xrange = items.size();
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
-        if ((width <= 0)) throw new AssertionError("width must be > 0");
-        if ((height <= 0)) throw new AssertionError("height must be > 0");
-        if (xrange <= 0) throw new AssertionError("xrange must be > 0");
+        if ((width <= 0)) throw new AssertionError(WIDTH_MUST_GT_0);
+        if ((height <= 0)) throw new AssertionError(HEIGHT_MUST_GT_0);
+        if (xrange <= 0) throw new AssertionError(XRANGE_MUST_GT_0);
         Path path = new Path();
         float xval;
         if (items.size() <= 0) {
@@ -164,9 +168,9 @@ public class Recorder {
         long xrange = items.size();
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
-        if ((width <= 0)) throw new AssertionError("width must be > 0");
-        if ((height <= 0)) throw new AssertionError("height must be > 0");
-        if (xrange <= 0) throw new AssertionError("xrange must be > 0");
+        if ((width <= 0)) throw new AssertionError(WIDTH_MUST_GT_0);
+        if ((height <= 0)) throw new AssertionError(HEIGHT_MUST_GT_0);
+        if (xrange <= 0) throw new AssertionError(XRANGE_MUST_GT_0);
         Path path = new Path();
         if (items.size() <= 0) {
             return null;
@@ -181,10 +185,10 @@ public class Recorder {
     private Path getNbeastPath(int rawwidth, int rawheight, int padding) {
         int width = rawwidth - 2 * padding;
         int height = rawheight - 2 * padding;
-        if ((width <= 0)) throw new AssertionError(TAG + " getNbeastPath: width must be > 0");
-        if ((height <= 0)) throw new AssertionError(TAG + " getNbeastPath: height must be > 0");
+        if ((width <= 0)) throw new AssertionError(TAG + " getNbeastPath: " + WIDTH_MUST_GT_0);
+        if ((height <= 0)) throw new AssertionError(TAG + " getNbeastPath: " + HEIGHT_MUST_GT_0);
         long xrange = items.size();
-        if (xrange <= 0) throw new AssertionError(TAG + " getNbestPath: xrange must be > 0");
+        if (xrange <= 0) throw new AssertionError(TAG + " getNbestPath:" + XRANGE_MUST_GT_0);
         // TODO replace larger dump below with the above
         Path path = new Path();
         float xval;

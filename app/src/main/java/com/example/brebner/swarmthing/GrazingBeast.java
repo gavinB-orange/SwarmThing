@@ -45,7 +45,7 @@ class GrazingBeast extends Beast {
         init_energy = sharedPreferences.getInt(context.getString(R.string.gb_init_energy_key), ConfigureGrazingBeastActivity.DEFAULT_INIT_ENERGY);
         split_threshold = sharedPreferences.getInt(context.getString(R.string.gb_split_threshold_key), ConfigureGrazingBeastActivity.DEFAULT_SPLIT_THRESHOLD);
         int gb_max_age = sharedPreferences.getInt(context.getString(R.string.fb_max_age_key), ConfigureFoodBeast.DEFAULT_AGE);
-        set_max_age(gb_max_age);
+        setMaxAge(gb_max_age);
         Log.d(TAG, "GrazingBeast: init_energy = " + init_energy, null);
         Log.d(TAG, "GrazingBeast: split_threshold = " + split_threshold, null);
     }
