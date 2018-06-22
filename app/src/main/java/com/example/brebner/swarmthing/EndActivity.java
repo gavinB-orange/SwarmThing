@@ -1,10 +1,10 @@
 package com.example.brebner.swarmthing;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +36,7 @@ public class EndActivity extends AppCompatActivity {
         else {
             titleTextView.setText(R.string.endActivityGameOverTitle);
         }
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         long start = sharedPreferences.getLong(getString(R.string.start_time_key), 0);
         long now = System.currentTimeMillis();
         long seconds = (now - start) / 1000;

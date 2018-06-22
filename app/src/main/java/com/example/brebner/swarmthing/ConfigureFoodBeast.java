@@ -1,8 +1,8 @@
 package com.example.brebner.swarmthing;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,8 +32,7 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_food_beast);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         int initial_init_energy = sharedPreferences.getInt(getString(R.string.fb_init_energy_key), DEFAULT_INIT_ENERGY);
         int initial_split_threshold = sharedPreferences.getInt(getString(R.string.fb_split_threshold_key), DEFAULT_SPLIT_THRESHOLD);
         int initial_max_age = sharedPreferences.getInt(getString(R.string.fb_max_age_key), DEFAULT_AGE);
@@ -57,7 +56,7 @@ public class ConfigureFoodBeast extends AppCompatActivity implements SeekBar.OnS
     }
 
     public void reportFBConfigData(View view) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(getString(R.string.fb_init_energy_key), initenergy);
         editor.putInt(getString(R.string.fb_split_threshold_key), split_threshold);

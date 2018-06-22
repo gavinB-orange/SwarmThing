@@ -13,7 +13,6 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -83,6 +82,8 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     private int finger_x;
     private int finger_y;
 
+    private SharedPreferences sharedPreferences;
+
 
     // dummy for tools
     public SwarmPlaygroundView(Context context) {
@@ -92,7 +93,7 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
     public SwarmPlaygroundView(Context context, int screenX, int screenY) {
         super(context);
         this.context = context;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         int nbeasts = sharedPreferences.getInt(context.getString(R.string.other_nbeasts_key), ConfigureOtherActivity.DEFAULT_N_BEASTS);
         int other_ratio = sharedPreferences.getInt(context.getString(R.string.other_ratio_key), ConfigureOtherActivity.DEFAULT_RATIO);
         sane_light = sharedPreferences.getInt(context.getString(R.string.fb_sane_light_key), ConfigureFoodBeast.DEFAULT_SANE_LIGHT);
@@ -197,10 +198,10 @@ public class SwarmPlaygroundView extends SurfaceView implements Runnable {
         intent.putExtra(context.getString(R.string.final_gb_value_key), beasts.size() - nFB);
         intent.putExtra(context.getString(R.string.final_time_up_key), timeup);
         // create and save compressed graph image - should this be made async?
-        long start = PreferenceManager.getDefaultSharedPreferences(context).getLong(context.getString(R.string.start_time_key), 0);
+        long start = sharedPreferences.getLong(context.getString(R.string.start_time_key), 0);
         long now = System.currentTimeMillis();
         long seconds = (now - start) / 1000;
-        Bitmap graph = recorder.createBitmapDrawing(screenX - 10, screenY / 3, seconds);
+        Bitmap graph = recorder.createBitmapDrawing(screenX - 10, screenY / 3, seconds, null);
         context.deleteFile(context.getString(R.string.recorder_graph_file_name));  // just in case
         FileOutputStream fileOutputStream = null;
         try {

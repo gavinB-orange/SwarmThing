@@ -2,7 +2,6 @@ package com.example.brebner.swarmthing;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -26,7 +25,7 @@ public class ScoreLogger {
 
     public ScoreLogger(Context context) {
         this.context = context;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
     }
 
     public void add_score_data(long timestamp, int challenge, int score) {

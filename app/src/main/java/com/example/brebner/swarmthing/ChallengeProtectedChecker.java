@@ -1,7 +1,7 @@
 package com.example.brebner.swarmthing;
 
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,8 @@ public class ChallengeProtectedChecker extends ChallengeChecker {
     }
 
     public String validate(Recorder recorder) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(recorder.getContext());
+        Context context = recorder.getContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         if (! timeMatches(sharedPreferences.getLong(recorder.getContext().getString(R.string.other_maxtime_key), 0))) {
             return "time does not match";
         }

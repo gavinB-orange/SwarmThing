@@ -2,13 +2,13 @@ package com.example.brebner.swarmthing;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class Recorder {
         items = new ArrayList<>();
         maxnbeasts = 0;
         nbeastssum = 0;
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         challengeChoice = sharedPreferences.getInt(context.getString(R.string.challenge_choice_key), ChallengeActivity.NO_CHALLENGE_SELECTED);
         minnbeasts = MainActivity.MAXBEASTS;
     }
@@ -219,7 +219,14 @@ public class Recorder {
         return path;
     }
 
-    public Bitmap createBitmapDrawing(int width, int height, long seconds) {
+    public Bitmap createBitmapDrawing(int width, int height, long seconds, Bitmap srcbitmap) {
+        /*
+        Create a bit map of the graph
+        int width : width of the bitmap
+        int height : height of the bitmap
+        long seconds: the seconds value to display
+        Bitmap srcbitmap: generally null but can pass for test purposes.
+         */
         if (items.size() < 1) {
             AssertionError e = new AssertionError();
             Log.e(TAG, "createBitmapDrawing: items is 0", e );
@@ -227,13 +234,13 @@ public class Recorder {
         }
         int text_size = height / 20;
         Canvas canvas = new Canvas();
-        Bitmap bitmap;
-        Bitmap srcbitmap;
         // start with an existing bitmap of the right size
-        srcbitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_50);
-        srcbitmap = Bitmap.createScaledBitmap(srcbitmap, width, height, false);
+        if (srcbitmap == null) {
+            srcbitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.beast_2_50);
+        }
+        srcbitmap = srcbitmap.createScaledBitmap(srcbitmap, width, height, false);
         // make a mutable copy
-        bitmap = srcbitmap.copy(srcbitmap.getConfig(), true);
+        Bitmap bitmap = srcbitmap.copy(srcbitmap.getConfig(), true);
         // set as bitmap for the canvas
         canvas.setBitmap(bitmap);
         // draw stuff

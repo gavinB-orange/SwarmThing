@@ -1,8 +1,8 @@
 package com.example.brebner.swarmthing;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +29,7 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_grazing_beast);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
 
         int initial_init_energy = sharedPreferences.getInt(getString(R.string.gb_init_energy_key), DEFAULT_INIT_ENERGY);
         int initial_split_threshold = sharedPreferences.getInt(getString(R.string.gb_split_threshold_key), DEFAULT_SPLIT_THRESHOLD);
@@ -52,7 +52,7 @@ public class ConfigureGrazingBeastActivity extends AppCompatActivity implements 
     }
 
     public void reportGBConfigData(View view) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(getString(R.string.gb_init_energy_key), initenergy);
         Log.d(TAG, "reportGBConfigData: set GB init energy to " + initenergy);

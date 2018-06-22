@@ -1,20 +1,16 @@
 package com.example.brebner.swarmthing;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -119,7 +115,7 @@ public class ChallengeFragment extends Fragment implements View.OnClickListener 
         ImageButton imageButton = (ImageButton)v;
         imageButton.setImageResource(android.R.drawable.checkbox_on_background);
         // save the choice
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getActivity().getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(getString(R.string.challenge_choice_key), choice);
         // all challenges currently work with 5 mins, so ...

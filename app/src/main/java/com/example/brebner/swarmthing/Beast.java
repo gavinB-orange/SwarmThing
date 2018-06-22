@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -54,7 +52,7 @@ public abstract class Beast extends DrawableThing {
         int tmpstep = getStep();
         vx = random.nextInt(2 * tmpstep + 1) - tmpstep;
         vy = random.nextInt(2 * tmpstep + 1) - tmpstep;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         myage = 1000; // something long enough to last until we overwrite immediately
     }
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -41,10 +40,10 @@ class GrazingBeast extends Beast {
             Log.d(TAG, "GrazingBeast: Re-using cached bitmaps");
             bitmaps = bitmapcache;
         }
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
         init_energy = sharedPreferences.getInt(context.getString(R.string.gb_init_energy_key), ConfigureGrazingBeastActivity.DEFAULT_INIT_ENERGY);
         split_threshold = sharedPreferences.getInt(context.getString(R.string.gb_split_threshold_key), ConfigureGrazingBeastActivity.DEFAULT_SPLIT_THRESHOLD);
-        int gb_max_age = sharedPreferences.getInt(context.getString(R.string.fb_max_age_key), ConfigureFoodBeast.DEFAULT_AGE);
+        int gb_max_age = sharedPreferences.getInt(context.getString(R.string.gb_max_age_key), ConfigureFoodBeast.DEFAULT_AGE);
         setMaxAge(gb_max_age);
         Log.d(TAG, "GrazingBeast: init_energy = " + init_energy, null);
         Log.d(TAG, "GrazingBeast: split_threshold = " + split_threshold, null);

@@ -1,9 +1,9 @@
 package com.example.brebner.swarmthing;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,7 +45,7 @@ public class ConfigureOtherActivity extends AppCompatActivity implements SeekBar
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_other);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = getSharedPreferences(getString(R.string.shared_preference_name), Context.MODE_PRIVATE);
 
         int initial_default_n_beasts = sharedPreferences.getInt(getString(R.string.other_nbeasts_key), DEFAULT_N_BEASTS);
         int initial_ratio = sharedPreferences.getInt(getString(R.string.other_ratio_key), DEFAULT_RATIO);
