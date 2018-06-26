@@ -27,6 +27,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+// TODO add some checks / asserts to make this test useful
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class InitialParamsConfigTest {
