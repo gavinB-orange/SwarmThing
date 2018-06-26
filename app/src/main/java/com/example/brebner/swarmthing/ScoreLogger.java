@@ -150,4 +150,22 @@ public class ScoreLogger {
         editor.putInt(context.getString(R.string.overall_score_key), 0);
         editor.commit();
     }
+
+    public boolean self_test() {
+        this.reset_score_data();
+        String toto = this.get_all_score_data();
+        if (toto != "No Scores Saved") {
+            return false;
+        }
+        this.add_score_data((long)0, ChallengeActivity.CHALLENGE_MOST_DEAD, 1);
+        this.add_score_data((long)0, ChallengeActivity.CHALLENGE_MOST_BORN, 1);
+        this.add_score_data((long)0, ChallengeActivity.CHALLENGE_MOST_BEAST_ITERATIONS, 1);
+        this.add_score_data((long)0, ChallengeActivity.CHALLENGE_MOST_PROTECTED, 1);
+        this.add_score_data((long)0, ChallengeActivity.CHALLENGE_PHOENIX, 1);
+        toto = this.get_all_score_data();
+        if (toto.length() <= "No Scores Saved".length()) {
+            return false;
+        }
+        return true;
+    }
 }

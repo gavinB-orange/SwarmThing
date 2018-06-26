@@ -54,6 +54,11 @@ public class TestScoreLogger {
         scoreLogger.reset_score_data();
         assertTrue(scoreLogger.get_all_score_data() != null);
     }
+     @Test
+    public void test_logger_self_test() {
+        ScoreLogger scoreLogger = new ScoreLogger(mockContext);
+        assertTrue(scoreLogger.self_test());
+     }
 
 
 }
