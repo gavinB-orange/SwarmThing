@@ -1,3 +1,6 @@
+
+package com.example.brebner.swarmthing;
+
 import static org.junit.Assert.*;
 
 /**
